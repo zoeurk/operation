@@ -82,6 +82,7 @@ int main(int argc, char **argv){
 		free(temp);
 	printf("ARGV[2] = %s\n", argv[2]);
 	temp = argv[2];
+	count = 0;
 	if(equal(temp, "0") >= 0){
 		while(equal(pi_, temp) < 0){
 			temp_ = soustraction(temp, pi_);
