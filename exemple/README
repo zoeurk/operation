@@ -1,0 +1,1 @@
+export LD_LIBRARY_PATH="~/Projets/c_inf/operation/exemple:$LD_LIBRARY_PATH"
