@@ -50,15 +50,28 @@ int main(int argc, char **argv){
 	printf("ARGV[1] = %s\n", argv[1]);
 	temp = argv[1];
 	pi_ = multiplication(pi, "2");
-	while(equal(pi_, temp) < 0){
-		temp_ = soustraction(temp, pi_);
-		if(temp == argv[1])
-			temp = temp_;
-		else{
-			free(temp);
-			temp = temp_;
+	if(equal(temp, "0") >= 0){
+		while(equal(pi_, temp) < 0){
+			temp_ = soustraction(temp, pi_);
+			if(temp == argv[1])
+				temp = temp_;
+				else{
+				free(temp);
+				temp = temp_;
+			}
+			count++;
 		}
-		count++;
+	}else{
+		while(equal(pi_, temp) > 0){
+			temp_ = addition(temp, pi_);
+			if(temp == argv[1])
+				temp = temp_;
+				else{
+				free(temp);
+				temp = temp_;
+			}
+			count++;
+		}
 	}
 	printf("Count:\t\t\t%lu\n", count);
 	x = strtold(temp, &endptr);
@@ -69,15 +82,28 @@ int main(int argc, char **argv){
 		free(temp);
 	printf("ARGV[2] = %s\n", argv[2]);
 	temp = argv[2];
-	while(equal(pi_, temp) < 0){
-		temp_ = soustraction(temp, pi_);
-		if(temp == argv[2])
-			temp = temp_;
-		else{
-			free(temp);
-			temp = temp_;
+	if(equal(temp, "0") >= 0){
+		while(equal(pi_, temp) < 0){
+			temp_ = soustraction(temp, pi_);
+			if(temp == argv[2])
+				temp = temp_;
+			else{
+				free(temp);
+				temp = temp_;
+			}
+			count++;
 		}
-		count++;
+	}else{
+		while(equal(pi_, temp) > 0){
+			temp_ = addition(temp, pi_);
+			if(temp == argv[2])
+				temp = temp_;
+			else{
+				free(temp);
+				temp = temp_;
+			}
+			count++;
+		}
 	}
 	printf("Count:\t\t\t%lu\n", count);
 	x = strtold(temp, &endptr);
