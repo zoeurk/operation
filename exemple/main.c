@@ -3,7 +3,6 @@
 #include <string.h>
 #include <math.h>
 #include "operation.h"
-
 int main(int argc, char **argv){
 	int ret;
 	unsigned long int count = 0;
@@ -47,32 +46,19 @@ int main(int argc, char **argv){
 		printf("division:%s\n", (char *)r);
 		free(r);
 	}
-	printf("ARGV[1] = %s\n", argv[1]);
-	temp = argv[1];
 	pi_ = multiplication(pi, "2");
-	if(equal(temp, "0") >= 0){
-		while(equal(pi_, temp) < 0){
-			temp_ = soustraction(temp, pi_);
-			if(temp == argv[1])
-				temp = temp_;
-				else{
-				free(temp);
-				temp = temp_;
-			}
-			count++;
-		}
-	}else{
-		while(equal(pi_, temp) > 0){
-			temp_ = addition(temp, pi_);
-			if(temp == argv[1])
-				temp = temp_;
-				else{
-				free(temp);
-				temp = temp_;
-			}
-			count++;
-		}
-	}
+	if(equal(argv[1], pi_) > 0){
+		temp = division(argv[1], pi_, 0);
+		temp_ = soustraction(temp,"1");
+		free(temp);
+		temp = multiplication(temp_, pi_);
+		free(temp_);
+		temp_ = soustraction(argv[1], temp);
+		free(temp);
+		temp = temp_;
+	}else
+		temp = argv[1];
+	printf("ARGV[1] = %s\n", argv[1]);
 	printf("Count:\t\t\t%lu\n", count);
 	x = strtold(temp, &endptr);
 	printf("cosinus arbitraire:\t%.48Lf\n", cosl(x));
@@ -80,32 +66,18 @@ int main(int argc, char **argv){
 	printf("cosinus:\t\t%.48Lf\n", cosl(x));
 	if(temp != argv[1])
 		free(temp);
+	if(equal(argv[2], pi_) > 0){
+		temp = division(argv[2], pi_, 0);
+		temp_ = soustraction(temp,"1");
+		free(temp);
+		temp = multiplication(temp_, pi_);
+		free(temp_);
+		temp_ = soustraction(argv[1], temp);
+		free(temp);
+		temp = temp_;
+	}else
+		temp = argv[2];
 	printf("ARGV[2] = %s\n", argv[2]);
-	temp = argv[2];
-	count = 0;
-	if(equal(temp, "0") >= 0){
-		while(equal(pi_, temp) < 0){
-			temp_ = soustraction(temp, pi_);
-			if(temp == argv[2])
-				temp = temp_;
-			else{
-				free(temp);
-				temp = temp_;
-			}
-			count++;
-		}
-	}else{
-		while(equal(pi_, temp) > 0){
-			temp_ = addition(temp, pi_);
-			if(temp == argv[2])
-				temp = temp_;
-			else{
-				free(temp);
-				temp = temp_;
-			}
-			count++;
-		}
-	}
 	printf("Count:\t\t\t%lu\n", count);
 	x = strtold(temp, &endptr);
 	printf("cosinus arbitraire:\t%.48Lf\n", cosl(x));
@@ -116,4 +88,3 @@ int main(int argc, char **argv){
 	free(pi_);
 	return 0;
 }
-
