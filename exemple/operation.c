@@ -1009,7 +1009,6 @@ void *division(void *num1, void *num2, unsigned long int virgule){
 		VALEUR_NEGATIVE(result, pr, ii);
 	}
 	//printf("%s\n", result);
-				//printf("==>%s\n", result);
 	if((temp = strchr(result, '.')) != NULL){
 		temp_ = &result[strlen(result)-1];
 		if(virgule == 0){
@@ -1021,7 +1020,9 @@ void *division(void *num1, void *num2, unsigned long int virgule){
 				free(result);
 				result = temp_;
 				temp = strchr(result,'.');
-				*temp = 0;
+				//exit(0);
+				if(temp)
+					*temp = 0;
 			}
 		}else{
 			//printf("ici\n");

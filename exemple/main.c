@@ -46,8 +46,11 @@ int main(int argc, char **argv){
 		free(r);
 	}
 	pi_ = multiplication(pi, "2");
+	//printf("*************\n");
 	if(equal(argv[1], pi_) > 0){
+		//printf("*****************************\n");
 		temp = division(argv[1], pi_, 0);
+		//printf("==>%s\n", temp);
 		temp_ = soustraction(temp,"1");
 		free(temp);
 		temp = multiplication(temp_, pi_);
@@ -55,8 +58,9 @@ int main(int argc, char **argv){
 		temp_ = soustraction(argv[1], temp);
 		free(temp);
 		temp = temp_;
-	}else
+	}else{
 		temp = argv[1];
+	}
 	printf("ARGV[1] = %s\n", argv[1]);
 	//printf("Count:\t\t\t%lu\n", count);
 	x = strtold(temp, &endptr);
