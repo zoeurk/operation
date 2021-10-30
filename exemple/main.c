@@ -5,7 +5,6 @@
 #include "operation.h"
 int main(int argc, char **argv){
 	int ret;
-	unsigned long int count = 0;
 	char *r, pi[51], *pi_, *temp, *temp_, *endptr;
 	long double x;
 	memset(pi, 0, 51);
@@ -59,7 +58,7 @@ int main(int argc, char **argv){
 	}else
 		temp = argv[1];
 	printf("ARGV[1] = %s\n", argv[1]);
-	printf("Count:\t\t\t%lu\n", count);
+	//printf("Count:\t\t\t%lu\n", count);
 	x = strtold(temp, &endptr);
 	printf("cosinus arbitraire:\t%.48Lf\n", cosl(x));
 	x = strtold(argv[1], &endptr);
@@ -78,7 +77,7 @@ int main(int argc, char **argv){
 	}else
 		temp = argv[2];
 	printf("ARGV[2] = %s\n", argv[2]);
-	printf("Count:\t\t\t%lu\n", count);
+	//printf("Count:\t\t\t%lu\n", count);
 	x = strtold(temp, &endptr);
 	printf("cosinus arbitraire:\t%.48Lf\n", cosl(x));
 	x = strtold(argv[2], &endptr);
