@@ -1021,7 +1021,8 @@ void *division(void *num1, void *num2, unsigned long int virgule){
 				free(result);
 				result = temp_;
 				temp = strchr(result,'.');
-				*temp = 0;
+				if(temp)
+					*temp = 0;
 			}
 		}else{
 			//printf("ici\n");
