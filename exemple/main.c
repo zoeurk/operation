@@ -13,6 +13,7 @@ int main(int argc, char **argv){
 		fprintf(stderr, "usage:\n\t%s num1 num2\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
+	printf("PI:%s\n", pi);
 	ret = equal(argv[1],argv[2]);
 	switch(ret){
 		case 0:
