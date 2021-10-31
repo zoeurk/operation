@@ -46,10 +46,8 @@ int main(int argc, char **argv){
 		printf("division:%s\n", (char *)r);
 		free(r);
 	}
-	pi_ = multiplication(pi, "2");
-	//printf("*************\n");
+	/*pi_ = multiplication(pi, "2");
 	if(equal(argv[1], pi_) > 0){
-		//printf("*****************************\n");
 		temp = division(argv[1], pi_, 0);
 		//printf("==>%s\n", temp);
 		temp_ = soustraction(temp,"1");
@@ -89,6 +87,6 @@ int main(int argc, char **argv){
 	printf("cosinus:\t\t%.48Lf\n", cosl(x));
 	if(temp != argv[2])
 		free(temp);
-	free(pi_);
+	free(pi_);*/
 	return 0;
 }
