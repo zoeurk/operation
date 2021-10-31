@@ -41,7 +41,7 @@ int main(int argc, char **argv){
 		printf("multiplication:%s\n", (char *)r);
 		free(r);
 	}
-	r = division(argv[1], argv[2], 8);
+	r = division(argv[1], argv[2], 24);
 	if(r){
 		printf("division:%s\n", (char *)r);
 		free(r);

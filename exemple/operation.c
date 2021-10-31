@@ -1057,14 +1057,14 @@ void *division(void *num1, void *num2, unsigned long int virgule){
 							//exit(0);
 						//}
 						//if(strlen(result) > 0)
-							result[strlen(result)-1] = 0;
+						//	result[strlen(result)-1] = 0;
 					}else	free(temp);
 				}
 			}
 		//}
 	}
 	if((n1 = strchr(result,'.')) != NULL)
-		for(n2 = &result[strlen(result) - 1]; *n2 == '.' || *n2 == '0' ; *n2 = 0, n2--);;
+		for(n2 = &result[strlen(result) - 1]; n2 != n1-1 && (*n2 == '.' || *n2 == '0') ; *n2 = 0, n2--);;
 	//printf("%s\n", result);
 	if(equal(result,"0") == 0 || equal(result,"-0") == 0){
 		*result = '0';
