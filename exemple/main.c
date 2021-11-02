@@ -13,7 +13,6 @@ int main(int argc, char **argv){
 		fprintf(stderr, "usage:\n\t%s num1 num2\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
-	printf("PI:%s\n", pi);
 	ret = equal(argv[1],argv[2]);
 	switch(ret){
 		case 0:
@@ -41,52 +40,61 @@ int main(int argc, char **argv){
 		printf("multiplication:%s\n", (char *)r);
 		free(r);
 	}
-	r = division(argv[1], argv[2], 24);
+	r = division(argv[1], argv[2], 0);
 	if(r){
 		printf("division:%s\n", (char *)r);
 		free(r);
 	}
-	/*pi_ = multiplication(pi, "2");
-	if(equal(argv[1], pi_) > 0){
-		temp = division(argv[1], pi_, 0);
-		//printf("==>%s\n", temp);
-		temp_ = soustraction(temp,"1");
-		free(temp);
-		temp = multiplication(temp_, pi_);
-		free(temp_);
-		temp_ = soustraction(argv[1], temp);
-		free(temp);
-		temp = temp_;
-	}else{
-		temp = argv[1];
-	}
-	printf("ARGV[1] = %s\n", argv[1]);
-	//printf("Count:\t\t\t%lu\n", count);
+	pi_ = multiplication(pi, "2");
+	temp = division(argv[1], pi_, 48);
+	temp_ = strchr(temp, '.');
+	temp_--;
+	*temp_ = '0';
+	endptr = multiplication(pi_,temp_);
+	free(temp);
+	temp = endptr;
+	endptr = NULL;
+	//printf("COUNT:%s\n", temp);
 	x = strtold(temp, &endptr);
-	printf("cosinus arbitraire:\t%.48Lf\n", cosl(x));
+	if(endptr && strlen(endptr)>0)
+		fprintf(stderr, "Erreur: <%s>\n", endptr);
+	free(temp);
+	//free(pi_);
+	printf("cosinus arbitraire de \'%s\':\t%.48Lf\n", argv[1],cosl(x));
+	endptr = NULL;
 	x = strtold(argv[1], &endptr);
-	printf("cosinus:\t\t%.48Lf\n", cosl(x));
-	if(temp != argv[1])
-		free(temp);
-	if(equal(argv[2], pi_) > 0){
-		temp = division(argv[2], pi_, 0);
-		temp_ = soustraction(temp,"1");
-		free(temp);
-		temp = multiplication(temp_, pi_);
-		free(temp_);
-		temp_ = soustraction(argv[1], temp);
-		free(temp);
-		temp = temp_;
-	}else
-		temp = argv[2];
-	printf("ARGV[2] = %s\n", argv[2]);
-	//printf("Count:\t\t\t%lu\n", count);
+	if(endptr && strlen(endptr)>0)
+		fprintf(stderr, "Erreur: <%s>\n", endptr);
+	printf("cosinus de \'%s\':", argv[1]);
+	if(equal(argv[1], "0") < 0){
+		printf("\t\t%.48Lf\n", cosl(x));
+	}else{
+		printf("\t\t\t%.48Lf\n", cosl(x));
+	}
+	temp = division(argv[2], pi_, 48);
+	temp_ = strchr(temp, '.');
+	temp_--;
+	*temp_ = '0';
+	endptr = multiplication(pi_,temp_);
+	free(temp);
+	temp = endptr;
+	endptr = NULL;
+	//printf("COUNT:%s\n", temp);
 	x = strtold(temp, &endptr);
-	printf("cosinus arbitraire:\t%.48Lf\n", cosl(x));
+	if(endptr && strlen(endptr)>0)
+		fprintf(stderr, "Erreur: <%s>\n", endptr);
+	free(temp);
+	printf("cosinus de arbitraire de \'%s\':\t%.48Lf\n", argv[2],cosl(x));
+	endptr = NULL;
 	x = strtold(argv[2], &endptr);
-	printf("cosinus:\t\t%.48Lf\n", cosl(x));
-	if(temp != argv[2])
-		free(temp);
-	free(pi_);*/
+	if(endptr && strlen(endptr)>0)
+		fprintf(stderr, "Erreur: <%s>\n", endptr);
+	printf("cosinus de \'%s\':", argv[2]);
+	if(equal(argv[2], "0") < 0){
+		printf("\t\t%.48Lf\n", cosl(x));
+	}else{
+		printf("\t\t\t%.48Lf\n", cosl(x));
+	}
+	free(pi_);
 	return 0;
 }
