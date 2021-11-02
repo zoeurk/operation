@@ -62,6 +62,8 @@ int equal(void *num1, void *num2){
 	val2_len = strlen(n2);
 	val1_len = (dot1_len) ? val1_len - dot1_len -1: val1_len; 
 	val2_len = (dot2_len) ? val2_len - dot2_len -1: val2_len;
+	if((strcmp(n1, "-0") == 0 && strcmp(n2,"0") == 0) || (strcmp(n2, "-0") == 0 && strcmp(n1,"0") == 0))
+		return 0;
 	if(neg1 && !neg2)
 		return -1;
 	if(neg2 && !neg1)
@@ -857,7 +859,7 @@ void *division(void *num1, void *num2, unsigned long int virgule){
 	unsigned long int buflen = 0, qbuf = 1, len = 0, virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
 	long long int ii = 0;
 	int x;
-	if(equal(n2,"0") == 0){
+	if(equal(n2,"0") == 0 || equal(n2,"-0") == 0){
 		fprintf(stderr, "Erreur: Division par 0\n");
 		exit(EXIT_FAILURE);
 	}
