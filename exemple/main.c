@@ -66,7 +66,7 @@ int main(int argc, char **argv){
 	if(endptr && strlen(endptr)>0)
 		fprintf(stderr, "Erreur: <%s>\n", endptr);
 	printf("cosinus de \'%s\':", argv[1]);
-	if(equal(argv[1], "0") < 0){
+	if(*argv[1] == '-'){
 		printf("\t\t%.48Lf\n", cosl(x));
 	}else{
 		printf("\t\t\t%.48Lf\n", cosl(x));
@@ -90,7 +90,7 @@ int main(int argc, char **argv){
 	if(endptr && strlen(endptr)>0)
 		fprintf(stderr, "Erreur: <%s>\n", endptr);
 	printf("cosinus de \'%s\':", argv[2]);
-	if(equal(argv[2], "0") < 0){
+	if(*argv[2] == '-'){
 		printf("\t\t%.48Lf\n", cosl(x));
 	}else{
 		printf("\t\t\t%.48Lf\n", cosl(x));
