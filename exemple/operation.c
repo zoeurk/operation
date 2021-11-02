@@ -867,7 +867,7 @@ void *division(void *num1, void *num2, unsigned long int virgule){
 	ZERO;
 	if(equal(n2,"0") == 0 || equal(n2,"-0") == 0){
 		fprintf(stderr, "Erreur: Division par 0\n");
-		exit(EXIT_FAILURE);
+		return NULL;
 	}
 	if(equal(n1,"0") == 0){
 		 quotient = allocation((void **)&quotient,2,sizeof(char));
