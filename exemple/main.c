@@ -106,12 +106,12 @@ int main(int argc, char **argv){
 	endptr = NULL;
 	if(endptr && strlen(endptr)>0)
 		fprintf(stderr, "Erreur: <%s>\n", endptr);
-	printf("cosinus arbitraire de \'%s\':\t%.48Lf\n", argv[1],cosl(x));
+	printf("cosinus arbitraire de \'%s\':\t%.48Lf\n", argv[2],cosl(x));
 	endptr = NULL;
-	x = strtold(argv[1], &endptr);
+	x = strtold(argv[2], &endptr);
 	if(endptr && strlen(endptr)>0)
 		fprintf(stderr, "Erreur: <%s>\n", endptr);
-	printf("cosinus de \'%s\':", argv[1]);
+	printf("cosinus de \'%s\':", argv[2]);
 	if(equal(argv[2], "0") < 0){
 		printf("\t\t%.48Lf\n", cosl(x));
 	}else{
