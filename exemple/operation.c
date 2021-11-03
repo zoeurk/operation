@@ -96,15 +96,8 @@ int equal(void *num1, void *num2){
 		}
 	}
 	//printf("%s::%s\n", dot1, dot2);
-	if(dot1)*(dot1-1) = 0;
-	if(dot2)*(dot2-1) = 0;
-	if(strcmp(val1,"0") == 0 && strcmp(val2,"0") == 0){
-		if(dot1)*(dot1-1) = '.';
-		if(dot2)*(dot2-1) = '.';
+	if(strcmp(val1,"0") == 0 && strcmp(val2,"0") == 0)
 		return 0;
-	}
-	if(dot1)*(dot1-1) = '.';
-	if(dot2)*(dot2-1) = '.';
 	if(strcmp(val1,val2)==0)
 		return 0;
 	while(*val1 == '0' && *(val1+1) != '.'){
