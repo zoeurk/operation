@@ -53,9 +53,9 @@ int main(int argc, char **argv){
 		temp = argv[1];
 		x = strtold(temp, &endptr);
 	}else{
-		printf("%s\n", temp);
+		//printf("%s\n", temp);
 		if((temp_ = strchr(temp, '.')) != NULL){
-			printf("%s\n", temp);
+			//printf("%s\n", temp);
 			temp_--;
 			*temp_ = '0';
 			endptr = multiplication(pi_,temp_);
@@ -89,7 +89,7 @@ int main(int argc, char **argv){
 	}else{
 		printf("%s\n", temp);
 		if((temp_ = strchr(temp, '.')) != NULL){
-			printf("%s\n", temp);
+			//printf("%s\n", temp);
 			temp_--;
 			*temp_ = '0';
 			endptr = multiplication(pi_,temp_);

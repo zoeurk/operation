@@ -381,9 +381,8 @@ void *addition(void *num1, void *num2){
 	pret = &ret[strlen(ret)-1];
 	if(dot1 || dot2){
 		while(*(pret-1) != '.' && (*pret == '0' || *pret == '.')){
-				printf("%s\n", pret);
-				*pret = 0;
-				pret--;
+			*pret = 0;
+			pret--;
 		}
 	}
 	if(neg){
