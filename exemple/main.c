@@ -87,7 +87,7 @@ int main(int argc, char **argv){
 		temp = argv[2];
 		x = strtold(temp, &endptr);
 	}else{
-		printf("%s\n", temp);
+		//printf("%s\n", temp);
 		if((temp_ = strchr(temp, '.')) != NULL){
 			//printf("%s\n", temp);
 			temp_--;

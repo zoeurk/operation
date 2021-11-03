@@ -47,7 +47,7 @@ int equal(void *num1, void *num2){
 		v1[2] = { 0, 0 }, v2[2] = { 0, 0 },
 		neg1 = 0, neg2 = 0;
 	unsigned long int dot1_len = 0, dot2_len = 0,
-				val1_len = 0, val2_len = 0, z = 0;
+				val1_len = 0, val2_len = 0;
 	long long ii = 0;
 	for(val1 = n1; *val1 == '-' || *val1 == '+'; val1++)
 		if(*val1 == '-')
@@ -64,18 +64,48 @@ int equal(void *num1, void *num2){
 	val2_len = (dot2_len) ? val2_len - dot2_len -1: val2_len;
 	//printf("%s::%s\n", val1, val2);
 	if(neg1 && !neg2){
-		if(strcmp(val1,"0") == 0){
-			//printf("===%s\n", dot1);
+		if((pdot = strchr(val1, '.')) != NULL)
+			for(pdot = val1 +val1_len,
+				dot[0] = 0;
+				*pdot != 0 &&
+				dot[0] == 0;
+				pdot++
+			){	
+				//printf("%i\n", pdot[0]);
+				if(*pdot != '0')dot[0] = *pdot;
+			}
+		if(strncmp(val1,val2, 1 ) == 0 && dot[0] == 0){
+			//if(pdot)
+			//	*pdot = '.';
+			//printf("===>%s;%i\n",val1,dot[0]);
 			return 0;
-		}
+		}//else printf("merde\n");
+		//printf("%s\n", val1);
 		return -1;
 	}
 	if(neg2 && !neg1){
-		if(strcmp(val2,"0") == 0){
+		if((pdot = strchr(val2, '.')) != NULL)
+			for(pdot = val2 +val2_len,
+				dot[0] = 0;
+				*pdot != 0 &&
+				dot[0] == 0;
+				pdot++
+			){	
+				//printf("%i\n", pdot[0]);
+				if(*pdot != '0')dot[0] = *pdot;
+			}
+		if(strncmp(val1,val2, 1 ) == 0 && dot[0] == 0){
+			//if(pdot)
+			//	*pdot = '.';
+			//printf("===>%s;%i\n",val1,dot[0]);
+			return 0;
+		}//else printf("merde\n");
+		//printf("%s\n", val1);
+		/*if(strcmp(val2,"0") == 0){
 			//printf("===%s\n", dot1);
 			return 0;
 		}
-		//printf("===%s\n", dot2);
+		//printf("===%s\n", dot2);*/
 		return 1;
 	}
 	/*if(dot1){
@@ -380,7 +410,9 @@ void *addition(void *num1, void *num2){
 	}
 	pret = &ret[strlen(ret)-1];
 	if(dot1 || dot2){
-		while(*(pret-1) != '.' && (*pret == '0' || *pret == '.')){
+		//printf("DOT\n");
+		while((*pret == '0' || *pret == '.')){
+			//printf("...:%i\n", *pret);
 			*pret = 0;
 			pret--;
 		}
@@ -703,8 +735,8 @@ void *soustraction(void *num1, void *num2){
 	if(equal("0",ret) == 0){
 		strcpy(ret,"0");
 	}
-	/*while((dot1_len|| dot2_len) && (ret[strlen(ret)-1] == '0' || ret[strlen(ret)-1] == '.'))
-		ret[strlen(ret)-1] = 0;*/
+	while((dot1_len|| dot2_len) && (ret[strlen(ret)-1] == '0' || ret[strlen(ret)-1] == '.'))
+		ret[strlen(ret)-1] = 0;
 	free(pbuf);
 	return ret;
 }
