@@ -78,7 +78,7 @@ int equal(void *num1, void *num2){
 		//printf("===%s\n", dot2);
 		return 1;
 	}
-	if(dot1){
+	/*if(dot1){
 		for(pdot = dot1;*pdot != 0 && dot[0] == 0;pdot++){
 			if(*pdot != '0')
 				dot[0] = 1;
@@ -94,7 +94,7 @@ int equal(void *num1, void *num2){
 			//printf("******%s::%s\n", val2, dot2);
 			*(dot-1) = 0;
 		}
-	}
+	}*/
 	//printf("%s::%s\n", dot1, dot2);
 	if(strcmp(val1,"0") == 0 && strcmp(val2,"0") == 0)
 		return 0;
