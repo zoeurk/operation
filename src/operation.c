@@ -42,7 +42,7 @@ void *reallocation(void **ptr, unsigned long int size){
 }
 int equal(void *num1, void *num2){
 	char *n1 = num1, *n2 = num2,
-		*dot1, *dot2,
+		*dot1, *dot2, *pdot, dot[2] = {0, 0},
 		*val1, *val2,
 		v1[2] = { 0, 0 }, v2[2] = { 0, 0 },
 		neg1 = 0, neg2 = 0;
@@ -62,18 +62,51 @@ int equal(void *num1, void *num2){
 	val2_len = strlen(n2);
 	val1_len = (dot1_len) ? val1_len - dot1_len -1: val1_len; 
 	val2_len = (dot2_len) ? val2_len - dot2_len -1: val2_len;
-	if(strcmp(val1,"0") == 0 && strcmp(val2,"0") == 0)
-		return 0;
+	//printf("%s::%s\n", val1, val2);
 	if(neg1 && !neg2){
-		if(strcmp(val1,"0") == 0)
+		if(strcmp(val1,"0") == 0){
+			//printf("===%s\n", dot1);
 			return 0;
+		}
 		return -1;
 	}
 	if(neg2 && !neg1){
-		if(strcmp(val2,"0") == 0)
+		if(strcmp(val2,"0") == 0){
+			//printf("===%s\n", dot1);
 			return 0;
+		}
+		//printf("===%s\n", dot2);
 		return 1;
 	}
+	if(dot1){
+		for(pdot = dot1;*pdot != 0 && dot[0] == 0;pdot++){
+			if(*pdot != '0')
+				dot[0] = 1;
+		}
+		//printf("******\n");
+	}
+	if(dot2){
+		for(pdot = dot2;*pdot != 0 && dot[1] == 0;pdot++){
+			if(*pdot != '0')
+				dot[1] = 1;
+		}
+		if(*pdot == 0){
+			//printf("******%s::%s\n", val2, dot2);
+			*(dot-1) = 0;
+		}
+	}
+	//printf("%s::%s\n", dot1, dot2);
+	if(dot1)*(dot1-1) = 0;
+	if(dot2)*(dot2-1) = 0;
+	if(strcmp(val1,"0") == 0 && strcmp(val2,"0") == 0){
+		if(dot1)*(dot1-1) = '.';
+		if(dot2)*(dot2-1) = '.';
+		return 0;
+	}
+	if(dot1)*(dot1-1) = '.';
+	if(dot2)*(dot2-1) = '.';
+	if(strcmp(val1,val2)==0)
+		return 0;
 	while(*val1 == '0' && *(val1+1) != '.'){
 		val1_len--;
 		val1++;
@@ -678,8 +711,8 @@ void *soustraction(void *num1, void *num2){
 	if(equal("0",ret) == 0){
 		strcpy(ret,"0");
 	}
-	while((dot1_len|| dot2_len) && (ret[strlen(ret)-1] == '0' || ret[strlen(ret)-1] == '.'))
-		ret[strlen(ret)-1] = 0;
+	/*while((dot1_len|| dot2_len) && (ret[strlen(ret)-1] == '0' || ret[strlen(ret)-1] == '.'))
+		ret[strlen(ret)-1] = 0;*/
 	free(pbuf);
 	return ret;
 }
