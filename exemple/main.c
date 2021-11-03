@@ -64,7 +64,7 @@ int main(int argc, char **argv){
 		}else{
 			free(temp);
 			temp = argv[1];
-			x = 0;
+			x = strtold(argv[1], &endptr);
 		}
 	}
 	if(temp != argv[1])
@@ -98,7 +98,7 @@ int main(int argc, char **argv){
 		}else{
 			free(temp);
 			temp = argv[2];
-			x = 0;
+			x = strtold(argv[2], &endptr);
 		}
 	}
 	if(temp != argv[2])
