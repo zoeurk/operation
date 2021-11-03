@@ -47,7 +47,7 @@ int equal(void *num1, void *num2){
 		v1[2] = { 0, 0 }, v2[2] = { 0, 0 },
 		neg1 = 0, neg2 = 0;
 	unsigned long int dot1_len = 0, dot2_len = 0,
-				val1_len = 0, val2_len = 0;
+				val1_len = 0, val2_len = 0, z = 0;
 	long long ii = 0;
 	for(val1 = n1; *val1 == '-' || *val1 == '+'; val1++)
 		if(*val1 == '-')
@@ -62,13 +62,18 @@ int equal(void *num1, void *num2){
 	val2_len = strlen(n2);
 	val1_len = (dot1_len) ? val1_len - dot1_len -1: val1_len; 
 	val2_len = (dot2_len) ? val2_len - dot2_len -1: val2_len;
-	/*if((strcmp(val1, "-0") == 0 && strcmp(val2, "0") == 0) || (strcmp(val1, "0") == 0 && strcmp(val1,"0") == 0)){
+	if(strcmp(val1,"0") == 0 && strcmp(val2,"0") == 0)
 		return 0;
-	}*/
-	if(neg1 && !neg2)
+	if(neg1 && !neg2){
+		if(strcmp(val1,"0") == 0)
+			return 0;
 		return -1;
-	if(neg2 && !neg1)
+	}
+	if(neg2 && !neg1){
+		if(strcmp(val2,"0") == 0)
+			return 0;
 		return 1;
+	}
 	while(*val1 == '0' && *(val1+1) != '.'){
 		val1_len--;
 		val1++;
@@ -638,7 +643,7 @@ void *soustraction(void *num1, void *num2){
 		buflen++;
 	}
 	pbuf = (*(pbuf) == '.') ? pbuf +1: pbuf;
-	while(buffer[strlen(buffer)-1] == '0'&& buffer[strlen(buffer)-2] != '.'){
+	while(strlen(buffer) > 1 && (buffer[strlen(buffer)-1] == '0'&& buffer[strlen(buffer)-2] != '.')){
 		buffer[strlen(buffer)-1] = 0;
 		pbuf = &buffer[strlen(buffer)-2];
 
@@ -659,9 +664,11 @@ void *soustraction(void *num1, void *num2){
 			pbuf = reallocation((void **)&buffer,z*BUFFER);
 		}
 		pbuf = buffer+strlen(buffer);
-		sprintf(pbuf,"-");
-		pbuf++;
-		buflen++;
+		if(*(pbuf-1) != '0'){
+			sprintf(pbuf,"-");
+			pbuf++;
+			buflen++;
+		}
 	}
 	pbuf = buffer;
 	ij = strlen(pbuf);
@@ -861,12 +868,12 @@ void *division(void *num1, void *num2, unsigned long int virgule){
 	unsigned long int buflen = 0, qbuf = 1, len = 0, virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
 	long long int ii = 0;
 	int x;
+	NEG;
+	NEG_TEST;
 	if(equal(n2,"0") == 0 || equal(n2,"-0") == 0){
 		fprintf(stderr, "Erreur: Division par 0\n");
 		return NULL;
 	}
-	NEG;
-	NEG_TEST;
 	//printf("%i\n", neg);
 	ZERO;
 	if(equal(n1,"0") == 0){
