@@ -1130,14 +1130,17 @@ void *division(void *num1, void *num2, unsigned long int virgule){
 				}
 			}
 		//}
+		//printf("%s\n", result);
 	}
 	if((n1 = strchr(result,'.')) != NULL)
 		for(n2 = &result[strlen(result) - 1]; n2 != (n1-1) && (*n2 == '.' || *n2 == '0') ; *n2 = 0, n2--);;
 	//printf("%s\n", result);
-	if(equal(result,"0") == 0 || equal(result,"-0") == 0){
+	//printf("%s\n", result);
+	/*if(equal(result,"0") == 0 || equal(result,"-0") == 0){
 		*result = '0';
 		result[1] = 0;
-	}
+	}*/
+	//printf("%s\n", result);
 	free(reste);
 	free(dividende);
 	free(diviseur);
