@@ -56,10 +56,16 @@ int main(int argc, char **argv){
 	if(equal(argv[1], pi_) > 0 || equal(argv[1],npi_) < 0){
 		//if(equal(argv[1], pi_) > 0){
 		temp = division(argv[1], pi_, 48);
-		temp_ = strchr(temp, '.');
-		*temp_ = 0;
+		ret = 0;
+		if((temp_ = strchr(temp, '.')) != NULL){
+			*temp_ = 0;
+			ret = 1;
+		}else	temp = temp;
 		temp__ = multiplication(temp, pi_);
-		*temp_ = '.';
+		if(ret == 1){
+			*temp_ = '.';
+			ret = 0;
+		}
 		temp_ = soustraction(argv[1], temp__);
 		//printf("%s\n", temp_);
 		x = strtold(temp_, NULL);
