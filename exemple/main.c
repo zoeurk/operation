@@ -59,7 +59,7 @@ int main(int argc, char **argv){
 		temp_ = soustraction(argv[1], temp__);
 		x = strtold(temp_, NULL);
 		printf("Cosinus arbitraire de \'%s\': %.48Lf\n", argv[1], cosl(x));
-		x = strtold(argv[1], NULL);
+		//x = strtold(argv[1], NULL);
 		//x  -= 2*M_PI;
 		//printf("Cosinus  de \'%s\': %.48Lf\n", argv[1], cosl(x));
 		free(temp);
