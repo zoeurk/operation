@@ -55,37 +55,21 @@ int main(int argc, char **argv){
 	npi_ = multiplication(npi, "-2");
 	if(equal(argv[1], pi_) > 0 || equal(argv[1],npi_) < 0){
 		//if(equal(argv[1], pi_) > 0){
-			temp = division(argv[1], pi_, 48);
-			temp_ = strchr(temp, '.');
-			*temp_ = 0;
-			temp__ = multiplication(temp, pi_);
-			*temp_ = '.';
-			temp_ = soustraction(argv[1], temp__);
-			printf("%s\n", temp_);
-			x = strtold(temp_, NULL);
-			printf("Cosinus arbitraire de \'%s\': %.48Lf\n", argv[1], cosl(x));
-			//x = strtold(argv[1], NULL);
-			//x  -= 2*M_PI;
-			//printf("Cosinus  de \'%s\': %.48Lf\n", argv[1], cosl(x));
-			free(temp);
-			free(temp_);
-			free(temp__);
-		/*}else{
-			temp = division(argv[1], pi_, 48);
-			temp_ = strchr(temp, '.');
-			*temp_ = 0;
-			temp__ = multiplication(temp, pi_);
-			*temp_ = '.';
-			temp_ = soustraction(argv[1], temp__);
-			x = strtold(temp_, NULL);
-			printf("Cosinus arbitraire de \'%s\': %.48Lf\n", argv[1], cosl(x));
-			//x = strtold(argv[1], NULL);
-			//x  -= 2*M_PI;
-			//printf("Cosinus  de \'%s\': %.48Lf\n", argv[1], cosl(x));
-			free(temp);
-			free(temp_);
-			free(temp__);
-		}*/
+		temp = division(argv[1], pi_, 48);
+		temp_ = strchr(temp, '.');
+		*temp_ = 0;
+		temp__ = multiplication(temp, pi_);
+		*temp_ = '.';
+		temp_ = soustraction(argv[1], temp__);
+		//printf("%s\n", temp_);
+		x = strtold(temp_, NULL);
+		printf("Cosinus arbitraire de \'%s\': %.48Lf\n", argv[1], cosl(x));
+		//x = strtold(argv[1], NULL);
+		//x  -= 2*M_PI;
+		//printf("Cosinus  de \'%s\': %.48Lf\n", argv[1], cosl(x));
+		free(temp);
+		free(temp_);
+		free(temp__);
 	}else{
 		x = strtold(argv[1], NULL);
 		printf("Cosinus arbitraire de \'%s\': %.48Lf\n", argv[1], cosl(x));
