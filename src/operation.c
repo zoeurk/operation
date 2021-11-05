@@ -411,11 +411,11 @@ void *addition(void *num1, void *num2){
 	pret = &ret[strlen(ret)-1];
 	if(dot1 || dot2){
 		//printf("DOT\n");
-		while((*pret == '0' || *pret == '.')){
+		/*while((*pret == '0' || *pret == '.')){
 			//printf("...:%i\n", *pret);
 			*pret = 0;
 			pret--;
-		}
+		}*/
 	}
 	if(neg){
 		if((ret = realloc(ret,strlen(ret)+2)) == NULL){
@@ -426,6 +426,12 @@ void *addition(void *num1, void *num2){
 			*pret = ret[ii];
 		}
 		*ret = '-';
+	}
+	if((n1 = strchr(ret,'.')) != NULL){
+		for(n2 = &ret[strlen(ret) - 1];(n2+1) != n1 && (*n2 == '0' || *n2 == '.'); n2--){
+			//printf("%s\n", n2);
+			*n2 = 0;
+		}
 	}
 	return ret;
 }
@@ -735,8 +741,14 @@ void *soustraction(void *num1, void *num2){
 	if(equal("0",ret) == 0){
 		strcpy(ret,"0");
 	}
-	while((dot1_len|| dot2_len) && (ret[strlen(ret)-1] == '0' || ret[strlen(ret)-1] == '.'))
-		ret[strlen(ret)-1] = 0;
+	//printf("%s\n", ret);
+	/*while((dot1_len|| dot2_len) && (ret[strlen(ret)-1] == '0' || ret[strlen(ret)-1] == '.'))
+		ret[strlen(ret)-1] = 0;*/
+	if((n1 = strchr(ret,'.')) != NULL){
+		for(n2 = &ret[strlen(ret) - 1];(n2+1) != n1 && (*n2 == '0' || *n2 == '.'); n2--){
+			*n2 = 0;
+		}
+	}
 	free(pbuf);
 	return ret;
 }
