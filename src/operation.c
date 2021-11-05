@@ -948,7 +948,7 @@ void *division(void *num1, void *num2, unsigned long int virgule){
 	NEG;
 	NEG_TEST;
 	if(equal(n2,"0") == 0 || equal(n2,"-0") == 0){
-		fprintf(stderr, "Erreur: Division par 0:<%s>\n", n2);
+		fprintf(stderr, "Erreur: Division par 0\n");
 		return NULL;
 	}
 	//printf("%i\n", neg);
