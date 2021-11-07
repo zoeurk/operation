@@ -42,11 +42,16 @@ int main(int argc, char **argv){
 		printf("multiplication:%s\n", (char *)r);
 		free(r);
 	}
-	r = division(argv[1], argv[2], 56);
+	r = division(argv[1], argv[2], 3);
 	if(r){
 		printf("division:%s\n", (char *)r);
 		free(r);
 	}
+	/*r = modulo(argv[1], argv[2]);
+	if(r){
+		printf("modulo:%s\n", (char *)r);
+		free(r);
+	}*/
 	//printf("++++++++++++++++++\n");
 	x = strtold(argv[1], NULL);
 	//printf("%.48Lf\n", (long double)2*M_PI);

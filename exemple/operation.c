@@ -938,8 +938,8 @@ void *multiplication(void *num1, void *num2){
 void *division(void *num1, void *num2, unsigned long int virgule){
 	char *n1 = num1, *n2 = num2,
 		*quotient = NULL, *dividende = NULL, *diviseur = NULL, *reste = NULL, *preste,
-		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}, *result = NULL, *pr, point = 0,
-		*arrondi = NULL, neg = 0, neg1 = 0, neg2 = 0;
+		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}, *result = NULL, *pr, point = 0, *arrondi = NULL,
+		neg = 0, neg1 = 0, neg2 = 0;
 	unsigned long int buflen = 0, qbuf = 1, len = 0, virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
 	long long int ii = 0;
 	int x;
@@ -969,7 +969,6 @@ void *division(void *num1, void *num2, unsigned long int virgule){
 		temp = multiplication(dividende, "10");
 		free(dividende);
 		dividende = temp;
-
 	}while(1);
 	preste = allocation((void **)&reste, BUFFER, sizeof(char));
 	pr = allocation((void **)&result, BUFFER, sizeof(char));
@@ -986,7 +985,7 @@ void *division(void *num1, void *num2, unsigned long int virgule){
 		nreste++;
 		ii++;
 	}while((unsigned long int)ii < strlen(dividende) && equal(reste, diviseur) < 0);
-	while(equal(reste, diviseur) < 0 && virgule_ < virgule){
+	while(equal(reste, diviseur) < 0 && virgule_ <= virgule+1){
 		temp = multiplication(reste, "10");
 		free(reste);
 		reste = temp;
@@ -1065,7 +1064,7 @@ void *division(void *num1, void *num2, unsigned long int virgule){
 				buflen++;
 			}else
 				virgule_++;
-			if(virgule_ > virgule)break;
+			if(virgule_ >= virgule+1)break;
 		}
 		for(x = 9; x >= 0; x--){
 			sprintf(t, "%i", x);
@@ -1099,54 +1098,83 @@ void *division(void *num1, void *num2, unsigned long int virgule){
 	if((temp = strchr(result, '.')) != NULL){
 		temp_ = &result[strlen(result)-1];
 		if(virgule == 0){
-			if(equal(temp_, "5") >= 0){
+			if(equal(temp_, "5")){
 				if(!neg)
 					temp_ = addition(result ,"1");
 				else	temp_ = soustraction(result, "1");
+				//temp_ = addition(result,"1");
 				free(result);
 				result = temp_;
 				temp = strchr(result,'.');
-				free(reste);
+				//exit(0);
 				if(temp)
 					*temp = 0;
 			}
 		}else{
-			if(equal(temp_,"5") >= 0){
-				for(len = 0; len < virgule_; len++){
-					if(len == 0){
-						arrondi = allocation((void **)&arrondi, 3, sizeof(char));
-						strcpy(arrondi, "0.");
-					}else{	
-						if((arrondi = realloc(arrondi,strlen(arrondi)+2)) == NULL){
-							perror("ralloc()");
-							exit(EXIT_FAILURE);
+			//printf("ici\n");
+			//if(x == 0){
+			//printf("==>%s::%i:%i\n", result, x, neg);
+				if(strlen(strchr(result,'.') +1) >= virgule){
+					//printf("%lu\n", virgule_);
+					//printf("la\n");
+					temp = allocation((void **)&temp, strlen(result)+1, sizeof(char));
+					if(equal(temp_, "5") >= 0){
+						for(len = 0; len < virgule_; len++){
+							if(len == 0){
+								arrondi = allocation((void **)&arrondi, 3, sizeof(char));
+								strcpy(arrondi, "0.");
+							}else{	
+								if((arrondi = realloc(arrondi,strlen(arrondi)+2)) == NULL){
+									perror("ralloc()");
+									exit(EXIT_FAILURE);
+								}
+								if(len+1 == virgule_){
+									strcat(arrondi, "1");
+								}else{	strcat(arrondi, "0");
+								}
+							}
 						}
-						if(len+1 == virgule_){
-							strcat(arrondi, "1");
-						}else{	strcat(arrondi, "0");
-						}
-					}
+						printf("%s\n",arrondi);
+						//free(arrondi);
+						//printf("===>%s::%s\n",result, temp);
+						free(reste);
+						if(!neg)
+							reste = addition(result ,arrondi);
+						else	reste = soustraction(result, arrondi);
+						free(arrondi);
+						free(result);
+						result = reste;
+						reste = temp;
+						//if(virgule_ >= virgule -1){
+						//	printf("==>%s::%lu;%lu\n", result, virgule_, virgule);
+							//exit(0);
+						//}
+						if(strlen(result) > 0)
+							result[strlen(result)-1] = 0;
+					}else	free(temp);
 				}
-				free(reste);
-				if(!neg)
-					reste = addition(result ,arrondi);
-				else	reste = soustraction(result, arrondi);
-				free(result);
-				result = reste;
-				result[strlen(result)-1] = 0;
-				free(arrondi);
 			}
-		}
+		//}
+		//printf("%s\n", result);
 	}
 	if((n1 = strchr(result,'.')) != NULL)
 		for(n2 = &result[strlen(result) - 1]; n2 != (n1-1) && (*n2 == '.' || *n2 == '0') ; *n2 = 0, n2--);;
+	//printf("%s\n", result);
+	//printf("%s\n", result);
+	/*if(equal(result,"0") == 0 || equal(result,"-0") == 0){
+		*result = '0';
+		result[1] = 0;
+	}*/
+	//printf("%s\n", result);
+	//printf("%s\n", dividende);
+	free(reste);
 	free(dividende);
 	free(diviseur);
 	return result;
 }
-/*void *modulo(void *num1, void *num2){
+void *modulo(void *num1, void *num2){
 	char *n1 = num1, *n2 = num2,
-		*quotient = NULL, *dividende = NULL, *diviseur = NULL, *reste = NULL, *preste,
+		*quotient = NULL, *dividende = NULL, *diviseur = NULL, *reste = NULL, *preste, *zero_ = NULL, *pzero_,
 		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}, *result = NULL, *pr, point = 0,
 		neg = 0, neg1 = 0, neg2 = 0;
 	unsigned long int buflen = 0, qbuf = 1, len = 0, virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
@@ -1169,15 +1197,6 @@ void *division(void *num1, void *num2, unsigned long int virgule){
 	dividende = allocation((void **)&dividende, strlen(n1)+1, sizeof(char));
 	memcpy(diviseur, n2, strlen(n2));
 	memcpy(dividende, n1, strlen(n1));
-	if(equal(dividende , diviseur) < 0){
-		free(diviseur);
-		return dividende;
-	}
-	if(equal(dividende , diviseur) == 0){
-		free(diviseur);
-		strcpy(dividende, "0");
-		return dividende;
-	}
 	do{
 		if((n2 = strchr(diviseur,'.')) == NULL  && (n1 = strchr(dividende, '.')) == NULL)
 				break;
@@ -1187,15 +1206,145 @@ void *division(void *num1, void *num2, unsigned long int virgule){
 		temp = multiplication(dividende, "10");
 		free(dividende);
 		dividende = temp;
+		if(zero_ == NULL)
+			zero_ = multiplication("1", "10");
+		else{
+			pzero_ = multiplication(zero_,"10");
+			free(zero_);
+			zero_ = pzero_;
+		}
 	}while(1);
 	preste = allocation((void **)&reste, BUFFER, sizeof(char));
 	pr = allocation((void **)&result, BUFFER, sizeof(char));
 	len = strlen(dividende)-1;
-	free(reste);
+	do{
+		if(nreste +1 >= BUFFER){
+			qreste++;
+			nreste = 0;
+			preste = reallocation((void **)&reste, qreste*BUFFER);
+		}
+		*preste = dividende[ii];
+		preste[1] = 0;
+		preste++;
+		nreste++;
+		ii++;
+	}while((unsigned long int)ii < strlen(dividende) && equal(reste, diviseur) > 0);
+	/*while(equal(reste, diviseur) > 0){
+		temp = multiplication(reste, "10");
+		free(reste);
+		reste = temp;
+		if(point == 0){
+			if(buflen + 1 >= BUFFER){
+				buflen = 0;
+				qbuf++;
+				pr = reallocation((void **)&result, qbuf * BUFFER);
+			}
+			*pr = '0';
+			pr++;
+			buflen++;
+			if(buflen + 1 >= BUFFER){
+				buflen = 0;
+				qbuf++;
+				pr = reallocation((void **)&result, qbuf * BUFFER);
+			}
+			*pr = '.';
+			pr++;
+			buflen++;
+		}else{
+			if(buflen + 1 >= BUFFER){
+				buflen = 0;
+				qbuf++;
+				pr = reallocation((void **)&result, qbuf * BUFFER);
+			}
+			*pr = '0';
+			pr++;
+			buflen++;
+			virgule_++;
+		}
+		point = 1;
+		zero++;
+	}
+	for(x = 9; x >= 0;x--){
+		sprintf(t,"%i", x);
+		temp = multiplication(t, diviseur);
+		temp_ = soustraction(reste, temp);
+		if(equal(temp_,"0") >= 0){
+			free(reste);
+			free(temp);
+			reste = temp_;
+			break;
+		}
+		free(temp);
+		free(temp_);
+	}
+	if(buflen + 1 >= BUFFER){
+		buflen = 0;
+		qbuf++;
+		pr = reallocation((void **)&result, qbuf * BUFFER);
+	}*/
+	*pr = *t;
+	pr++;
+	buflen++;
+	/*while(((unsigned long int)ii <= len || equal(reste,"0") != 0)){
+		temp = multiplication(reste, "10");
+		free(reste);
+		reste = temp;
+		if((unsigned long int)ii <= len){
+			t[0] = dividende[ii];
+			t[1] = 0;
+			temp = addition(reste, t);
+			free(reste);
+			reste = temp;
+		}else{
+			if(point == 0){
+				point = 1;
+				if(buflen + 1 >= BUFFER){
+					buflen = 0;
+					qbuf++;
+					pr = reallocation((void **)&result, qbuf * BUFFER);
+				}
+				*pr = '.';
+				pr++;
+				buflen++;
+			}else
+				virgule_++;
+			//if(virgule_ >= virgule+1)break;
+		}
+		for(x = 9; x >= 0; x--){
+			sprintf(t, "%i", x);
+			temp = multiplication(t, diviseur);
+			temp_ = soustraction(reste, temp);
+			if(equal(temp_,"0") >= 0){
+				free(reste);
+				free(temp);
+				reste = temp_;
+				break;
+			}else{
+				free(temp);
+				free(temp_);
+			}
+		}
+		if(buflen + 1 >= BUFFER){
+			buflen = 0;
+			qbuf++;
+			pr = reallocation((void **)&result, qbuf * BUFFER);
+		}
+		*pr = *t;
+		pr++;
+		buflen++;
+		ii++;
+	}*/
+	if(zero_){
+		pzero_ = division(reste, zero_, strlen(reste)+3);
+		free(reste);
+		reste = pzero_;
+	}
+	//printf("%s\n", reste);
+	//free(reste);
 	free(dividende);
 	free(diviseur);
 	free(result);
-	return NULL;
+	return reste;
 	return result;
-}*/
+}
 
