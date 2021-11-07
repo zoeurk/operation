@@ -1192,7 +1192,7 @@ void *modulo(void *num1, void *num2){
 	}
 	//printf("%i\n", neg);
 	ZERO;
-	if(equal(n1, n2) == 0){
+	if(equal(n1, n2) == 0 || equal(n2,"1") == 0){
 		result = allocation((void **)&result, 2, sizeof(char));
 		*result = '0';
 		return result;
