@@ -1134,7 +1134,7 @@ void *division(void *num1, void *num2, unsigned long int virgule){
 								}
 							}
 						}
-						printf("%s\n",arrondi);
+						//printf("%s\n",arrondi);
 						//free(arrondi);
 						//printf("===>%s::%s\n",result, temp);
 						free(reste);
