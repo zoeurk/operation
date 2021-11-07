@@ -11,8 +11,8 @@ int main(int argc, char **argv){
 	sprintf(npi,"-%.48Lf", (long double)M_PI);
 	memset(pi, 0, 51);
 	sprintf(pi,"%.48Lf", (long double)M_PI);
-	if(argc != 3){
-		fprintf(stderr, "usage:\n\t%s num1 num2\n", argv[0]);
+	if(argc != 4){
+		fprintf(stderr, "usage:\n\t%s num1 num2 virgule\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
 	ret = equal(argv[1],argv[2]);
@@ -42,16 +42,16 @@ int main(int argc, char **argv){
 		printf("multiplication:%s\n", (char *)r);
 		free(r);
 	}
-	r = division(argv[1], argv[2], 3);
+	r = division(argv[1], argv[2], atoi(argv[3]));
 	if(r){
 		printf("division:%s\n", (char *)r);
 		free(r);
 	}
-	/*r = modulo(argv[1], argv[2]);
+	r = modulo(argv[1], argv[2]);
 	if(r){
 		printf("modulo:%s\n", (char *)r);
 		free(r);
-	}*/
+	}
 	//printf("++++++++++++++++++\n");
 	x = strtold(argv[1], NULL);
 	//printf("%.48Lf\n", (long double)2*M_PI);

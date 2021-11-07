@@ -1137,6 +1137,7 @@ void *division(void *num1, void *num2, unsigned long int virgule){
 						//printf("%s\n",arrondi);
 						//free(arrondi);
 						//printf("===>%s::%s\n",result, temp);
+						//printf("%s\n",reste);
 						free(reste);
 						if(!neg)
 							reste = addition(result ,arrondi);
@@ -1151,7 +1152,10 @@ void *division(void *num1, void *num2, unsigned long int virgule){
 						//}
 						if(strlen(result) > 0)
 							result[strlen(result)-1] = 0;
-					}else	free(temp);
+					}else{	free(temp);
+						//printf("%s\n", temp_);
+						result[strlen(result)-1] = 0;
+					}
 				}
 			}
 		//}
@@ -1188,6 +1192,18 @@ void *modulo(void *num1, void *num2){
 	}
 	//printf("%i\n", neg);
 	ZERO;
+	if(equal(n1, n2) == 0){
+		result = allocation((void **)&result, 2, sizeof(char));
+		*result = '0';
+		return result;
+	}
+	if(equal(n1, n2) < 0){
+		result = allocation((void **)&result, strlen(n1)+1, sizeof(char));
+		strcpy(result, n1);
+		//*result = '0';
+		return result;
+	}
+	//return NULL;
 	if(equal(n1,"0") == 0){
 		 quotient = allocation((void **)&quotient,2,sizeof(char));
 		*quotient = '0';
@@ -1229,7 +1245,7 @@ void *modulo(void *num1, void *num2){
 		nreste++;
 		ii++;
 	}while((unsigned long int)ii < strlen(dividende) && equal(reste, diviseur) > 0);
-	/*while(equal(reste, diviseur) > 0){
+	while(equal(reste, diviseur) > 0){
 		temp = multiplication(reste, "10");
 		free(reste);
 		reste = temp;
@@ -1281,11 +1297,11 @@ void *modulo(void *num1, void *num2){
 		buflen = 0;
 		qbuf++;
 		pr = reallocation((void **)&result, qbuf * BUFFER);
-	}*/
+	}
 	*pr = *t;
 	pr++;
 	buflen++;
-	/*while(((unsigned long int)ii <= len || equal(reste,"0") != 0)){
+	while(((unsigned long int)ii <= len /*|| equal(reste,"0") != 0*/)){
 		temp = multiplication(reste, "10");
 		free(reste);
 		reste = temp;
@@ -1333,18 +1349,21 @@ void *modulo(void *num1, void *num2){
 		pr++;
 		buflen++;
 		ii++;
-	}*/
+	}
 	if(zero_){
 		pzero_ = division(reste, zero_, strlen(reste)+3);
 		free(reste);
 		reste = pzero_;
 	}
-	//printf("%s\n", reste);
+	//printf("%s\n%s\n", reste, result);
 	//free(reste);
+	//free(reste);
+	if(zero_)
+		free(zero_);
 	free(dividende);
 	free(diviseur);
 	free(result);
 	return reste;
-	return result;
+	//return result;
 }
 
