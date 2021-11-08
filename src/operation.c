@@ -34,8 +34,8 @@ void *reallocation(void **ptr, unsigned long int size){
 		exit(EXIT_FAILURE);
 	}
 	buf = (*ptr)+strlen(*ptr);
-	sz = strlen(*ptr);
-	for(i = 0; i <= sz; i++){
+	sz = size - strlen(*ptr);
+	for(i = 0; i < sz; i++){
 		buf[i] = 0;
 	}
 	return (*ptr)+strlen(*ptr);
