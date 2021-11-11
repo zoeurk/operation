@@ -925,6 +925,9 @@ void *multiplication(void *num1, void *num2){
 			//printf("%s\n", result);
 			free(total);
 			free(resultat);
+			if(neg){
+				VALEUR_NEGATIVE(result, pbuf, ii);
+			}
 			return result;
 			//exit(0);
 		}
