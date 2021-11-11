@@ -45,7 +45,7 @@ while(*n2 == '0' && *(n2+1) != '.') \
 	} \
 	*buffer = '-';
 
-#define BUFFER 3
+#define BUFFER 2
 void *allocation(void **ptr, size_t members, unsigned long int size);
 void *reallocation(void **ptr, unsigned long int size);
 int equal(void *num1, void *num2);

@@ -907,9 +907,32 @@ void *multiplication(void *num1, void *num2){
 		}
 	}
 	if(dot1_len + dot2_len > 0){
+		//printf("%s::%lu\n", total, dot1_len + dot2_len);
+		if(strlen(total) < dot1_len + dot2_len){
+			//printf("ok:%s:%lu::%lu\n", total, strlen(total),dot1_len + dot2_len);
+			pbuf = allocation((void **)&buffer, dot1_len + dot2_len +2, sizeof(char));
+			for(result = &buffer[dot1_len + dot2_len +1], ii = strlen(total)-1;ii >= 0;result--,ii--){
+				//printf("%c\n",total[ii]);
+				*result = total[ii];
+			}
+			for(result = result, ii = 0;(unsigned long int)ii < dot1_len + dot2_len-strlen(total);ii++, result--){
+				//printf("0\n");
+				*result = '0';
+			}
+			*result = '.';
+			result--;
+			*result = '0';
+			//printf("%s\n", result);
+			free(total);
+			free(resultat);
+			return result;
+			//exit(0);
+		}
 		pbuf = allocation((void **)&buffer, strlen(total)+2, sizeof(char));
 		strcpy(pbuf, total);
-		for(pbuf = &buffer[strlen(buffer)-1], ii = 0; (unsigned long int)ii != dot1_len + dot2_len-1;pbuf--, ii++){
+		//printf("%s,%s\n", pbuf, total);
+		//exit(0);
+		for(pbuf = &buffer[strlen(buffer)-1], ii = 0; (unsigned long int)ii != dot1_len + dot2_len;pbuf--, ii++){
 			*(pbuf+1) = *(pbuf);
 		}
 		*(pbuf+1) = '.';
@@ -931,6 +954,7 @@ void *multiplication(void *num1, void *num2){
 			VALEUR_NEGATIVE(buffer, pbuf, ii);
 		}
 		return buffer;
+		exit(0);
 	}
 	if(neg){
 		VALEUR_NEGATIVE(total, pbuf, ii);
