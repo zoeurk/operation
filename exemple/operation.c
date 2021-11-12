@@ -282,6 +282,7 @@ void *addition(void *num1, void *num2){
 			pbuf++;
 			buflen++;
 		}
+		//printf("%s\n", buffer);
 		for(ii = ii, ptr1 = ptr1, ptr2 = ptr2; ii > 0; ii--, ptr1--, ptr2--){
 			v1[0] = *ptr1;
 			v2[0] = *ptr2;
@@ -297,6 +298,7 @@ void *addition(void *num1, void *num2){
 				buflen = 0;
 				pbuf = reallocation((void **)&buffer, BUFFER*z);
 			}
+			//printf("%i\n", result);
 			sprintf(pbuf, "%i", result);
 			pbuf++;
 			buflen++;
@@ -506,6 +508,7 @@ void *soustraction(void *num1, void *num2){
 	if(dot2 != NULL && dot2_len == 0)
 		val2_len--;
 	if(dot1_len > dot2_len){
+		//printf("ok\n");
 		for(ii = (long long int)dot1_len; ii >= 0 && (unsigned long int)ii != dot2_len; ii--){
 			if(buflen + 1 >= BUFFER){
 				z++;
@@ -539,14 +542,19 @@ void *soustraction(void *num1, void *num2){
 		}
 	}
 	if(dot2_len > dot1_len){
+		//printf("KO\n");
 		for(ii = dot2_len; ii > 0 && ii != (long long int)dot1_len; ii--){
 			v1[0] = dot2[ii-1];
 			v1[0] = atoi(v1);
+			//printf("%i;%i\n", v1[0],retenue);
 			if(v1[0] - retenue > 0){
 				result = 10 - v1[0] - retenue;
 				retenue = 1;
+				//printf("%i\n", result);
 			}else{
-				retenue = 0;
+				result = 10- (v1[0] + retenue);
+				retenue = 1;
+				//printf("%i\n",result);
 			}
 			if(buflen + 1 >= BUFFER){
 				z++;
@@ -557,6 +565,7 @@ void *soustraction(void *num1, void *num2){
 			pbuf++;
 			buflen++;
 		}
+		//printf("%s\n", buffer);
 		for(ii = ii, ij = dot1_len; ii > 0 && ij > 0; ii--, ij--){
 			v1[0] = dot1[ii-1];
 			v2[0] = dot2[ij-1];
@@ -621,6 +630,7 @@ void *soustraction(void *num1, void *num2){
 		}
 	}
 	if(dot1_len || dot2_len){
+		//printf("%s\n", buffer);
 		if(buflen + 1 >= BUFFER){
 			z++;
 			buflen = 0;
