@@ -3,14 +3,104 @@
 #include <string.h>
 #include <math.h>
 #include "operation.h"
-int main(int argc, char **argv){
+void cosinus(char *arg){
 	int ret;
-	char *r, pi[51], npi[52],*pi_, *npi_ ,*temp, *temp_, *temp__;
+	char pi[51], npi[52],*pi_, *npi_ ,*temp, *temp_, *temp__;
 	long double x;
 	memset(npi, 0, 51);
 	sprintf(npi,"-%.48Lf", (long double)M_PI);
 	memset(pi, 0, 51);
 	sprintf(pi,"%.48Lf", (long double)M_PI);
+	pi_ = multiplication(pi, "2");
+	npi_ = multiplication(npi, "-2");
+	if(equal(arg, pi_) > 0){
+		temp = division(arg, pi_, 56);
+		ret = 0;
+		if((temp_ = strchr(temp, '.')) != NULL){
+			*temp_ = 0;
+			ret = 1;
+		}else	temp = temp;
+		temp__ = multiplication(temp, pi_);
+		if(ret == 1){
+			*temp_ = '.';
+			ret = 0;
+		}
+		temp_ = soustraction(arg, temp__);
+		x = strtold(temp_, NULL);
+		printf("Cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(x));
+		free(temp);
+		free(temp_);
+		free(temp__);
+	}else{
+		if(equal(arg, npi_) < 0){
+			temp = division(arg, npi_, 56);
+			ret = 0;
+			if((temp_ = strchr(temp, '.')) != NULL){
+				*temp_ = 0;
+				ret = 1;
+			}else	temp = temp;
+			temp__ = multiplication(temp, pi_);
+				if(ret == 1){
+				*temp_ = '.';
+				ret = 0;
+			}
+			temp_ = soustraction(arg, temp__);
+			x = strtold(temp_, NULL);
+			printf("Cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(x));
+			free(temp);
+			free(temp_);
+			free(temp__);
+		}
+		//x = strtold(arg, NULL);
+		//printf("Cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(x));
+	}
+	x = strtold(arg, NULL);
+	printf("Cosinus  de \'%s\': %.56Lf\n", arg, cosl(x));
+	free(pi_);
+	free(npi_);
+}
+void racine_carree(char *i){
+	long double dl;
+	char pw[59],spk[59], *j_,*pj = NULL, *k = NULL, *pk, *l = NULL, *pl;
+	if(equal(i, "0") < 0){
+		printf("Impossible de calculer le racine carree d'une valeur negative\n");
+		return;
+	}
+	sprintf(pw, "%.56Lf", powl((long double)2,0.5));
+	for(j_ = division(i, "2",56);equal(j_, "1") > 0;pj = soustraction(j_, "1"), free(j_), j_ = pj){
+		if(k == NULL){
+			k = allocation((void **)&k, strlen(pw)+1, sizeof(char));
+			strcpy(k, pw);
+		}else{
+			pk = multiplication(k, pw);
+			free(k);
+			k = pk;
+		}
+		if(l == NULL){
+			l = allocation((void **)&l, 4, sizeof(char));
+			strcpy(l, "0.5");
+		}else{
+			pl = multiplication(l, "0.5");
+			free(l);
+			l = pl;
+		}
+	}
+	free(j_);
+	pl = multiplication(l, i);
+	free(l);
+	l = pl;
+	dl = strtold(l, NULL);
+	sprintf(spk, "%.56Lf",powl(dl, 0.5));
+	pk = multiplication((void **)spk, k);
+	free(k);
+	free(l);
+	printf("Racine carree arbitraire de \'%s\': %s\n", i, pk);
+	printf("Racine carree de \'%s\': %.56Lf\n", i, powl(strtold(i, NULL),0.5));
+	free(pk);
+}
+int main(int argc, char **argv){
+	int ret;
+	char *r;
 	if(argc != 4){
 		fprintf(stderr, "usage:\n\t%s num1 num2 virgule\n", argv[0]);
 		exit(EXIT_FAILURE);
@@ -52,60 +142,11 @@ int main(int argc, char **argv){
 		printf("modulo:%s\n", (char *)r);
 		free(r);
 	}
-	//printf("++++++++++++++++++\n");
-	x = strtold(argv[1], NULL);
-	//printf("%.48Lf\n", (long double)2*M_PI);
-	//printf("%.48Lf\n%.48Lf\n%.48Lf\n", x-2*M_PI, cosl(x-2*M_PI), cosl(x));
-	pi_ = multiplication(pi, "2");
-	npi_ = multiplication(npi, "-2");
-	if(equal(argv[1], pi_) > 0 || equal(argv[1],npi_) < 0){
-		//if(equal(argv[1], pi_) > 0){
-		temp = division(argv[1], pi_, 48);
-		ret = 0;
-		if((temp_ = strchr(temp, '.')) != NULL){
-			*temp_ = 0;
-			ret = 1;
-		}else	temp = temp;
-		temp__ = multiplication(temp, pi_);
-		if(ret == 1){
-			*temp_ = '.';
-			ret = 0;
-		}
-		temp_ = soustraction(argv[1], temp__);
-		//printf("%s\n", temp_);
-		x = strtold(temp_, NULL);
-		printf("Cosinus arbitraire de \'%s\': %.48Lf\n", argv[1], cosl(x));
-		//x = strtold(argv[1], NULL);
-		//x  -= 2*M_PI;
-		//printf("Cosinus  de \'%s\': %.48Lf\n", argv[1], cosl(x));
-		free(temp);
-		free(temp_);
-		free(temp__);
-	}else{
-		x = strtold(argv[1], NULL);
-		printf("Cosinus arbitraire de \'%s\': %.48Lf\n", argv[1], cosl(x));
-	}
-	x = strtold(argv[1], NULL);
-	printf("Cosinus  de \'%s\': %.48Lf\n", argv[1], cosl(x));
-	if(equal(argv[2], pi_) > 0 && equal(argv[2],npi_) < 0){
-		temp = division(argv[2], pi_, 48);
-		temp_ = strchr(temp, '.');
-		*temp_ = 0;
-		temp__ = multiplication(temp, pi_);
-		*temp_ = '.';
-		temp_ = soustraction(argv[2], temp__);
-		x = strtold(temp_, NULL);
-		printf("Cosinus arbitraire de \'%s\': %.48Lf\n", argv[2], cosl(x));
-		free(temp);
-		free(temp_);
-		free(temp__);
-	}else{
-		x = strtold(argv[2], NULL);
-		printf("Cosinus arbitraire de \'%s\': %.48Lf\n", argv[2], cosl(x));
-	}
-	x = strtold(argv[2], NULL);
-	printf("Cosinus  de \'%s\': %.48Lf\n", argv[2], cosl(x));
-	free(pi_);
-	free(npi_);
+	printf("++++++++++++++++++\n");
+	cosinus(argv[1]);
+	cosinus(argv[2]);
+	printf("++++++++++++++++++\n");
+	racine_carree(argv[1]);
+	racine_carree(argv[2]);
 	return 0;
 }
