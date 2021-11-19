@@ -85,6 +85,14 @@ void racine_carree(char *i){
 			l = pl;
 		}
 	}
+	if(l == NULL){
+		l = multiplication("1", "0.5");
+	}
+	if(k == NULL){
+		printf("OK\n");
+		k = multiplication("1", pw);
+		//exit(0);
+	}
 	free(j_);
 	pl = multiplication(l, i);
 	free(l);
