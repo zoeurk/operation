@@ -61,13 +61,18 @@ void cosinus(char *arg){
 }
 void racine_carree(char *i){
 	long double dl;
-	char pw[59],spk[59], *j_,*pj = NULL, *k = NULL, *pk, *l = NULL, *pl;
+	char zero[58], *r, pw[59],spk[59], *j_,*pj = NULL, *k = NULL, *pk = NULL, *l = NULL, *pl = NULL;
 	if(equal(i, "0") < 0){
 		printf("Impossible de calculer le racine carree d'une valeur negative\n");
 		return;
 	}
+	memset(zero,'0',57);
+	zero[1] = '.';
+	zero[56] = 1;
+	zero[57] = 0;
 	sprintf(pw, "%.56Lf", powl((long double)2,0.5));
-	for(j_ = division(i, "2",56);equal(j_, "1") > 0;pj = soustraction(j_, "1"), free(j_), j_ = pj){
+	for(j_ = division(i, "2",56);equal(j_, "1") > 0; pj = soustraction(j_, "1"), free(j_), j_ = pj){
+		//printf("======\n");
 		if(k == NULL){
 			k = allocation((void **)&k, strlen(pw)+1, sizeof(char));
 			strcpy(k, pw);
@@ -75,6 +80,16 @@ void racine_carree(char *i){
 			pk = multiplication(k, pw);
 			free(k);
 			k = pk;
+			r = strchr(k,'.');
+			if(r && strlen(k) > 56){
+				if(*(r+56) > 5){
+					pk = addition(k,zero);
+					free(k);
+					k = pk;
+				}
+				r = strchr(k,'.');
+				*(r+57) = 0;
+			}
 		}
 		if(l == NULL){
 			l = allocation((void **)&l, 4, sizeof(char));
@@ -84,6 +99,9 @@ void racine_carree(char *i){
 			free(l);
 			l = pl;
 		}
+		//printf("%s;%s\n",k, j_);
+		if(equal(j_,k) < 0)
+			break;
 	}
 	if(l == NULL){
 		l = multiplication("1", "0.5");
@@ -100,7 +118,18 @@ void racine_carree(char *i){
 	dl = strtold(l, NULL);
 	sprintf(spk, "%.56Lf",powl(dl, 0.5));
 	pk = multiplication((void **)spk, k);
-	free(k);
+	r = strchr(pk,'.');
+	if(r){
+		free(k);
+		if(*(r+56) > 5){
+			k = addition(pk,zero);
+			free(pk);
+			pk = k;
+		}
+		r = strchr(pk,'.');
+		*(r+56) = 0;
+	}
+	//free(k);
 	free(l);
 	printf("Racine carree arbitraire de \'%s\': %s\n", i, pk);
 	printf("Racine carree de \'%s\': %.56Lf\n", i, powl(strtold(i, NULL),0.5));
