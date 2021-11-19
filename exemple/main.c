@@ -88,7 +88,8 @@ void racine_carree(char *i){
 					k = pk;
 				}
 				r = strchr(k,'.');
-				*(r+57) = 0;
+				if(strlen(r+1) >= 56)
+					*(r+57) = 0;
 			}
 		}
 		if(l == NULL){
@@ -121,13 +122,14 @@ void racine_carree(char *i){
 	r = strchr(pk,'.');
 	if(r){
 		free(k);
-		if(*(r+56) > 5){
+		if(*(r+57) > 5){
 			k = addition(pk,zero);
 			free(pk);
 			pk = k;
 		}
 		r = strchr(pk,'.');
-		*(r+56) = 0;
+		if(strlen(r+1) >= 56)
+			*(r+57) = 0;
 	}
 	//free(k);
 	free(l);
