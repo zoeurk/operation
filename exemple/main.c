@@ -133,6 +133,8 @@ void racine_carree(char *i){
 	}
 	//free(k);
 	free(l);
+	if(pk[strlen(pk)-1] == '0')
+		pk[strlen(pk) -1] = 0;
 	printf("Racine carree arbitraire de \'%s\': %s\n", i, pk);
 	printf("Racine carree de \'%s\': %.56Lf\n", i, powl(strtold(i, NULL),0.5));
 	free(pk);
