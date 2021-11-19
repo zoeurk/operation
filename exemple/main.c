@@ -68,7 +68,7 @@ void racine_carree(char *i){
 	}
 	memset(zero,'0',57);
 	zero[1] = '.';
-	zero[56] = 1;
+	zero[56] = '1';
 	zero[57] = 0;
 	sprintf(pw, "%.56Lf", powl((long double)2,0.5));
 	for(j_ = division(i, "2",56);equal(j_, "1") > 0; pj = soustraction(j_, "1"), free(j_), j_ = pj){
