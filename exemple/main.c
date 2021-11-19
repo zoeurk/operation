@@ -89,7 +89,7 @@ void racine_carree(char *i){
 		l = multiplication("1", "0.5");
 	}
 	if(k == NULL){
-		printf("OK\n");
+		//printf("OK\n");
 		k = multiplication("1", pw);
 		//exit(0);
 	}
