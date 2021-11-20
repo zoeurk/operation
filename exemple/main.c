@@ -60,84 +60,9 @@ void cosinus(char *arg){
 	free(npi_);
 }
 void racine_carree(char *i){
-	long double dl;
-	char zero[58], *r, pw[59],spk[59], *j_,*pj = NULL, *k = NULL, *pk = NULL, *l = NULL, *pl = NULL;
-	if(equal(i, "0") < 0){
-		printf("Impossible de calculer le racine carree d'une valeur negative\n");
-		return;
-	}
-	memset(zero,'0',57);
-	zero[1] = '.';
-	zero[56] = '1';
-	zero[57] = 0;
-	sprintf(pw, "%.56Lf", powl((long double)2,0.5));
-	for(j_ = division(i, "1",56);equal(j_, "1") > 0; pj = soustraction(j_, "1"), free(j_), j_ = pj){
-		//printf("======\n");
-		if(k == NULL){
-			k = allocation((void **)&k, strlen(pw)+1, sizeof(char));
-			strcpy(k, pw);
-		}else{
-			pk = multiplication(k, pw);
-			free(k);
-			k = pk;
-			r = strchr(k,'.');
-			if(r && strlen(k) > 56){
-				if(*(r+56) > 5){
-					pk = addition(k,zero);
-					free(k);
-					k = pk;
-				}
-				r = strchr(k,'.');
-				if(strlen(r+1) >= 56)
-					*(r+57) = 0;
-			}
-		}
-		if(equal(j_,k) < 0)
-			break;
-		if(l == NULL){
-			l = allocation((void **)&l, 4, sizeof(char));
-			strcpy(l, "0.5");
-		}else{
-			pl = multiplication(l, "0.5");
-			free(l);
-			l = pl;
-		}
-		//printf("%s;%s\n",k, j_);
-	}
-	if(l == NULL){
-		l = multiplication("1", "0.5");
-	}
-	if(k == NULL){
-		//printf("OK\n");
-		k = multiplication("1", pw);
-		//exit(0);
-	}
-	free(j_);
-	pl = multiplication(l, i);
-	free(l);
-	l = pl;
-	dl = strtold(l, NULL);
-	sprintf(spk, "%.56Lf",powl(dl, 0.5));
-	pk = multiplication((void **)spk, k);
-	r = strchr(pk,'.');
-	if(r){
-		free(k);
-		if(*(r+57) > 5){
-			k = addition(pk,zero);
-			free(pk);
-			pk = k;
-		}
-		r = strchr(pk,'.');
-		if(strlen(r+1) >= 56)
-			*(r+57) = 0;
-	}
-	//free(k);
-	free(l);
-	if(pk[strlen(pk)-1] == '0')
-		pk[strlen(pk) -1] = 0;
-	printf("Racine carree arbitraire de \'%s\': %s\n", i, pk);
+	//printf("Racine carree arbitraire de \'%s\': %s\n", i, pk);
 	printf("Racine carree de \'%s\': %.56Lf\n", i, powl(strtold(i, NULL),0.5));
-	free(pk);
+	//free(pk);
 }
 int main(int argc, char **argv){
 	int ret;
