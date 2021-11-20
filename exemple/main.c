@@ -71,7 +71,7 @@ void racine_carree(char *i){
 	zero[56] = '1';
 	zero[57] = 0;
 	sprintf(pw, "%.56Lf", powl((long double)2,0.5));
-	for(j_ = division(i, "2",56);equal(j_, "1") > 0; pj = soustraction(j_, "1"), free(j_), j_ = pj){
+	for(j_ = division(i, "1",56);equal(j_, "1") > 0; pj = soustraction(j_, "1"), free(j_), j_ = pj){
 		//printf("======\n");
 		if(k == NULL){
 			k = allocation((void **)&k, strlen(pw)+1, sizeof(char));
@@ -92,6 +92,8 @@ void racine_carree(char *i){
 					*(r+57) = 0;
 			}
 		}
+		if(equal(j_,k) < 0)
+			break;
 		if(l == NULL){
 			l = allocation((void **)&l, 4, sizeof(char));
 			strcpy(l, "0.5");
@@ -101,8 +103,6 @@ void racine_carree(char *i){
 			l = pl;
 		}
 		//printf("%s;%s\n",k, j_);
-		if(equal(j_,k) < 0)
-			break;
 	}
 	if(l == NULL){
 		l = multiplication("1", "0.5");
