@@ -11,8 +11,8 @@ void cosinus(char *arg){
 	sprintf(npi,"-%.48Lf", (long double)M_PI);
 	memset(pi, 0, 51);
 	sprintf(pi,"%.48Lf", (long double)M_PI);
-	pi_ = multiplication(pi, "2");
-	npi_ = multiplication(npi, "-2");
+	pi_ = multiplication(pi, "4");
+	npi_ = multiplication(npi, "-4");
 	if(equal(arg, pi_) > 0){
 		temp = division(arg, pi_, 56);
 		ret = 0;
@@ -60,9 +60,51 @@ void cosinus(char *arg){
 	free(npi_);
 }
 void racine_carree(char *i){
-	//printf("Racine carree arbitraire de \'%s\': %s\n", i, pk);
-	printf("Racine carree de \'%s\': %.56Lf\n", i, powl(strtold(i, NULL),0.5));
-	//free(pk);
+	//printf("%s\n", i);
+	char *pi,*j, *pj, rc[60], arrondi[58];
+	long double r1;
+	char t[2] = { 0, 0 };
+	sprintf(rc, "%.56Lf", sqrtl(64));
+	memset(arrondi,'0',58);
+	arrondi[57] = 0;
+	arrondi[1] = '.';
+	arrondi[56] = '1';
+	//printf("%s\n", rc);
+	pi = multiplication(i,"1");
+	pj = multiplication("1","1");
+	while(equal(pi,"64") > 0){
+		//printf("%s\n", rc);
+		j = pj;
+		pj = multiplication(rc, pj);
+		free(j);
+		if((j = strchr(pj, '.'))){
+			if(strlen(j+1) > 56){
+				t[0] = *(j+57);
+				if(atoi(t) >= 5){
+					j = pj;
+					pj = addition(j, arrondi);
+					free(j);
+					j = strchr(pj, '.');
+					*(j+57) = 0;
+				}else
+					*(j+57) = 0;
+			}
+		}
+		j = pi;
+		pi = division(pi,"64",56);
+		free(j);
+	}
+	j = pj;
+	r1 = strtold(pi, NULL);
+	r1 = sqrtl(r1);
+	sprintf(rc, "%.56Lf", r1);
+	pj = multiplication(pj,rc);
+	free(j);
+	//printf("==>%s\n", pj);
+//	free(pj);
+	free(pi);
+	printf("Racine carree arbitraire pour \'%s\':%s\n" , i,pj);
+	printf("Racine carree pour \'%s\':%.56Lf\n", i, sqrtl(strtold(i, NULL)));
 }
 int main(int argc, char **argv){
 	int ret;
