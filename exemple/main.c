@@ -78,7 +78,7 @@ void racine_carree(char *i){
 	pi = multiplication(i,"1");
 	pj = multiplication("1","1");
 	while(equal(pi,m) > 0){
-		printf("*\n");
+		//printf("*\n");
 		//printf("%s\n", rc);
 		j = pj;
 		pj = multiplication(rc, pj);
