@@ -93,8 +93,9 @@ void racine_carree(char *i){
 			}
 		}
 		j = pi;
-		pi = division(pi,Q_MIN,56);
+		pi = division(j,Q_MIN,56);
 		free(j);
+		j = pi;
 	}
 	j = pj;
 	r1 = strtold(pi, NULL);
