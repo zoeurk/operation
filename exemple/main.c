@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-//#include <float.h>
 #include "operation.h"
 void cosinus(char *arg){
 	int ret;
@@ -117,7 +116,6 @@ int main(int argc, char **argv){
 		fprintf(stderr, "usage:\n\t%s num1 num2 virgule\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
-	//printf("%.56Lf\n", LDBL_MAX);
 	ret = equal(argv[1],argv[2]);
 	switch(ret){
 		case 0:
