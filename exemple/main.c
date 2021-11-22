@@ -160,11 +160,11 @@ int main(int argc, char **argv){
 		printf("modulo:%s\n", (char *)r);
 		free(r);
 	}
-	printf("++++++++++++++++++\n");
+	/*printf("++++++++++++++++++\n");
 	cosinus(argv[1]);
 	cosinus(argv[2]);
 	printf("++++++++++++++++++\n");
 	racine_carree(argv[1]);
-	racine_carree(argv[2]);
+	racine_carree(argv[2]);*/
 	return 0;
 }
