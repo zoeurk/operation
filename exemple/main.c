@@ -63,7 +63,7 @@ void cosinus(char *arg){
 #define Q_MIN "4096"
 void racine_carree(char *i){
 	//printf("%s\n", i);
-	char *pi,*j, *pj, rc[60], arrondi[58];
+	char *pi,*j, *pj, *pk, rc[60], arrondi[58];
 	long double r1;
 	char t[2] = { 0, 0 };
 	sprintf(rc, "%.56Lf", sqrtl(MIN));
@@ -96,6 +96,12 @@ void racine_carree(char *i){
 		pi = division(j,Q_MIN,56);
 		free(j);
 		j = pi;
+		pk = multiplication(j, j);
+		if(equal(pk,i) >= 0){
+			free(pk);
+			break;
+		}
+		free(pk);
 	}
 	j = pj;
 	r1 = strtold(pi, NULL);
