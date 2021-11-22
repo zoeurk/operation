@@ -59,14 +59,17 @@ void cosinus(char *arg){
 	free(pi_);
 	free(npi_);
 }
-#define MIN 4096
-#define Q_MIN "4096"
+#define MIN 64
+#define Q_MIN "64"
 void racine_carree(char *i){
 	//printf("%s\n", i);
-	char *pi,*j, *pj, *pk, rc[60], arrondi[58];
+	char *pi,*j, *pj, *pl, rc[1024], arrondi[58], m[21];
 	long double r1;
 	char t[2] = { 0, 0 };
-	sprintf(rc, "%.56Lf", sqrtl(MIN));
+	unsigned long int  max = ~0;
+	memset(m,0,21);
+	sprintf(m,"%lu", max);
+	sprintf(rc, "%.56Lf", sqrtl(max));
 	memset(arrondi,'0',58);
 	arrondi[57] = 0;
 	arrondi[1] = '.';
@@ -74,7 +77,8 @@ void racine_carree(char *i){
 	//printf("%s\n", rc);
 	pi = multiplication(i,"1");
 	pj = multiplication("1","1");
-	while(equal(pi,Q_MIN) > 0){
+	while(equal(pi,m) > 0){
+		printf("*\n");
 		//printf("%s\n", rc);
 		j = pj;
 		pj = multiplication(rc, pj);
@@ -93,24 +97,20 @@ void racine_carree(char *i){
 			}
 		}
 		j = pi;
-		pi = division(j,Q_MIN,56);
+		/*pl = multiplication(j, j);
+		if(equal(i, pl) < 0)
+			break;*/
+		pi = division(j,m,56);
 		free(j);
 		j = pi;
-		pk = multiplication(j, j);
-		if(equal(pk,i) >= 0){
-			free(pk);
-			break;
-		}
-		free(pk);
 	}
 	j = pj;
 	r1 = strtold(pi, NULL);
 	r1 = sqrtl(r1);
 	sprintf(rc, "%.56Lf", r1);
 	j = multiplication(pj,rc);
-	free(pj);
 	//printf("==>%s\n", pj);
-//	free(pj);
+	free(pj);
 	free(pi);
 	printf("Racine carree arbitraire pour \'%s\':%s\n" , i,j);
 	printf("Racine carree pour \'%s\':%.56Lf\n", i, sqrtl(strtold(i, NULL)));
