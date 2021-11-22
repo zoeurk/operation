@@ -101,13 +101,14 @@ void racine_carree(char *i){
 	r1 = strtold(pi, NULL);
 	r1 = sqrtl(r1);
 	sprintf(rc, "%.56Lf", r1);
-	pj = multiplication(pj,rc);
+	pj = multiplication(j,rc);
 	free(j);
 	//printf("==>%s\n", pj);
 //	free(pj);
 	free(pi);
 	printf("Racine carree arbitraire pour \'%s\':%s\n" , i,pj);
 	printf("Racine carree pour \'%s\':%.56Lf\n", i, sqrtl(strtold(i, NULL)));
+	free(pj);
 }
 int main(int argc, char **argv){
 	int ret;
