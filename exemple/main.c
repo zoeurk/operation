@@ -11,8 +11,8 @@ void cosinus(char *arg){
 	sprintf(npi,"-%.48Lf", (long double)M_PI);
 	memset(pi, 0, 51);
 	sprintf(pi,"%.48Lf", (long double)M_PI);
-	pi_ = multiplication(pi, "4");
-	npi_ = multiplication(npi, "-4");
+	pi_ = multiplication(pi, "2");
+	npi_ = multiplication(npi, "-2");
 	if(equal(arg, pi_) > 0){
 		temp = division(arg, pi_, 56);
 		ret = 0;
