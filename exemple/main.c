@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <float.h>
+//#include <float.h>
 #include "operation.h"
 void cosinus(char *arg){
 	int ret;
@@ -101,14 +101,14 @@ void racine_carree(char *i){
 	r1 = strtold(pi, NULL);
 	r1 = sqrtl(r1);
 	sprintf(rc, "%.56Lf", r1);
-	pj = multiplication(j,rc);
-	free(j);
+	j = multiplication(pj,rc);
+	free(pj);
 	//printf("==>%s\n", pj);
 //	free(pj);
 	free(pi);
-	printf("Racine carree arbitraire pour \'%s\':%s\n" , i,pj);
+	printf("Racine carree arbitraire pour \'%s\':%s\n" , i,j);
 	printf("Racine carree pour \'%s\':%.56Lf\n", i, sqrtl(strtold(i, NULL)));
-	free(pj);
+	free(j);
 }
 int main(int argc, char **argv){
 	int ret;
@@ -117,7 +117,7 @@ int main(int argc, char **argv){
 		fprintf(stderr, "usage:\n\t%s num1 num2 virgule\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
-	printf("%.56Lf\n", LDBL_MAX);
+	//printf("%.56Lf\n", LDBL_MAX);
 	ret = equal(argv[1],argv[2]);
 	switch(ret){
 		case 0:
