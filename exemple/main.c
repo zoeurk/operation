@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <float.h>
 #include "operation.h"
 void cosinus(char *arg){
 	int ret;
@@ -59,12 +60,14 @@ void cosinus(char *arg){
 	free(pi_);
 	free(npi_);
 }
+#define MIN 4096
+#define Q_MIN "4096"
 void racine_carree(char *i){
 	//printf("%s\n", i);
 	char *pi,*j, *pj, rc[60], arrondi[58];
 	long double r1;
 	char t[2] = { 0, 0 };
-	sprintf(rc, "%.56Lf", sqrtl(64));
+	sprintf(rc, "%.56Lf", sqrtl(MIN));
 	memset(arrondi,'0',58);
 	arrondi[57] = 0;
 	arrondi[1] = '.';
@@ -72,7 +75,7 @@ void racine_carree(char *i){
 	//printf("%s\n", rc);
 	pi = multiplication(i,"1");
 	pj = multiplication("1","1");
-	while(equal(pi,"64") > 0){
+	while(equal(pi,Q_MIN) > 0){
 		//printf("%s\n", rc);
 		j = pj;
 		pj = multiplication(rc, pj);
@@ -91,7 +94,7 @@ void racine_carree(char *i){
 			}
 		}
 		j = pi;
-		pi = division(pi,"64",56);
+		pi = division(pi,Q_MIN,56);
 		free(j);
 	}
 	j = pj;
@@ -113,6 +116,7 @@ int main(int argc, char **argv){
 		fprintf(stderr, "usage:\n\t%s num1 num2 virgule\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
+	printf("%.56Lf\n", LDBL_MAX);
 	ret = equal(argv[1],argv[2]);
 	switch(ret){
 		case 0:
