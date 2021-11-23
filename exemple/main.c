@@ -33,7 +33,7 @@ void cosinus(char *arg){
 }
 #define MIN 64
 #define Q_MIN "64"
-void racine_carree(char *i){
+void racine_carree(char *i, unsigned long int virgule){
 	//printf("%s\n", i);
 	char *pi,*j, *pj,rc[60], arrondi[58], m[21];
 	long double r1;
@@ -64,7 +64,7 @@ void racine_carree(char *i){
 		/*pl = multiplication(j, j);
 		if(equal(i, pl) < 0)
 			break;*/
-		pi = division(j,m,56);
+		pi = division(j,m,virgule);
 		free(j);
 		j = pi;
 	}
@@ -146,7 +146,7 @@ int main(int argc, char **argv){
 	cosinus(argv[1]);
 	cosinus(argv[2]);
 	printf("++++++++++++++++++\n");
-	racine_carree(argv[1]);
-	racine_carree(argv[2]);*/
+	racine_carree(argv[1], 56);
+	racine_carree(argv[2], 56);*/
 	return 0;
 }
