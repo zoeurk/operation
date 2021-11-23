@@ -79,19 +79,19 @@ void racine_carree(char *i){
 	/*pj = multiplication(j,j);
 	printf("==>%s\n", pj);
 	free(pj);*/
-			if((pj = strchr(j, '.'))){
-			if(strlen(pj+1) > 56){
-				t[0] = *(pj+56);
-				if(atoi(t) >= 5){
-					pj = j;
-					j = addition(pj, arrondi);
-					free(pj);
-					pj = strchr(j, '.');
-					*(pj+57) = 0;
-				}else
-					*(pj+57) = 0;
-			}
+	/*if((pj = strchr(j, '.'))){
+		if(strlen(pj+1) > 56){
+			t[0] = *(pj+56);
+			if(atoi(t) >= 5){
+				pj = j;
+			j = addition(pj, arrondi);
+			free(pj);
+			pj = strchr(j, '.');
+			*(pj+57) = 0;
+		}else
+			*(pj+57) = 0;
 		}
+	}*/
 	printf("Racine carree arbitraire pour \'%s\':%s\n" , i,j);
 	printf("Racine carree pour \'%s\':%.56Lf\n", i, sqrtl(strtold(i, NULL)));
 	free(j);
