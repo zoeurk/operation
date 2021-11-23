@@ -59,16 +59,16 @@ void racine_carree(char *i){
 		pj = multiplication(rc, pj);
 		free(j);
 		if((j = strchr(pj, '.'))){
-			if(strlen(j+1) > 1024){
-				t[0] = *(j+1025);
+			if(strlen(j+1) > 56){
+				t[0] = *(j+56);
 				if(atoi(t) >= 5){
 					j = pj;
 					pj = addition(j, arrondi);
 					free(j);
 					j = strchr(pj, '.');
-					*(j+1025) = 0;
+					*(j+57) = 0;
 				}else
-					*(j+1025) = 0;
+					*(j+57) = 0;
 			}
 		}
 		j = pi;
