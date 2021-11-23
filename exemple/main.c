@@ -4,7 +4,6 @@
 #include <math.h>
 #include "operation.h"
 void cosinus(char *arg){
-	int ret = 0;
 	char pi[60], npi[60],*pi_, *npi_ ,*temp;
 	long double x;
 	//memset(npi, 0, 51);
@@ -26,8 +25,6 @@ void cosinus(char *arg){
 			printf("Cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(x));
 			free(temp);
 		}
-		//x = strtold(arg, NULL);
-		//printf("Cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(x));
 	}
 	x = strtold(arg, NULL);
 	printf("Cosinus  de \'%s\': %.56Lf\n", arg, cosl(x));
@@ -38,10 +35,10 @@ void cosinus(char *arg){
 #define Q_MIN "64"
 void racine_carree(char *i){
 	//printf("%s\n", i);
-	char *pi,*j, *pj, *pl, rc[1024], arrondi[58], m[21];
+	char *pi,*j, *pj,rc[60], arrondi[58], m[21];
 	long double r1;
 	char t[2] = { 0, 0 };
-	unsigned long long int  max = ~0;
+	unsigned long long int  max = 64;
 	memset(m,0,21);
 	sprintf(m,"%llu", max);
 	sprintf(rc, "%.56Lf", sqrtl(max));
@@ -135,7 +132,9 @@ int main(int argc, char **argv){
 		printf("modulo:%s\n", (char *)r);
 		free(r);
 	}
-	/*printf("++++++++++++++++++\n");
+	/*
+	//No warrenty
+	printf("++++++++++++++++++\n");
 	cosinus(argv[1]);
 	cosinus(argv[2]);
 	printf("++++++++++++++++++\n");
