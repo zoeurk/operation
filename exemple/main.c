@@ -4,52 +4,27 @@
 #include <math.h>
 #include "operation.h"
 void cosinus(char *arg){
-	int ret;
-	char pi[51], npi[52],*pi_, *npi_ ,*temp, *temp_, *temp__;
+	int ret = 0;
+	char pi[60], npi[60],*pi_, *npi_ ,*temp;
 	long double x;
-	memset(npi, 0, 51);
-	sprintf(npi,"-%.48Lf", (long double)M_PI);
-	memset(pi, 0, 51);
-	sprintf(pi,"%.48Lf", (long double)M_PI);
+	//memset(npi, 0, 51);
+	sprintf(npi,"-%.56Lf", (long double)M_PI);
+	//memset(pi, 0, 51);
+	sprintf(pi,"%.56Lf", (long double)M_PI);
 	pi_ = multiplication(pi, "2");
 	npi_ = multiplication(npi, "-2");
-	if(equal(arg, pi_) > 0){
-		temp = division(arg, pi_, 56);
-		ret = 0;
-		if((temp_ = strchr(temp, '.')) != NULL){
-			*temp_ = 0;
-			ret = 1;
-		}else	temp = temp;
-		temp__ = multiplication(temp, pi_);
-		if(ret == 1){
-			*temp_ = '.';
-			ret = 0;
-		}
-		temp_ = soustraction(arg, temp__);
-		x = strtold(temp_, NULL);
+	temp = multiplication(arg,"1");
+	if(equal(temp, pi_) > 0){
+		temp = modulo(arg, pi_);
+		x = strtold(modulo(arg,pi_), NULL);
 		printf("Cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(x));
 		free(temp);
-		free(temp_);
-		free(temp__);
 	}else{
 		if(equal(arg, npi_) < 0){
-			temp = division(arg, npi_, 56);
-			ret = 0;
-			if((temp_ = strchr(temp, '.')) != NULL){
-				*temp_ = 0;
-				ret = 1;
-			}else	temp = temp;
-			temp__ = multiplication(temp, pi_);
-				if(ret == 1){
-				*temp_ = '.';
-				ret = 0;
-			}
-			temp_ = soustraction(arg, temp__);
-			x = strtold(temp_, NULL);
+			temp = modulo(arg, npi_);
+			x = strtold(temp, NULL);
 			printf("Cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(x));
 			free(temp);
-			free(temp_);
-			free(temp__);
 		}
 		//x = strtold(arg, NULL);
 		//printf("Cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(x));
@@ -66,9 +41,9 @@ void racine_carree(char *i){
 	char *pi,*j, *pj, *pl, rc[1024], arrondi[58], m[21];
 	long double r1;
 	char t[2] = { 0, 0 };
-	unsigned long int  max = ~0;
+	unsigned long long int  max = ~0;
 	memset(m,0,21);
-	sprintf(m,"%lu", max);
+	sprintf(m,"%llu", max);
 	sprintf(rc, "%.56Lf", sqrtl(max));
 	memset(arrondi,'0',58);
 	arrondi[57] = 0;
@@ -84,16 +59,16 @@ void racine_carree(char *i){
 		pj = multiplication(rc, pj);
 		free(j);
 		if((j = strchr(pj, '.'))){
-			if(strlen(j+1) > 56){
-				t[0] = *(j+57);
+			if(strlen(j+1) > 1024){
+				t[0] = *(j+1025);
 				if(atoi(t) >= 5){
 					j = pj;
 					pj = addition(j, arrondi);
 					free(j);
 					j = strchr(pj, '.');
-					*(j+57) = 0;
+					*(j+1025) = 0;
 				}else
-					*(j+57) = 0;
+					*(j+1025) = 0;
 			}
 		}
 		j = pi;
