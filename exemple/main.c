@@ -81,15 +81,15 @@ void racine_carree(char *i){
 	free(pj);
 	if((j = strchr(pj, '.'))){
 		if(strlen(j+1) > 56){
-				t[0] = *(j+56);
-				if(atoi(t) >= 5){
-					pj = j;
-					j = addition(pj, arrondi);
-					free(pj);
-					pj = strchr(j, '.');
-					*(pj+57) = 0;
-				}else
-					*(pj+57) = 0;
+			t[0] = *(j+56);
+			if(atoi(t) >= 5){
+				pj = j;
+				j = addition(pj, arrondi);
+				free(pj);
+				pj = strchr(j, '.');
+				*(pj+57) = 0;
+			}else
+				*(pj+57) = 0;
 		}
 	}
 	printf("Racine carree arbitraire pour \'%s\':%s\n" , i,j);
