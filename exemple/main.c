@@ -38,7 +38,11 @@ void racine_carree(char *i){
 	char *pi,*j, *pj,rc[60], arrondi[58], m[21];
 	long double r1;
 	char t[2] = { 0, 0 };
-	unsigned long long int  max = 64;
+	unsigned long long int  max = MIN;
+	if(equal(i, "0") < 0){
+		printf("ERREUR: Valeur: %s < 0\n", i);
+		return;
+	}
 	memset(m,0,21);
 	sprintf(m,"%llu", max);
 	sprintf(rc, "%.56Lf", sqrtl(max));
@@ -84,6 +88,9 @@ void racine_carree(char *i){
 	//printf("==>%s\n", pj);
 	free(pj);
 	free(pi);
+	pj = multiplication(j,j);
+	printf("==>%s\n", pj);
+	free(pj);
 	printf("Racine carree arbitraire pour \'%s\':%s\n" , i,j);
 	printf("Racine carree pour \'%s\':%.56Lf\n", i, sqrtl(strtold(i, NULL)));
 	free(j);
@@ -132,9 +139,9 @@ int main(int argc, char **argv){
 		printf("modulo:%s\n", (char *)r);
 		free(r);
 	}
-	/*
+	
 	//No warrenty
-	printf("++++++++++++++++++\n");
+	/*printf("++++++++++++++++++\n");
 	cosinus(argv[1]);
 	cosinus(argv[2]);
 	printf("++++++++++++++++++\n");
