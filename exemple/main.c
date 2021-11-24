@@ -55,7 +55,7 @@ void racine_carree(char *i, unsigned long int virgule, unsigned long int coeffic
 	//printf("%s\n", rc);
 	pi = multiplication(i,"1");
 	pj = multiplication("1","1");
-	while(equal(pi,m) > 0 || (eq != NULL && equal(eq, i) > 0)){
+	while(equal(pi,m) > 0){
 		//printf("***\n");
 		//printf("*\n");
 		//printf("%s\n", rc);
