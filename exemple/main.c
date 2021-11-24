@@ -31,14 +31,14 @@ void cosinus(char *arg){
 	free(pi_);
 	free(npi_);
 }
-#define MIN 4
-#define Q_MIN "4"
-void racine_carree(char *i, unsigned long int virgule){
+//#define MIN 10000
+//#define Q_MIN "10000"
+void racine_carree(char *i, unsigned long int virgule, unsigned long int coefficient){
 	//printf("%s\n", i);
 	char *pi,*j, *pj,rc[60], arrondi[58], m[21];
 	long double r1;
-	char t[2] = { 0, 0 };
-	unsigned long long int  max = MIN;
+	//char t[2] = { 0, 0 };
+	unsigned long long int  max = coefficient;
 	if(equal(i, "0") < 0){
 		printf("ERREUR: Valeur: %s < 0\n", i);
 		return;
@@ -53,7 +53,7 @@ void racine_carree(char *i, unsigned long int virgule){
 	//printf("%s\n", rc);
 	pi = multiplication(i,"1");
 	pj = multiplication("1","1");
-	while(equal(pi,m) > 0){
+	while(equal(pi,m) > 0 && equal(multiplication(j,j), i) > 0){
 		//printf("*\n");
 		//printf("%s\n", rc);
 		j = pj;
@@ -147,7 +147,7 @@ int main(int argc, char **argv){
 	cosinus(argv[1]);
 	cosinus(argv[2]);
 	printf("++++++++++++++++++\n");
-	racine_carree(argv[1], 56);
-	racine_carree(argv[2], 56);
+	racine_carree(argv[1], 56, 4);
+	racine_carree(argv[2], 56,100);
 	return 0;
 }
