@@ -14,12 +14,14 @@ void cosinus(char *arg){
 	npi_ = multiplication(npi, "-2");
 	temp = multiplication(arg,"1");
 	if(equal(temp, pi_) > 0){
+		free(temp);
 		temp = modulo(arg, pi_);
-		x = strtold(modulo(arg,pi_), NULL);
+		x = strtold(temp, NULL);
 		printf("Cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(x));
 		free(temp);
 	}else{
 		if(equal(arg, npi_) < 0){
+			free(temp);
 			temp = modulo(arg, npi_);
 			x = strtold(temp, NULL);
 			printf("Cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(x));
@@ -35,7 +37,7 @@ void cosinus(char *arg){
 //#define Q_MIN "10000"
 void racine_carree(char *i, unsigned long int virgule, unsigned long int coefficient){
 	//printf("%s\n", i);
-	char *pi,*j, *pj,rc[60], arrondi[58], m[21];
+	char *pi,*j, *pj,rc[60], arrondi[58], m[21], *eq = NULL;
 	long double r1;
 	//char t[2] = { 0, 0 };
 	unsigned long long int  max = coefficient;
@@ -53,7 +55,7 @@ void racine_carree(char *i, unsigned long int virgule, unsigned long int coeffic
 	//printf("%s\n", rc);
 	pi = multiplication(i,"1");
 	pj = multiplication("1","1");
-	while(equal(pi,m) > 0 && equal(multiplication(j,j), i) > 0){
+	while(equal(pi,m) > 0 && (eq == NULL || equal(eq, i) > 0)){
 		//printf("*\n");
 		//printf("%s\n", rc);
 		j = pj;
@@ -66,7 +68,12 @@ void racine_carree(char *i, unsigned long int virgule, unsigned long int coeffic
 		pi = division(j,m,virgule);
 		free(j);
 		j = pi;
+		if(eq)
+			free(eq);
+		eq = multiplication(j,j);
 	}
+	if(eq)
+		free(eq);
 	j = pj;
 	r1 = strtold(pi, NULL);
 	r1 = sqrtl(r1);
