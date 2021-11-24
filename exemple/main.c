@@ -31,8 +31,8 @@ void cosinus(char *arg){
 	free(pi_);
 	free(npi_);
 }
-#define MIN 64
-#define Q_MIN "64"
+#define MIN 4
+#define Q_MIN "4"
 void racine_carree(char *i, unsigned long int virgule){
 	//printf("%s\n", i);
 	char *pi,*j, *pj,rc[60], arrondi[58], m[21];
@@ -59,7 +59,6 @@ void racine_carree(char *i, unsigned long int virgule){
 		j = pj;
 		pj = multiplication(rc, pj);
 		free(j);
-
 		j = pi;
 		/*pl = multiplication(j, j);
 		if(equal(i, pl) < 0)
