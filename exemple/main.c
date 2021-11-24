@@ -69,12 +69,12 @@ void racine_carree(char *i, unsigned long int virgule, unsigned long int coeffic
 		pi = division(j,m,virgule);
 		free(j);
 		j = pi;
-		if(eq)
-			free(eq);
-		eq = multiplication(j,j);
+		//if(eq)
+		//	free(eq);
+		//eq = multiplication(j,j);
 	}
-	if(eq)
-		free(eq);
+	//if(eq)
+	//	free(eq);
 	j = pj;
 	r1 = strtold(pi, NULL);
 	r1 = sqrtl(r1);
