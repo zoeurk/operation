@@ -92,10 +92,12 @@ void racine_carree(char *i, unsigned long int virgule){
 			*(pj+57) = 0;
 		}
 	}*/
+	//printf("%s\n", (char *)multiplication(j,j));
 	printf("Racine carree arbitraire pour \'%s\':%s\n" , i,j);
 	printf("Racine carree pour \'%s\':%.56Lf\n", i, sqrtl(strtold(i, NULL)));
 	free(j);
 }
+
 int main(int argc, char **argv){
 	int ret;
 	char *r;
@@ -142,11 +144,11 @@ int main(int argc, char **argv){
 	}
 	
 	//No warrenty
-	/*printf("++++++++++++++++++\n");
+	printf("++++++++++++++++++\n");
 	cosinus(argv[1]);
 	cosinus(argv[2]);
 	printf("++++++++++++++++++\n");
 	racine_carree(argv[1], 56);
-	racine_carree(argv[2], 56);*/
+	racine_carree(argv[2], 56);
 	return 0;
 }
