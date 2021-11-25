@@ -50,7 +50,7 @@ void racine_carree(char *i, unsigned long int virgule, unsigned long long int co
 			pj = multiplication("1000", pj);
 			free(j);
 			j = pi;
-			pi = division(j,"1000000",virgule);
+			pi = division(j,"1000000",virgule,0);
 			free(j);
 			j = pi;		
 		}else{
@@ -58,7 +58,7 @@ void racine_carree(char *i, unsigned long int virgule, unsigned long long int co
 			pj = multiplication(rc, pj);
 			free(j);
 			j = pi;
-			pi = division(j,m,virgule);
+			pi = division(j,m,virgule, 0);
 			//printf("%s\n", pi);
 			free(j);
 			j = pi;
@@ -111,7 +111,7 @@ int main(int argc, char **argv){
 		printf("multiplication:%s\n", (char *)r);
 		free(r);
 	}
-	r = division(argv[1], argv[2], atoi(argv[3]));
+	r = division(argv[1], argv[2], atoi(argv[3]), 1);
 	if(r){
 		printf("division:%s\n", (char *)r);
 		free(r);
