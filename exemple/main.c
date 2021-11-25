@@ -32,8 +32,7 @@ void cosinus(char *arg){
 	free(npi_);
 }
 void racine_carree(char *i, unsigned long int virgule, unsigned long long int coefficient){
-	//printf("%s\n", i);
-	char *t, *pi,*j, *pj,rc[60], m[21];
+	char *pi,*j, *pj,rc[60], m[21];
 	long double r1;
 	unsigned long long int  max = coefficient;
 	if(equal(i, "0") < 0){
@@ -43,16 +42,15 @@ void racine_carree(char *i, unsigned long int virgule, unsigned long long int co
 	memset(m,0,21);
 	sprintf(m,"%llu", max);
 	sprintf(rc, "%.56Lf", sqrtl(max));
-	//printf("%s\n", rc);
 	pi = multiplication(i,"1");
 	pj = multiplication("1","1");
 	while(equal(pi,m) > 0){
 		if(pi && strchr(pi,'.') && strlen(strchr(pi,'.')) > 6){
 			j = pj;
-			pj = multiplication("10000", pj);
+			pj = multiplication("1000", pj);
 			free(j);
 			j = pi;
-			pi = division(j,"100000000",virgule);
+			pi = division(j,"1000000",virgule);
 			free(j);
 			j = pi;		
 		}else{
