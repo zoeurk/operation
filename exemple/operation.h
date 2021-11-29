@@ -52,6 +52,6 @@ int equal(void *num1, void *num2);
 void *addition(void *num1, void *num2);
 void *soustraction(void *num1, void *num2);
 void *multiplication(void *num1, void *num2);
-void *division(void *num1, void *num2, unsigned long int virgule);
+void *division(void *num1, void *num2, unsigned long int virgule, int arr);
 void *modulo(void *num1, void *num2);
 #endif

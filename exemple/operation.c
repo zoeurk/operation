@@ -728,29 +728,34 @@ void *soustraction(void *num1, void *num2){
 	while(strlen(buffer) > 1 && (buffer[strlen(buffer)-1] == '0'&& buffer[strlen(buffer)-2] != '.')){
 		buffer[strlen(buffer)-1] = 0;
 		pbuf = &buffer[strlen(buffer)-2];
-
 	}
-	pbuf--;
-	buflen--;
-	if(buflen + 1 >= BUFFER){
-		z++;
-		buflen = 0;
-		pbuf = reallocation((void **)&buffer,z*BUFFER);
-	}
-	pbuf++;
-	buflen++;
+	//pbuf--;
+	//buflen--;
+	//if(buflen + 1 >= BUFFER){
+	//	z++;
+	//	buflen = 0;
+	//	pbuf = reallocation((void **)&buffer,z*BUFFER);
+	//}
+	//pbuf++;
+	//buflen++;
 	if(neg){
+		//printf("ok\n");
 		/*BUG POSSIBLE*/
 		if(buflen + 1 >= BUFFER){
 			z++;
 			pbuf = reallocation((void **)&buffer,z*BUFFER);
-		}
-		pbuf = buffer+strlen(buffer);
-		if(*(pbuf-1) != '0'){
-			sprintf(pbuf,"-");
-			pbuf++;
-			buflen++;
-		}
+		}else//{
+			//printf("oh yes\n");
+			//pbuf--;
+			//buflen--;
+			pbuf = buffer+strlen(buffer);
+		//}
+		//printf("==>cool\n");
+		//if(*(pbuf-1) != '0'){
+		sprintf(pbuf,"-");
+		pbuf++;
+		buflen++;
+		//}
 	}
 	pbuf = buffer;
 	ij = strlen(pbuf);
@@ -972,10 +977,12 @@ void *multiplication(void *num1, void *num2){
 	if(neg){
 		VALEUR_NEGATIVE(total, pbuf, ii);
 	}
+	//if((pbuf = strchr(total,'.')))
+	//	*pbuf = 0;
 	free(resultat);
 	return total;
 }
-void *division(void *num1, void *num2, unsigned long int virgule){
+void *division(void *num1, void *num2, unsigned long int virgule, int arr){
 	char *n1 = num1, *n2 = num2,
 		*quotient = NULL, *dividende = NULL, *diviseur = NULL, *reste = NULL, *preste,
 		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}, *result = NULL, *pr, point = 0, *arrondi = NULL,
@@ -1135,71 +1142,80 @@ void *division(void *num1, void *num2, unsigned long int virgule){
 		VALEUR_NEGATIVE(result, pr, ii);
 	}
 	//printf("%s\n", result);
-	if((temp = strchr(result, '.')) != NULL){
-		temp_ = &result[strlen(result)-1];
-		if(virgule == 0){
-			if(equal(temp_, "5")){
-				if(!neg)
-					temp_ = addition(result ,"1");
-				else	temp_ = soustraction(result, "1");
-				//temp_ = addition(result,"1");
-				free(result);
-				result = temp_;
-				temp = strchr(result,'.');
-				//exit(0);
-				if(temp)
-					*temp = 0;
-			}
-		}else{
-			//printf("ici\n");
-			//if(x == 0){
-			//printf("==>%s::%i:%i\n", result, x, neg);
-				if(strlen(strchr(result,'.') +1) >= virgule){
-					//printf("%lu\n", virgule_);
-					//printf("la\n");
-					temp = allocation((void **)&temp, strlen(result)+1, sizeof(char));
-					if(equal(temp_, "5") >= 0){
-						for(len = 0; len < virgule_; len++){
-							if(len == 0){
-								arrondi = allocation((void **)&arrondi, 3, sizeof(char));
-								strcpy(arrondi, "0.");
-							}else{	
-								if((arrondi = realloc(arrondi,strlen(arrondi)+2)) == NULL){
-									perror("ralloc()");
-									exit(EXIT_FAILURE);
+	if(!arr){
+		if((temp = strchr(result, '.')) != NULL){
+			temp_ = &result[strlen(result)-1];
+				if(virgule == 0){
+					if(equal(temp_, "5")>=0){
+						if(!neg)
+							temp_ = addition(result ,"1");
+						else	temp_ = soustraction(result, "1");
+						//temp_ = addition(result,"1");
+						free(result);
+						result = temp_;
+						temp = strchr(result,'.');
+						//exit(0);
+						if(temp)
+							*temp = 0;
+					}else{
+						temp = strchr(result,'.');
+						*temp = 0;
+					}
+				}else{
+					//printf("ici\n");
+					//if(x == 0){
+					//printf("==>%s::%i:%i\n", result, x, neg);
+						if(strlen(strchr(result,'.') +1) >= virgule){
+							//printf("%lu\n", virgule_);
+							//printf("la\n");
+							temp = allocation((void **)&temp, strlen(result)+1, sizeof(char));
+							if(equal(temp_, "5") >= 0){
+								for(len = 0; len < virgule_; len++){
+									if(len == 0){
+										arrondi = allocation((void **)&arrondi, 3, sizeof(char));
+										strcpy(arrondi, "0.");
+									}else{	
+										if((arrondi = realloc(arrondi,strlen(arrondi)+2)) == NULL){
+											perror("ralloc()");
+											exit(EXIT_FAILURE);
+										}
+										if(len+1 == virgule_){
+											strcat(arrondi, "1");
+										}else{	strcat(arrondi, "0");
+										}
+									}
 								}
-								if(len+1 == virgule_){
-									strcat(arrondi, "1");
-								}else{	strcat(arrondi, "0");
-								}
+								//printf("%s\n",arrondi);
+								//free(arrondi);
+								//printf("===>%s::%s\n",result, temp);
+								//printf("%s\n",reste);
+								free(reste);
+								if(!neg)
+									reste = addition(result ,arrondi);
+								else	reste = soustraction(result, arrondi);
+								free(arrondi);
+								free(result);
+								result = reste;
+								reste = temp;
+								//if(virgule_ >= virgule -1){
+								//	printf("==>%s::%lu;%lu\n", result, virgule_, virgule);
+									//exit(0);
+								//}
+								if(strlen(result) > 0)
+									result[strlen(result)-1] = 0;
+							}else{	free(temp);
+								//printf("%s\n", temp_);
+								result[strlen(result)-1] = 0;
 							}
 						}
-						//printf("%s\n",arrondi);
-						//free(arrondi);
-						//printf("===>%s::%s\n",result, temp);
-						//printf("%s\n",reste);
-						free(reste);
-						if(!neg)
-							reste = addition(result ,arrondi);
-						else	reste = soustraction(result, arrondi);
-						free(arrondi);
-						free(result);
-						result = reste;
-						reste = temp;
-						//if(virgule_ >= virgule -1){
-						//	printf("==>%s::%lu;%lu\n", result, virgule_, virgule);
-							//exit(0);
-						//}
-						if(strlen(result) > 0)
-							result[strlen(result)-1] = 0;
-					}else{	free(temp);
-						//printf("%s\n", temp_);
-						result[strlen(result)-1] = 0;
-					}
 				}
-			}
-		//}
+		}
 		//printf("%s\n", result);
+	}else{
+		//printf("%s\n", result);
+		temp = strchr(result,'.');
+		if(temp && strlen(temp+1) > virgule)
+			*(temp+strlen(temp +1)) = 0;
 	}
 	if((n1 = strchr(result,'.')) != NULL)
 		for(n2 = &result[strlen(result) - 1]; n2 != (n1-1) && (*n2 == '.' || *n2 == '0') ; *n2 = 0, n2--);;
@@ -1393,7 +1409,7 @@ void *modulo(void *num1, void *num2){
 		ii++;
 	}
 	if(zero_){
-		pzero_ = division(reste, zero_, strlen(reste)+3);
+		pzero_ = division(reste, zero_, strlen(reste)+3, 0);
 		free(reste);
 		reste = pzero_;
 	}

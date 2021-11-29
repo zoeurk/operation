@@ -32,7 +32,7 @@ void cosinus(char *arg){
 	free(npi_);
 }
 void racine_carree(char *i, unsigned long int virgule, unsigned long long int coefficient){
-	char *pi,*j, *pj,rc[60], m[21];
+	char *eq = NULL, *pi,*j, *pj,rc[60], m[21];
 	long double r1;
 	unsigned long long int  max = coefficient;
 	if(equal(i, "0") < 0){
@@ -45,24 +45,25 @@ void racine_carree(char *i, unsigned long int virgule, unsigned long long int co
 	pi = multiplication(i,"1");
 	pj = multiplication("1","1");
 	while(equal(pi,m) > 0){
-		if(pi && strchr(pi,'.') && strlen(strchr(pi,'.')) > 6){
+		/*if(pi && strchr(pi,'.') && strlen(strchr(pi,'.')) > 6){
 			j = pj;
 			pj = multiplication("1000", pj);
 			free(j);
 			j = pi;
 			pi = division(j,"1000000",virgule,0);
 			free(j);
-			j = pi;		
-		}else{
+			j = pi;
+		}else{*/
 			j = pj;
 			pj = multiplication(rc, pj);
 			free(j);
 			j = pi;
-			pi = division(j,m,virgule, 0);
+			pi = division(j,m,virgule, 1);
+			//printf("%s\n", pi);
 			//printf("%s\n", pi);
 			free(j);
 			j = pi;
-		}
+		//}
 	}
 	j = pj;
 	r1 = strtold(pi, NULL);
@@ -71,7 +72,6 @@ void racine_carree(char *i, unsigned long int virgule, unsigned long long int co
 	j = multiplication(pj,rc);
 	free(pj);
 	free(pi);
-	//printf("%s\n", (char *)multiplication(j,j));
 	printf("Racine carree arbitraire pour \'%s\':%s\n" , i,j);
 	printf("Racine carree pour \'%s\':%.56Lf\n", i, sqrtl(strtold(i, NULL)));
 	free(j);
@@ -111,7 +111,7 @@ int main(int argc, char **argv){
 		printf("multiplication:%s\n", (char *)r);
 		free(r);
 	}
-	r = division(argv[1], argv[2], atoi(argv[3]), 1);
+	r = division(argv[1], argv[2], atoi(argv[3]),0);
 	if(r){
 		printf("division:%s\n", (char *)r);
 		free(r);
