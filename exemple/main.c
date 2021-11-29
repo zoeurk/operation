@@ -4,14 +4,14 @@
 #include <math.h>
 #include "operation.h"
 void cosinus(char *arg){
-	char pi[60], npi[60],*pi_, *npi_ ,*temp;
+	char pi[60], npi[60],*pi_, *npi_ ,*temp, *t;
 	long double x;
 	sprintf(npi,"-%.56Lf", (long double)M_PI);
 	sprintf(pi,"%.56Lf", (long double)M_PI);
 	pi_ = multiplication(pi, "2");
-	npi_ = multiplication(npi, "-2");
-	temp = multiplication(arg,"1");
-	if(equal(temp, pi_) > 0){
+	//npi_ = multiplication(npi, "-2");
+	//temp = multiplication(arg,"1");
+	/*if(equal(temp, pi_) > 0){
 		free(temp);
 		temp = modulo(arg, pi_);
 		x = strtold(temp, NULL);
@@ -25,11 +25,14 @@ void cosinus(char *arg){
 			printf("Cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(x));
 			free(temp);
 		}
-	}
+	}*/
+	temp = modulo(arg,pi_);
+	printf("Modulo  arbitraire de \'%s/%s\': %s\n", arg, pi_, temp);
+	free(temp);
 	x = strtold(arg, NULL);
-	printf("Cosinus  de \'%s\': %.56Lf\n", arg, cosl(x));
+	printf("Modulo  de \'%s/%s\': %.56Lf\n", arg, pi_,fmodl(x,strtold(pi_,NULL)));
 	free(pi_);
-	free(npi_);
+	//free(npi_);
 }
 void racine_carree(char *i, unsigned long int virgule, unsigned long long int coefficient){
 	char *eq = NULL, *pi,*j, *pj,rc[60], m[21];
@@ -47,10 +50,10 @@ void racine_carree(char *i, unsigned long int virgule, unsigned long long int co
 	while(equal(pi,m) > 0){
 		/*if(pi && strchr(pi,'.') && strlen(strchr(pi,'.')) > 6){
 			j = pj;
-			pj = multiplication("1000", pj);
+			pj = multiplication("10", pj);
 			free(j);
 			j = pi;
-			pi = division(j,"1000000",virgule,0);
+			pi = division(j,"100",virgule,1);
 			free(j);
 			j = pi;
 		}else{*/
@@ -58,7 +61,7 @@ void racine_carree(char *i, unsigned long int virgule, unsigned long long int co
 			pj = multiplication(rc, pj);
 			free(j);
 			j = pi;
-			pi = division(j,m,virgule, 1);
+			pi = division(j,m, virgule,1);
 			//printf("%s\n", pi);
 			//printf("%s\n", pi);
 			free(j);
