@@ -20,13 +20,15 @@ void cosinus(char *arg){
 		printf("cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(strtold(t,NULL)));
 		free(t);
 	}else{
-		t = division(arg, npi_ , 0, 0);
-		temp = multiplication(t,npi_);
-		free(t);
-		t = soustraction(arg, temp);
-		free(temp); 
-		printf("cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(strtold(t,NULL)));
-		free(t);
+		if(equal(arg, "0") == -1){
+			t = division(arg, npi_ , 0, 0);
+			temp = multiplication(t,npi_);
+			free(t);
+			t = soustraction(arg, temp);
+			free(temp); 
+			printf("cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(strtold(t,NULL)));
+			free(t);
+		}
 	}
 	x = strtold(arg, NULL);
 	printf("cosinus  de \'%s\': %.56Lf\n", arg, cosl(strtold(arg, NULL)));
