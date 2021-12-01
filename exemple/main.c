@@ -3,12 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include "operation.h"
-void test(long double x){
-	long double result = 0;
-	result = 1 - powl(x,2)/2 + powl(x,4)/4 + powl(-1,3);
-	printf("%Lf\n", result);
-	printf("%Lf\n", cosl(x));
-}
+
 void cosinus(char *arg){
 	char pi[60], npi[60],*pi_, *npi_ ,*temp, *t;
 	long double x;
