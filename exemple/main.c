@@ -3,36 +3,40 @@
 #include <string.h>
 #include <math.h>
 #include "operation.h"
+void test(long double x){
+	long double result = 0;
+	result = 1 - powl(x,2)/2 + powl(x,4)/4 + powl(-1,3);
+	printf("%Lf\n", result);
+	printf("%Lf\n", cosl(x));
+}
 void cosinus(char *arg){
 	char pi[60], npi[60],*pi_, *npi_ ,*temp, *t;
 	long double x;
 	sprintf(npi,"-%.56Lf", (long double)M_PI);
 	sprintf(pi,"%.56Lf", (long double)M_PI);
 	pi_ = multiplication(pi, "2");
-	//npi_ = multiplication(npi, "-2");
-	//temp = multiplication(arg,"1");
-	/*if(equal(temp, pi_) > 0){
+	npi_ = multiplication(pi,"-2");
+	if(equal(arg, "0") == 1){
+		t = division(arg, pi_ , 0, 0);
+		temp = multiplication(t,pi_);
+		free(t);
+		t = soustraction(arg, temp);
 		free(temp);
-		temp = modulo(arg, pi_);
-		x = strtold(temp, NULL);
-		printf("Cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(x));
-		free(temp);
+		printf("cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(strtold(t,NULL)));
+		free(t);
 	}else{
-		if(equal(arg, npi_) < 0){
-			free(temp);
-			temp = modulo(arg, npi_);
-			x = strtold(temp, NULL);
-			printf("Cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(x));
-			free(temp);
-		}
-	}*/
-	temp = modulo(arg,pi_);
-	printf("Modulo  arbitraire de \'%s/%s\': %s\n", arg, pi_, temp);
-	free(temp);
+		t = division(arg, npi_ , 0, 0);
+		temp = multiplication(t,npi_);
+		free(t);
+		t = soustraction(arg, temp);
+		free(temp); 
+		printf("cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(strtold(t,NULL)));
+		free(t);
+	}
 	x = strtold(arg, NULL);
-	printf("Modulo  de \'%s/%s\': %.56Lf\n", arg, pi_,fmodl(x,strtold(pi_,NULL)));
+	printf("cosinus  de \'%s\': %.56Lf\n", arg, cosl(strtold(arg, NULL)));
 	free(pi_);
-	//free(npi_);
+	free(npi_);
 }
 void racine_carree(char *i, unsigned long int virgule, unsigned long long int coefficient){
 	char *eq = NULL, *pi,*j, *pj,rc[60], m[21];
@@ -61,7 +65,7 @@ void racine_carree(char *i, unsigned long int virgule, unsigned long long int co
 			pj = multiplication(rc, pj);
 			free(j);
 			j = pi;
-			pi = division(j,m, virgule,1);
+			pi = division(j,m, virgule,0);
 			//printf("%s\n", pi);
 			//printf("%s\n", pi);
 			free(j);
@@ -114,7 +118,7 @@ int main(int argc, char **argv){
 		printf("multiplication:%s\n", (char *)r);
 		free(r);
 	}
-	r = division(argv[1], argv[2], atoi(argv[3]),0);
+	r = division(argv[1], argv[2], atoi(argv[3]),1);
 	if(r){
 		printf("division:%s\n", (char *)r);
 		free(r);
@@ -124,8 +128,8 @@ int main(int argc, char **argv){
 		printf("modulo:%s\n", (char *)r);
 		free(r);
 	}
-	
 	//No warrenty
+	test(strtold(argv[1], NULL));
 	printf("++++++++++++++++++\n");
 	cosinus(argv[1]);
 	cosinus(argv[2]);
