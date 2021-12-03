@@ -126,7 +126,6 @@ int main(int argc, char **argv){
 		free(r);
 	}
 	//No warrenty
-	test(strtold(argv[1], NULL));
 	printf("++++++++++++++++++\n");
 	cosinus(argv[1]);
 	cosinus(argv[2]);
