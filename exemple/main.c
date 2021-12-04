@@ -61,7 +61,7 @@ void racine_carree(char *i, unsigned long int virgule, unsigned long int coeffic
 	sprintf(rc, "%.56Lf", sqrtl(max));
 	pi = multiplication(i,"1");
 	pj = multiplication("1","1");
-	printf("%s:%lu\n",m, max);
+	//printf("%s:%lu\n",m, max);
 	//exit(0);
 	while(equal(pi, m) > 0){
 		/*if(pi && strchr(pi,'.') && strlen(strchr(pi,'.')) > 6){
@@ -142,10 +142,10 @@ int main(int argc, char **argv){
 		free(r);
 	}
 	//No warrenty
-	/*printf("++++++++++++++++++\n");
+	printf("++++++++++++++++++\n");
 	cosinus(argv[1]);
 	cosinus(argv[2]);
-	printf("++++++++++++++++++\n");
+	/*printf("++++++++++++++++++\n");
 	racine_carree(argv[1], 56, 16);
 	racine_carree(argv[2], 56, 16);*/
 	return 0;
