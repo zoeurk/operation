@@ -62,7 +62,7 @@ void racine_carree(char *i, unsigned long int virgule, unsigned long long int co
 			pj = multiplication(rc, pj);
 			free(j);
 			j = pi;
-			pi = division(j,m, virgule,0);
+			pi = division(j,m, virgule,1);
 			//printf("%s\n", pi);
 			//printf("%s\n", pi);
 			free(j);
