@@ -6,30 +6,14 @@
 
 void cosinus(char *arg){
 	char pi[512], npi[512],*pi_, *npi_ ,*temp, *t;
-	long double x;
-	//printf("%.42Lf\n", (long double)M_PI);
 	sprintf(npi,"-%.56Lf", 8*atanl(1));
 	sprintf(pi,"%.56Lf", 8*atanl(1));
-	//printf("%.56Lf\n%.56Lf\n", 8*atanl(1), 2*(long double)M_PI);
 	pi_ = multiplication(pi, "2");
 	npi_ = multiplication(pi,"-2");
 	if(equal(arg, "0") == 1){
 		t = division(arg, pi_ , 0, 0);
-		//printf("%s\n", t);
-		/*temp = multiplication(t,pi_);
-		free(t);
-		t = soustraction(arg, temp);
-		free(temp);*/
 		free(t);
 		t = multiplication(arg, "1");
-		/*x = 0;
-		while(equal(pi_ , t) < 0){
-			temp = soustraction(t, pi_);
-			free(t);
-			t = temp;
-			x++;
-		}
-		printf("%Lf\n", x);*/
 		printf("cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(strtold(t,NULL)));
 		free(t);
 	}else{
@@ -43,47 +27,30 @@ void cosinus(char *arg){
 			free(t);
 		}
 	}
-	x = strtold(arg, NULL);
 	printf("cosinus  de \'%s\': %.56Lf\n", arg, cosl(strtold(arg, NULL)));
 	free(pi_);
 	free(npi_);
 }
-void racine_carree(char *i, unsigned long int virgule, unsigned long int coefficient){
-	char *eq = NULL, *pi,*j, *pj,rc[60], m[58];
+void racine_carree(char *i, unsigned long int coefficient){
+	char *pi,*j, *pj,rc[60], m[58];
 	long double r1;
 	unsigned long int  max = coefficient;
 	if(equal(i, "0") < 0){
 		printf("ERREUR: Valeur: %s < 0\n", i);
 		return;
 	}
-	//memset(m,0,21);
 	sprintf(m,"%lu", coefficient);
 	sprintf(rc, "%.56Lf", sqrtl(max));
 	pi = multiplication(i,"1");
 	pj = multiplication("1","1");
-	//printf("%s:%lu\n",m, max);
-	//exit(0);
 	while(equal(pi, m) > 0){
-		/*if(pi && strchr(pi,'.') && strlen(strchr(pi,'.')) > 6){
-			j = pj;
-			pj = multiplication("10", pj);
-			free(j);
-			j = pi;
-			pi = division(j,"100",virgule,1);
-			free(j);
-			j = pi;
-		}else{*/
-			//printf("***%s\n", );
 			j = pj;
 			pj = multiplication(rc, pj);
 			free(j);
 			j = pi;
-			pi = division(j,m, virgule,0);
-			//printf("%s\n", pi);
-			//printf("%s\n", pi);
+			pi = division(j,m, 0,0);
 			free(j);
 			j = pi;
-		//}
 	}
 	j = pj;
 	r1 = strtold(pi, NULL);
@@ -145,8 +112,8 @@ int main(int argc, char **argv){
 	printf("++++++++++++++++++\n");
 	cosinus(argv[1]);
 	cosinus(argv[2]);
-	/*printf("++++++++++++++++++\n");
-	racine_carree(argv[1], 56, 16);
-	racine_carree(argv[2], 56, 16);*/
+	printf("++++++++++++++++++\n");
+	racine_carree(argv[1], (unsigned long int)9999999999*9999999999);
+	racine_carree(argv[2], 16);
 	return 0;
 }
