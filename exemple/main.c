@@ -126,11 +126,11 @@ int main(int argc, char **argv){
 		free(r);
 	}
 	//No warrenty
-	printf("++++++++++++++++++\n");
+	/*printf("++++++++++++++++++\n");
 	cosinus(argv[1]);
 	cosinus(argv[2]);
 	printf("++++++++++++++++++\n");
 	racine_carree(argv[1], 56, 4);
-	racine_carree(argv[2], 56, 4);
+	racine_carree(argv[2], 56, 4);*/
 	return 0;
 }
