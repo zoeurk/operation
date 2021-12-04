@@ -113,7 +113,7 @@ int main(int argc, char **argv){
 	cosinus(argv[1]);
 	cosinus(argv[2]);
 	printf("++++++++++++++++++\n");
-	racine_carree(argv[1], (unsigned long int)9999999999*9999999999);
-	racine_carree(argv[2], 16);
+	/*racine_carree(argv[1], (unsigned long int)9999999999*9999999999);
+	racine_carree(argv[2], 16);*/
 	return 0;
 }
