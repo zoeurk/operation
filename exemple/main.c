@@ -62,7 +62,18 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 								free(dot);
 								pt = padd;
 								pt[strlen(pt)-1] = 0;
-							}else pt[strlen(pt)-1] = 0;
+							}else{
+								if(virgule == 1){
+									l = virgule;
+									padd = dot = allocation((void **)&dot, 2+3, sizeof(char));
+									*padd = '1';
+									padd = addition(pt,dot);
+									free(pt);
+									free(dot);
+									pt = padd;
+								}
+								pt[strlen(pt)-1] = 0;
+							}
 						}else pt[strlen(pt)-1] = 0;
 						free(ppt);
 						dotlen = virgule;
