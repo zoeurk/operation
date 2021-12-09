@@ -31,42 +31,95 @@ void cosinus(char *arg){
 	free(pi_);
 	free(npi_);
 }
-void racine_carree(char *i, unsigned long int coefficient){
-	char *pi,*j, *pj,rc[60], m[58];
-	long double r1;
-	unsigned long int  max = coefficient;
-	if(equal(i, "0") < 0){
-		printf("ERREUR: Valeur: %s < 0\n", i);
-		return;
+char *find(char *i, char *result, unsigned long int virgule, int approximation){
+	char *i_ = multiplication(i,"1"), k, end = 0,
+		*temp = multiplication(i,i), *ppt, *pt,*t, *dot = NULL,
+		*add = NULL, *padd;
+	unsigned long int len = 0, l = 0, dotlen = 0;
+	padd = allocation((void **)&add, strlen(i)+1, sizeof(char));
+	memset(add, '0', strlen(i));
+	add[0] = '1';
+	if((dot = strchr(i,'.')) != NULL){
+		len = strlen(i);
+		l = len-strlen(dot);
+		add[l] = '.';
 	}
-	sprintf(m,"%lu", coefficient);
-	sprintf(rc, "%.56Lf", sqrtl(max));
-	pi = multiplication(i,"1");
-	pj = multiplication("1","1");
-	while(equal(pi, m) > 0){
-			j = pj;
-			pj = multiplication(rc, pj);
-			free(j);
-			j = pi;
-			pi = division(j,m, 0,0);
-			free(j);
-			j = pi;
+	while(equal(temp, result) < 0 && dotlen < virgule && end == 0){
+		for(k = 57; k > 47;k--){
+			t = multiplication(add,&k);
+			pt = addition(i_,t);
+			ppt = multiplication(pt, pt);
+			if(equal(ppt, result) < 0){
+				if((padd = strchr(pt,'.')) != NULL){
+					if(strlen(padd) > virgule){
+						if(approximation){
+							if(strlen(pt)-1 > virgule){
+								l = virgule;
+								padd = dot = allocation((void **)&dot, virgule+3, sizeof(char));
+								strcpy(dot,"0.");
+								for(l = 0, padd += 2; l < virgule-2; l++, padd++){
+									*padd = '0';
+								}
+								*padd = '1';
+								padd = addition(pt,dot);
+								free(pt);
+								free(dot);
+								pt = padd;
+								pt[strlen(pt)-1] = 0;
+							}else pt[strlen(pt)-1] = 0;
+						}else pt[strlen(pt)-1] = 0;
+						free(ppt);
+						dotlen = virgule;
+						end = 1;
+						free(i_);
+						i_ = pt;
+						free(t);
+						break;
+					}
+				}
+				free(i_);
+				free(ppt);
+				i_ = pt;
+				free(t);
+			}else{
+				free(t);
+				free(pt);
+				free(ppt);
+			}
+		}
+		padd = add;
+		add = division(add,"10",virgule,0);
+		free(padd);
 	}
-	j = pj;
-	r1 = strtold(pi, NULL);
-	r1 = sqrtl(r1);
-	sprintf(rc, "%.56Lf", r1);
-	j = multiplication(pj,rc);
-	free(pj);
-	free(pi);
-	printf("Racine carree arbitraire pour \'%s\':%s\n" , i,j);
-	printf("Racine carree pour \'%s\':%.56Lf\n", i, sqrtl(strtold(i, NULL)));
+	free(temp);
+	free(add);
+	return i_;
+}
+char *racine_carree(char *argv, unsigned long int virgule, int approximation){
+	char *r, *i = addition(argv, "0"),*i_ = NULL, *j = NULL, *result = multiplication("1", argv);
+	do{
+		i_ = division(i, "2", 0, 1);
+		j = multiplication(i_,i_);
+		if(equal(j, result) <= 0){
+			break;
+		}
+		free(i);
+		i = i_ ;
+		free(j);
+	}while(1);
+	if(equal(j, result) != 0){
+		r = find(i_, result, virgule+1, approximation);
+		free(i_);
+	}else r = i_;
+	free(i);
 	free(j);
+	free(result);
+	return r;
 }
 
 int main(int argc, char **argv){
 	int ret;
-	char *r;
+	char *r, *check;
 	if(argc != 4){
 		fprintf(stderr, "usage:\n\t%s num1 num2 virgule\n", argv[0]);
 		exit(EXIT_FAILURE);
@@ -113,7 +166,29 @@ int main(int argc, char **argv){
 	cosinus(argv[1]);
 	cosinus(argv[2]);
 	printf("++++++++++++++++++\n");
-	/*racine_carree(argv[1], (unsigned long int)9999999999*9999999999);
-	racine_carree(argv[2], 16);*/
+	r = racine_carree(argv[1], 16, 1);
+	check = multiplication(r, r);
+	printf("Racine carree (arrondie) de \'%s\':%s\n",argv[1], r);
+	printf("Verification: %s\n", check);
+	free(r);
+	free(check);
+	r = racine_carree(argv[1], 16, 0);
+	check = multiplication(r, r);
+	printf("Racine carree de \'%s\':%s\n",argv[1], r);
+	printf("Verification: %s\n", check);
+	free(r);
+	free(check);
+	r = racine_carree(argv[2], 16, 1);
+	check = multiplication(r, r);
+	printf("Racine carree (arrondie) de \'%s\':%s\n",argv[2], r);
+	printf("Verification: %s\n", check);
+	free(r);
+	free(check);
+	r = racine_carree(argv[2], 16, 0);
+	check = multiplication(r, r);
+	printf("Racine carree de \'%s\':%s\n",argv[2], r);
+	printf("Verification: %s\n", check);
+	free(r);
+	free(check);
 	return 0;
 }
