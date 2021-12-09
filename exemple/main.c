@@ -49,7 +49,7 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 				if((padd = strchr(pt,'.')) != NULL){
 					if(strlen(padd) > virgule){
 						if(approximation){
-							if(strlen(pt)-1 > virgule){
+							if(strlen(pt)-1 > virgule && virgule > 1){
 								l = virgule;
 								padd = dot = allocation((void **)&dot, virgule+3, sizeof(char));
 								strcpy(dot,"0.");
