@@ -59,16 +59,13 @@ int equal(void *num1, void *num2){
 	if(dot1)dot1++;
 	if(dot2)dot2++;
 	for(n1 = n1;(*n1+1) != '.' && (*n1 == '0' || *n1 == '+' || *n1 == '-'); n1++);;
-		//n1++;
 	for(n2 = n2;(*n2+1) != '.' && (*n2 == '0' || *n2 == '+' || *n2 == '-'); n2++);;
-		//n2++;
 	val1 = n1;
 	val2 = n2;
 	val1_len = strlen(n1);
 	val2_len = strlen(n2);
 	val1_len = (dot1_len) ? val1_len - dot1_len -1: val1_len; 
 	val2_len = (dot2_len) ? val2_len - dot2_len -1: val2_len;
-	//printf("%s::%s\n", val1, val2);
 	if(neg1 && !neg2){
 		if((pdot = strchr(val1, '.')) != NULL)
 			for(pdot = val1 +val1_len,
@@ -76,17 +73,9 @@ int equal(void *num1, void *num2){
 				*pdot != 0 &&
 				dot[0] == 0;
 				pdot++
-			){	
-				//printf("%i\n", pdot[0]);
-				if(*pdot != '0')dot[0] = *pdot;
-			}
-		if(strncmp(val1,val2, 1 ) == 0 && dot[0] == 0){
-			//if(pdot)
-			//	*pdot = '.';
-			//printf("===>%s;%i\n",val1,dot[0]);
+			)if(*pdot != '0')dot[0] = *pdot;
+		if(strncmp(val1,val2, 1 ) == 0 && dot[0] == 0)
 			return 0;
-		}//else printf("merde\n");
-		//printf("%s\n", val1);
 		return -1;
 	}
 	if(neg2 && !neg1){
@@ -96,42 +85,14 @@ int equal(void *num1, void *num2){
 				*pdot != 0 &&
 				dot[0] == 0;
 				pdot++
-			){	
-				//printf("%i\n", pdot[0]);
+			){
 				if(*pdot != '0')dot[0] = *pdot;
 			}
 		if(strncmp(val1,val2, 1 ) == 0 && dot[0] == 0){
-			//if(pdot)
-			//	*pdot = '.';
-			//printf("===>%s;%i\n",val1,dot[0]);
-			return 0;
-		}//else printf("merde\n");
-		//printf("%s\n", val1);
-		/*if(strcmp(val2,"0") == 0){
-			//printf("===%s\n", dot1);
 			return 0;
 		}
-		//printf("===%s\n", dot2);*/
 		return 1;
 	}
-	/*if(dot1){
-		for(pdot = dot1;*pdot != 0 && dot[0] == 0;pdot++){
-			if(*pdot != '0')
-				dot[0] = 1;
-		}
-		//printf("******\n");
-	}
-	if(dot2){
-		for(pdot = dot2;*pdot != 0 && dot[1] == 0;pdot++){
-			if(*pdot != '0')
-				dot[1] = 1;
-		}
-		if(*pdot == 0){
-			//printf("******%s::%s\n", val2, dot2);
-			*(dot-1) = 0;
-		}
-	}*/
-	//printf("%s::%s\n", dot1, dot2);
 	if(strcmp(val1,"0") == 0 && strcmp(val2,"0") == 0)
 		return 0;
 	if(strcmp(val1,val2)==0)
@@ -282,7 +243,6 @@ void *addition(void *num1, void *num2){
 			pbuf++;
 			buflen++;
 		}
-		//printf("%s\n", buffer);
 		for(ii = ii, ptr1 = ptr1, ptr2 = ptr2; ii > 0; ii--, ptr1--, ptr2--){
 			v1[0] = *ptr1;
 			v2[0] = *ptr2;
@@ -298,7 +258,6 @@ void *addition(void *num1, void *num2){
 				buflen = 0;
 				pbuf = reallocation((void **)&buffer, BUFFER*z);
 			}
-			//printf("%i\n", result);
 			sprintf(pbuf, "%i", result);
 			pbuf++;
 			buflen++;
@@ -417,14 +376,6 @@ void *addition(void *num1, void *num2){
 		}
 	}
 	pret = &ret[strlen(ret)-1];
-	if(dot1 || dot2){
-		//printf("DOT\n");
-		/*while((*pret == '0' || *pret == '.')){
-			//printf("...:%i\n", *pret);
-			*pret = 0;
-			pret--;
-		}*/
-	}
 	if(neg){
 		if((ret = realloc(ret,strlen(ret)+2)) == NULL){
 			perror("realloc()");
@@ -435,12 +386,9 @@ void *addition(void *num1, void *num2){
 		}
 		*ret = '-';
 	}
-	if((n1 = strchr(ret,'.')) != NULL){
-		for(n2 = &ret[strlen(ret) - 1];(n2+1) != n1 && (*n2 == '0' || *n2 == '.'); n2--){
-			//printf("%s\n", n2);
+	if((n1 = strchr(ret,'.')) != NULL)
+		for(n2 = &ret[strlen(ret) - 1];(n2+1) != n1 && (*n2 == '0' || *n2 == '.'); n2--)
 			*n2 = 0;
-		}
-	}
 	return ret;
 }
 void *soustraction(void *num1, void *num2){
@@ -500,15 +448,12 @@ void *soustraction(void *num1, void *num2){
 		default: printf("ERROR\n");
 			exit(0);
 	}
-	//printf("%lu::%lu\n", val1_len, val2_len);
-	//exit(0);
 	pbuf = allocation((void **)&buffer,BUFFER, sizeof(char));
 	if(dot1 != NULL && dot1_len == 0)
 		val1_len--;
 	if(dot2 != NULL && dot2_len == 0)
 		val2_len--;
 	if(dot1_len > dot2_len){
-		//printf("ok\n");
 		for(ii = (long long int)dot1_len; ii >= 0 && (unsigned long int)ii != dot2_len; ii--){
 			if(buflen + 1 >= BUFFER){
 				z++;
@@ -542,19 +487,15 @@ void *soustraction(void *num1, void *num2){
 		}
 	}
 	if(dot2_len > dot1_len){
-		//printf("KO\n");
 		for(ii = dot2_len; ii > 0 && ii != (long long int)dot1_len; ii--){
 			v1[0] = dot2[ii-1];
 			v1[0] = atoi(v1);
-			//printf("%i;%i\n", v1[0],retenue);
 			if(v1[0] - retenue > 0){
 				result = 10 - v1[0] - retenue;
 				retenue = 1;
-				//printf("%i\n", result);
 			}else{
 				result = 10- (v1[0] + retenue);
 				retenue = 1;
-				//printf("%i\n",result);
 			}
 			if(buflen + 1 >= BUFFER){
 				z++;
@@ -565,7 +506,6 @@ void *soustraction(void *num1, void *num2){
 			pbuf++;
 			buflen++;
 		}
-		//printf("%s\n", buffer);
 		for(ii = ii, ij = dot1_len; ii > 0 && ij > 0; ii--, ij--){
 			v1[0] = dot1[ii-1];
 			v2[0] = dot2[ij-1];
@@ -630,7 +570,6 @@ void *soustraction(void *num1, void *num2){
 		}
 	}
 	if(dot1_len || dot2_len){
-		//printf("%s\n", buffer);
 		if(buflen + 1 >= BUFFER){
 			z++;
 			buflen = 0;
@@ -639,30 +578,13 @@ void *soustraction(void *num1, void *num2){
 		sprintf(pbuf, ".");
 		pbuf++;
 		buflen++;
-		//printf("%s\n", buffer);
 	}
-	//fprintf(stderr,"===>%s::%s\n", (char *)n1, (char *)n2);
-	//len = val2_len - val1_len;
-	//printf("%lu::%lu::%lli\n", val1_len, val2_len, len);
-	//exit(0);
 	for(ptr1 = val1, ptr2 = val2, ii = val1_len - (neg1 == 1), ij = val2_len - (dot2_len > 0);
-		ii > 0 && ij > 0; /*&&
-		*ptr1 != 0 && 
-		*ptr2 != 0;*/
+		ii > 0 && ij > 0;
 		ii--, ij--, ptr1--, ptr2--
 	){
-		//printf("++++++++++++++++++++++\n");
-		/*fprintf(stderr, "%s::%s\n",
-			ptr1,
-			ptr2
-		);*/
-		//printf("===>%lli::%lli\n", ii, ij);
-		//exit(0);
 		v1[0] = *ptr1;
 		v2[0] = *ptr2 ;
-		/*if(*(ptr2 +1) == 0 ){
-			fprintf(stderr,"ERROR::%lli\n", ij);
-		}*/
 		v1[0] = atoi(v1);
 		v2[0] = atoi(v2);
 		if(v1[0] - retenue >= v2[0]){
@@ -681,8 +603,6 @@ void *soustraction(void *num1, void *num2){
 		pbuf++;
 		buflen++;
 	}
-	//printf("==>%lli::%lli\n", ii, ij);
-	//exit(0);
 	for(ii = ii; ii > 0; ii--, ptr1--){
 		if((ptr1 +1) == n1)break;
 		v1[0] = *ptr1;
@@ -729,33 +649,15 @@ void *soustraction(void *num1, void *num2){
 		buffer[strlen(buffer)-1] = 0;
 		pbuf = &buffer[strlen(buffer)-2];
 	}
-	//pbuf--;
-	//buflen--;
-	//if(buflen + 1 >= BUFFER){
-	//	z++;
-	//	buflen = 0;
-	//	pbuf = reallocation((void **)&buffer,z*BUFFER);
-	//}
-	//pbuf++;
-	//buflen++;
 	if(neg){
-		//printf("ok\n");
-		/*BUG POSSIBLE*/
 		if(buflen + 1 >= BUFFER){
 			z++;
 			pbuf = reallocation((void **)&buffer,z*BUFFER);
-		}else//{
-			//printf("oh yes\n");
-			//pbuf--;
-			//buflen--;
+		}else
 			pbuf = buffer+strlen(buffer);
-		//}
-		//printf("==>cool\n");
-		//if(*(pbuf-1) != '0'){
 		sprintf(pbuf,"-");
 		pbuf++;
 		buflen++;
-		//}
 	}
 	pbuf = buffer;
 	ij = strlen(pbuf);
@@ -765,14 +667,9 @@ void *soustraction(void *num1, void *num2){
 	if(equal("0",ret) == 0){
 		strcpy(ret,"0");
 	}
-	//printf("%s\n", ret);
-	/*while((dot1_len|| dot2_len) && (ret[strlen(ret)-1] == '0' || ret[strlen(ret)-1] == '.'))
-		ret[strlen(ret)-1] = 0;*/
-	if((n1 = strchr(ret,'.')) != NULL){
-		for(n2 = &ret[strlen(ret) - 1];(n2+1) != n1 && (*n2 == '0' || *n2 == '.'); n2--){
+	if((n1 = strchr(ret,'.')) != NULL)
+		for(n2 = &ret[strlen(ret) - 1];(n2+1) != n1 && (*n2 == '0' || *n2 == '.'); n2--)
 			*n2 = 0;
-		}
-	}
 	free(pbuf);
 	return ret;
 }
@@ -922,34 +819,24 @@ void *multiplication(void *num1, void *num2){
 		}
 	}
 	if(dot1_len + dot2_len > 0){
-		//printf("%s::%lu\n", total, dot1_len + dot2_len);
 		if(strlen(total) < dot1_len + dot2_len){
-			//printf("ok:%s:%lu::%lu\n", total, strlen(total),dot1_len + dot2_len);
 			pbuf = allocation((void **)&buffer, dot1_len + dot2_len +2, sizeof(char));
-			for(result = &buffer[dot1_len + dot2_len +1], ii = strlen(total)-1;ii >= 0;result--,ii--){
-				//printf("%c\n",total[ii]);
+			for(result = &buffer[dot1_len + dot2_len +1], ii = strlen(total)-1;ii >= 0;result--,ii--)
 				*result = total[ii];
-			}
-			for(result = result, ii = 0;(unsigned long int)ii < dot1_len + dot2_len-strlen(total);ii++, result--){
-				//printf("0\n");
+			for(result = result, ii = 0;(unsigned long int)ii < dot1_len + dot2_len-strlen(total);ii++, result--)
 				*result = '0';
-			}
 			*result = '.';
 			result--;
 			*result = '0';
-			//printf("%s\n", result);
 			free(total);
 			free(resultat);
 			if(neg){
 				VALEUR_NEGATIVE(result, pbuf, ii);
 			}
 			return result;
-			//exit(0);
 		}
 		pbuf = allocation((void **)&buffer, strlen(total)+2, sizeof(char));
 		strcpy(pbuf, total);
-		//printf("%s,%s\n", pbuf, total);
-		//exit(0);
 		for(pbuf = &buffer[strlen(buffer)-1], ii = 0; (unsigned long int)ii != dot1_len + dot2_len;pbuf--, ii++){
 			*(pbuf+1) = *(pbuf);
 		}
@@ -977,8 +864,6 @@ void *multiplication(void *num1, void *num2){
 	if(neg){
 		VALEUR_NEGATIVE(total, pbuf, ii);
 	}
-	//if((pbuf = strchr(total,'.')))
-	//	*pbuf = 0;
 	free(resultat);
 	return total;
 }
@@ -996,7 +881,6 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 		fprintf(stderr, "Erreur: Division par 0\n");
 		return NULL;
 	}
-	//printf("%i\n", neg);
 	ZERO;
 	if(equal(n1,"0") == 0){
 		 quotient = allocation((void **)&quotient,2,sizeof(char));
@@ -1137,11 +1021,9 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 		buflen++;
 		ii++;
 	}
-	//printf("%s\n", result);
 	if(neg){
 		VALEUR_NEGATIVE(result, pr, ii);
 	}
-	//printf("%s\n", result);
 	if(approximation){
 		if((temp = strchr(result, '.')) != NULL){
 			temp_ = &result[strlen(result)-1];
@@ -1150,11 +1032,9 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 						if(!neg)
 							temp_ = addition(result ,"1");
 						else	temp_ = soustraction(result, "1");
-						//temp_ = addition(result,"1");
 						free(result);
 						result = temp_;
 						temp = strchr(result,'.');
-						//exit(0);
 						if(temp)
 							*temp = 0;
 					}else{
@@ -1162,12 +1042,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 						*temp = 0;
 					}
 				}else{
-					//printf("ici\n");
-					//if(x == 0){
-					//printf("==>%s::%i:%i\n", result, x, neg);
 						if(strlen(strchr(result,'.') +1) >= virgule){
-							//printf("%lu\n", virgule_);
-							//printf("la\n");
 							temp = allocation((void **)&temp, strlen(result)+1, sizeof(char));
 							if(equal(temp_, "5") >= 0){
 								for(len = 0; len < virgule_; len++){
@@ -1185,10 +1060,6 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 										}
 									}
 								}
-								//printf("%s\n",arrondi);
-								//free(arrondi);
-								//printf("===>%s::%s\n",result, temp);
-								//printf("%s\n",reste);
 								free(reste);
 								if(!neg)
 									reste = addition(result ,arrondi);
@@ -1197,37 +1068,21 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 								free(result);
 								result = reste;
 								reste = temp;
-								//if(virgule_ >= virgule -1){
-								//	printf("==>%s::%lu;%lu\n", result, virgule_, virgule);
-									//exit(0);
-								//}
 								if(strlen(result) > 0)
 									result[strlen(result)-1] = 0;
 							}else{	free(temp);
-								//printf("%s\n", temp_);
 								result[strlen(result)-1] = 0;
 							}
 						}
 				}
 		}
-		//printf("%s\n", result);
 	}else{
-		//printf("%s\n", result);
 		temp = strchr(result,'.');
 		if(temp && strlen(temp+1) > virgule)
 			*(temp+strlen(temp +1)) = 0;
 	}
 	if((n1 = strchr(result,'.')) != NULL)
 		for(n2 = &result[strlen(result) - 1]; n2 != (n1-1) && (*n2 == '.' || *n2 == '0') ; *n2 = 0, n2--);;
-	//printf("%s\n", result);
-	//printf("%s\n", result);
-	/*if(equal(result,"0") == 0 || equal(result,"-0") == 0){
-		*result = '0';
-		result[1] = 0;
-	}*/
-	//printf("%s\n", result);
-	//printf("%s\n", dividende);
-	//printf("%s\n", reste);
 	free(reste);
 	free(dividende);
 	free(diviseur);
@@ -1288,7 +1143,6 @@ void *modulo(void *num1, void *num2){
 		}
 	}while(1);
 	preste = allocation((void **)&reste, BUFFER, sizeof(char));
-	/*pr = allocation((void **)&result, BUFFER, sizeof(char));*/
 	len = strlen(dividende)-1;
 	do{
 		if(nreste +1 >= BUFFER){
@@ -1303,38 +1157,9 @@ void *modulo(void *num1, void *num2){
 		ii++;
 	}while((unsigned long int)ii < strlen(dividende) && equal(reste, diviseur) < 0);
 	while(equal(reste, diviseur) < 0){
-		//printf("%s::%s\n", reste, diviseur);
 		temp = multiplication(reste, "10");
 		free(reste);
 		reste = temp;
-		if(point == 0){
-			/*if(buflen + 1 >= BUFFER){
-				buflen = 0;
-				qbuf++;
-				pr = reallocation((void **)&result, qbuf * BUFFER);
-			}*/
-			/**pr = '0';
-			pr++;
-			buflen++;
-			if(buflen + 1 >= BUFFER){
-				buflen = 0;
-				qbuf++;
-				pr = reallocation((void **)&result, qbuf * BUFFER);
-			}
-			*pr = '.';
-			pr++;
-			buflen++;*/
-		}else{
-			/*if(buflen + 1 >= BUFFER){
-				buflen = 0;
-				qbuf++;
-				pr = reallocation((void **)&result, qbuf * BUFFER);
-			}
-			*pr = '0';
-			pr++;
-			buflen++;
-			virgule_++;*/
-		}
 		point = 1;
 		zero++;
 	}
@@ -1351,15 +1176,7 @@ void *modulo(void *num1, void *num2){
 		free(temp);
 		free(temp_);
 	}
-	/*if(buflen + 1 >= BUFFER){
-		buflen = 0;
-		qbuf++;
-		pr = reallocation((void **)&result, qbuf * BUFFER);
-	}
-	*pr = *t;
-	pr++;
-	buflen++;*/
-	while(((unsigned long int)ii <= len /*|| equal(reste,"0") != 0*/)){
+	while(((unsigned long int)ii <= len)){
 		temp = multiplication(reste, "10");
 		free(reste);
 		reste = temp;
@@ -1370,19 +1187,10 @@ void *modulo(void *num1, void *num2){
 			free(reste);
 			reste = temp;
 		}else{
-			if(point == 0){
+			if(point == 0)
 				point = 1;
-				/*if(buflen + 1 >= BUFFER){
-					buflen = 0;
-					qbuf++;
-					pr = reallocation((void **)&result, qbuf * BUFFER);
-				}
-				*pr = '.';
-				pr++;
-				buflen++;*/
-			}else
+			else
 				virgule_++;
-			//if(virgule_ >= virgule+1)break;
 		}
 		for(x = 9; x >= 0; x--){
 			sprintf(t, "%i", x);
@@ -1398,14 +1206,6 @@ void *modulo(void *num1, void *num2){
 				free(temp_);
 			}
 		}
-		/*if(buflen + 1 >= BUFFER){
-			buflen = 0;
-			qbuf++;
-			pr = reallocation((void **)&result, qbuf * BUFFER);
-		}
-		*pr = *t;
-		pr++;
-		buflen++;*/
 		ii++;
 	}
 	if(zero_){
@@ -1413,15 +1213,10 @@ void *modulo(void *num1, void *num2){
 		free(reste);
 		reste = pzero_;
 	}
-	//printf("%s\n%s\n", reste, result);
-	//free(reste);
-	//free(reste);
 	if(zero_)
 		free(zero_);
 	free(dividende);
 	free(diviseur);
-	//free(result);
 	return reste;
-	//return result;
 }
 
