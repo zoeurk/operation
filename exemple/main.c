@@ -4,9 +4,8 @@
 #include <math.h>
 #include "operation.h"
 
-char *cosinus(char *arg, unsigned long int virgule, int approximation){
-	char pi[512], npi[512],*pi_, *npi_ ,*temp, *t = NULL, *dot, *padd;
-	unsigned long int l = 0;
+char *cosinus(char *arg){
+	char pi[512], npi[512],*pi_, *npi_ ,*temp, *t = NULL;
 	sprintf(npi,"-%.56Lf", 8*atanl(1));
 	sprintf(pi,"%.56Lf", 8*atanl(1));
 	pi_ = multiplication(pi, "2");
@@ -28,9 +27,10 @@ char *cosinus(char *arg, unsigned long int virgule, int approximation){
 			//free(t);
 		}
 	}
-	if((temp = strchr(t, '.')) != NULL){
+	/*if((temp = strchr(t, '.')) != NULL){
 		if(approximation){
 			if(strlen(temp)+1 > virgule){
+				printf("*******\n");
 				padd = dot = allocation((void **)&dot, virgule+3, sizeof(char));
 				strcpy(dot,"0.");
 				for(l = 0, padd += 2; l < virgule-2; l++, padd++)
@@ -39,11 +39,11 @@ char *cosinus(char *arg, unsigned long int virgule, int approximation){
 				t[strlen(t)-1] = 0;
 			}
 		}else{t[strlen(t)-1] = 0;}
-	}
+	}*/
 	free(pi_);
 	free(npi_);
 	return t;
-	printf("cosinus  de \'%s\': %.56Lf\n", arg, cosl(strtold(arg, NULL)));
+	//printf("cosinus  de \'%s\': %.56Lf\n", arg, cosl(strtold(arg, NULL)));
 }
 char *find(char *i, char *result, unsigned long int virgule, int approximation){
 	char *i_ = multiplication(i,"1"), k, end = 0,
@@ -176,14 +176,14 @@ int main(int argc, char **argv){
 	}
 	//No warrenty
 	printf("++++++++++++++++++\n");
-	r = cosinus(argv[1], 6, 0);
+	r = cosinus(argv[1]);
 	if(r){
 		printf("cosinus de \'%s\':%Lf\n", argv[1],cosl(strtold(r,NULL)));
 		free(r);
 	}
-	r = cosinus(argv[2], 6, 0);
+	r = cosinus(argv[2]);
 	if(r){
-		printf("cosinus de \'%s\':%Lf\n", argv[2],cosl(strtold(r,NULL)));
+		printf("cosinus de \'%s\':%Lf\n", argv[2], cosl(strtold(r,NULL)));
 		free(r);
 	}
 	printf("++++++++++++++++++\n");
