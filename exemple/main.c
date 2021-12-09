@@ -33,7 +33,7 @@ void cosinus(char *arg){
 }
 char *find(char *i, char *result, unsigned long int virgule, int approximation){
 	char *i_ = multiplication(i,"1"), k, end = 0,
-		*temp = multiplication(i,i), *ppt, *pt,*t, *dot = NULL,
+		*ppt, *pt,*t, *dot = NULL,
 		*add = NULL, *padd;
 	unsigned long int len = 0, l = 0, dotlen = 0;
 	padd = allocation((void **)&add, strlen(i)+1, sizeof(char));
@@ -44,7 +44,7 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 		l = len-strlen(dot);
 		add[l] = '.';
 	}
-	while(equal(temp, result) < 0 && dotlen < virgule && end == 0){
+	while(dotlen < virgule && end == 0){
 		for(k = 57; k > 47;k--){
 			t = multiplication(add,&k);
 			pt = addition(i_,t);
@@ -91,7 +91,6 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 		add = division(add,"10",virgule,0);
 		free(padd);
 	}
-	free(temp);
 	free(add);
 	return i_;
 }
