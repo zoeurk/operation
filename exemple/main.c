@@ -14,36 +14,18 @@ char *cosinus(char *arg){
 		t = division(arg, pi_ , 0, 0);
 		free(t);
 		t = multiplication(arg, "1");
-		//printf("cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(strtold(t,NULL)));
-		//free(t);
 	}else{
 		if(equal(arg, "0") == -1){
 			t = division(arg, npi_ , 0, 0);
 			temp = multiplication(t,npi_);
 			free(t);
 			t = soustraction(arg, temp);
-			free(temp); 
-			//printf("cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(strtold(t,NULL)));
-			//free(t);
+			free(temp);
 		}
 	}
-	/*if((temp = strchr(t, '.')) != NULL){
-		if(approximation){
-			if(strlen(temp)+1 > virgule){
-				printf("*******\n");
-				padd = dot = allocation((void **)&dot, virgule+3, sizeof(char));
-				strcpy(dot,"0.");
-				for(l = 0, padd += 2; l < virgule-2; l++, padd++)
-					*padd = '0';
-				*padd = '1';
-				t[strlen(t)-1] = 0;
-			}
-		}else{t[strlen(t)-1] = 0;}
-	}*/
 	free(pi_);
 	free(npi_);
 	return t;
-	//printf("cosinus  de \'%s\': %.56Lf\n", arg, cosl(strtold(arg, NULL)));
 }
 char *find(char *i, char *result, unsigned long int virgule, int approximation){
 	char *i_ = multiplication(i,"1"), k, end = 0,
