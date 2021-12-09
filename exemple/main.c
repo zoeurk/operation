@@ -4,8 +4,9 @@
 #include <math.h>
 #include "operation.h"
 
-void cosinus(char *arg){
-	char pi[512], npi[512],*pi_, *npi_ ,*temp, *t;
+char *cosinus(char *arg, unsigned long int virgule, int approximation){
+	char pi[512], npi[512],*pi_, *npi_ ,*temp, *t = NULL, *dot, *padd;
+	unsigned long int l = 0;
 	sprintf(npi,"-%.56Lf", 8*atanl(1));
 	sprintf(pi,"%.56Lf", 8*atanl(1));
 	pi_ = multiplication(pi, "2");
@@ -14,8 +15,8 @@ void cosinus(char *arg){
 		t = division(arg, pi_ , 0, 0);
 		free(t);
 		t = multiplication(arg, "1");
-		printf("cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(strtold(t,NULL)));
-		free(t);
+		//printf("cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(strtold(t,NULL)));
+		//free(t);
 	}else{
 		if(equal(arg, "0") == -1){
 			t = division(arg, npi_ , 0, 0);
@@ -23,13 +24,26 @@ void cosinus(char *arg){
 			free(t);
 			t = soustraction(arg, temp);
 			free(temp); 
-			printf("cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(strtold(t,NULL)));
-			free(t);
+			//printf("cosinus arbitraire de \'%s\': %.56Lf\n", arg, cosl(strtold(t,NULL)));
+			//free(t);
 		}
 	}
-	printf("cosinus  de \'%s\': %.56Lf\n", arg, cosl(strtold(arg, NULL)));
+	if((temp = strchr(t, '.')) != NULL){
+		if(approximation){
+			if(strlen(temp)+1 > virgule){
+				padd = dot = allocation((void **)&dot, virgule+3, sizeof(char));
+				strcpy(dot,"0.");
+				for(l = 0, padd += 2; l < virgule-2; l++, padd++)
+					*padd = '0';
+				*padd = '1';
+				t[strlen(t)-1] = 0;
+			}
+		}else{t[strlen(t)-1] = 0;}
+	}
 	free(pi_);
 	free(npi_);
+	return t;
+	printf("cosinus  de \'%s\': %.56Lf\n", arg, cosl(strtold(arg, NULL)));
 }
 char *find(char *i, char *result, unsigned long int virgule, int approximation){
 	char *i_ = multiplication(i,"1"), k, end = 0,
@@ -162,28 +176,36 @@ int main(int argc, char **argv){
 	}
 	//No warrenty
 	printf("++++++++++++++++++\n");
-	cosinus(argv[1]);
-	cosinus(argv[2]);
+	r = cosinus(argv[1], 6, 0);
+	if(r){
+		printf("cosinus de \'%s\':%Lf\n", argv[1],cosl(strtold(r,NULL)));
+		free(r);
+	}
+	r = cosinus(argv[2], 6, 0);
+	if(r){
+		printf("cosinus de \'%s\':%Lf\n", argv[2],cosl(strtold(r,NULL)));
+		free(r);
+	}
 	printf("++++++++++++++++++\n");
-	r = racine_carree(argv[1], 16, 1);
+	r = racine_carree(argv[1], atoi(argv[3]), 1);
 	check = multiplication(r, r);
 	printf("Racine carree (arrondie) de \'%s\':%s\n",argv[1], r);
 	printf("Verification: %s\n", check);
 	free(r);
 	free(check);
-	r = racine_carree(argv[1], 16, 0);
+	r = racine_carree(argv[1], atoi(argv[3]), 0);
 	check = multiplication(r, r);
 	printf("Racine carree de \'%s\':%s\n",argv[1], r);
 	printf("Verification: %s\n", check);
 	free(r);
 	free(check);
-	r = racine_carree(argv[2], 16, 1);
+	r = racine_carree(argv[2], atoi(argv[3]), 1);
 	check = multiplication(r, r);
 	printf("Racine carree (arrondie) de \'%s\':%s\n",argv[2], r);
 	printf("Verification: %s\n", check);
 	free(r);
 	free(check);
-	r = racine_carree(argv[2], 16, 0);
+	r = racine_carree(argv[2], atoi(argv[3]),0);
 	check = multiplication(r, r);
 	printf("Racine carree de \'%s\':%s\n",argv[2], r);
 	printf("Verification: %s\n", check);
