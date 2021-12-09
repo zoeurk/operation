@@ -982,7 +982,7 @@ void *multiplication(void *num1, void *num2){
 	free(resultat);
 	return total;
 }
-void *division(void *num1, void *num2, unsigned long int virgule, int arr){
+void *division(void *num1, void *num2, unsigned long int virgule, int approximation){
 	char *n1 = num1, *n2 = num2,
 		*quotient = NULL, *dividende = NULL, *diviseur = NULL, *reste = NULL, *preste,
 		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}, *result = NULL, *pr, point = 0, *arrondi = NULL,
@@ -1142,7 +1142,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int arr){
 		VALEUR_NEGATIVE(result, pr, ii);
 	}
 	//printf("%s\n", result);
-	if(!arr){
+	if(approximation){
 		if((temp = strchr(result, '.')) != NULL){
 			temp_ = &result[strlen(result)-1];
 				if(virgule == 0){
