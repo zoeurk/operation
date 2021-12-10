@@ -81,11 +81,12 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 						free(i_);
 						i_ = pt;
 						free(t);
-						if((ppt = strchr(pt, '.')) != NULL)
+						if((ppt = strchr(pt, '.')) != NULL){
 							for(pt = &i_[strlen(pt)-1];pt != i && (*pt == '0' && *pt != '.'); pt--)
 								*pt = 0;
-						if(*pt == '.')
-							*pt = 0;
+							if(*pt == '.')
+								*pt = 0;
+						}
 						break;
 					}
 				}
@@ -107,9 +108,21 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 	return i_;
 }
 char *racine_carree(char *argv, unsigned long int virgule, int approximation){
-	char *r, *i = addition(argv, "0"),*i_ = NULL, *j = NULL, *result = multiplication("1", argv);
+	char *r, *i = addition(argv, "0"),*i_ = NULL, *j = NULL, *result = multiplication("1", argv),
+		*tableau[4] = {"7", "5", "3", "2"}, *mod = NULL;
+	int z = 0;
+	while(mod == NULL){
+		mod = modulo(i, tableau[z]);
+		if(equal(mod,"0") == 0){
+			free(mod);
+			break;
+		}
+		free(mod);
+		mod = NULL;
+		z++;
+	}
 	do{
-		i_ = division(i, "2", 0, 1);
+		i_ = division(i, tableau[z], 0, 1);
 		j = multiplication(i_,i_);
 		if(equal(j, result) <= 0){
 			break;
