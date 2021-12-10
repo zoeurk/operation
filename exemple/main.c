@@ -120,6 +120,8 @@ char *racine_carree(char *argv, unsigned long int virgule, int approximation){
 		free(mod);
 		mod = NULL;
 		z++;
+		if(z == 3)
+			break;
 	}
 	do{
 		i_ = division(i, tableau[z], 0, 1);
