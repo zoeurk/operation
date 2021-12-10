@@ -185,13 +185,13 @@ int main(int argc, char **argv){
 	printf("++++++++++++++++++\n");
 	r = racine_carree(argv[1], atoi(argv[3]), 1);
 	check = multiplication(r, r);
-	printf("Racine carree (arrondie) de \'%s\':%s\n",argv[1], r);
+	printf("Racine carree arbitraire (arrondie) de \'%s\':%s\n",argv[1], r);
 	printf("Verification: %s\n", check);
 	free(r);
 	free(check);
 	r = racine_carree(argv[1], atoi(argv[3]), 0);
 	check = multiplication(r, r);
-	printf("Racine carree de \'%s\':%s\n",argv[1], r);
+	printf("Racine carree arbitraire de \'%s\':%s\n",argv[1], r);
 	printf("Verification: %s\n", check);
 	free(r);
 	free(check);
