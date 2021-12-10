@@ -82,8 +82,10 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 						i_ = pt;
 						free(t);
 						if((ppt = strchr(pt, '.')) != NULL)
-							for(pt = &i_[strlen(pt)-1];pt != i && (*pt == '0' || *pt == '.'); pt--)
+							for(pt = &i_[strlen(pt)-1];pt != i && (*pt == '0' && *pt != '.'); pt--)
 								*pt = 0;
+						if(*pt == '.')
+							*pt = 0;
 						break;
 					}
 				}
