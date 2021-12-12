@@ -89,7 +89,7 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 						}
 						break;
 					}
-				}else{ break;}
+				}
 				free(i_);
 				free(ppt);
 				i_ = pt;
