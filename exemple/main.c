@@ -63,7 +63,7 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 								pt = padd;
 								pt[strlen(pt)-1] = 0;
 							}else{
-								if(virgule == 1){
+								if(virgule == 1 || virgule == 0){
 									l = virgule;
 									padd = dot = allocation((void **)&dot, 2+3, sizeof(char));
 									*padd = '1';
@@ -89,7 +89,7 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 						}
 						break;
 					}
-				}
+				}else{ break;}
 				free(i_);
 				free(ppt);
 				i_ = pt;
@@ -103,6 +103,8 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 		padd = add;
 		add = division(add,"10",virgule,0);
 		free(padd);
+		if(virgule == 1)
+			break;
 	}
 	free(add);
 	return i_;
