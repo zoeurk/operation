@@ -40,14 +40,14 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 		l = len-strlen(dot);
 		add[l] = '.';
 	}
-	while(dotlen < virgule && end == 0){
+	while(dotlen <= virgule && end == 0){
 		for(k = 57; k > 47;k--){
 			t = multiplication(add,&k);
 			pt = addition(i_,t);
 			ppt = multiplication(pt, pt);
 			if(equal(ppt, result) < 0){
 				if((padd = strchr(pt,'.')) != NULL){
-					if(strlen(padd) >= virgule){
+					if(strlen(padd) > virgule){
 						if(approximation){
 							if(strlen(pt)-1 > virgule && virgule > 1){
 								l = virgule;
