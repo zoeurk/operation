@@ -917,7 +917,6 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 		ii++;
 	}while((unsigned long int)ii < strlen(dividende) && equal(reste, diviseur) < 0);
 	while(equal(reste, diviseur) < 0 && virgule_ <= virgule){
-		printf("%lu\n", virgule_);
 		temp = multiplication(reste, "10");
 		free(reste);
 		reste = temp;
