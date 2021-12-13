@@ -63,7 +63,7 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 								free(pt);
 								free(dot);
 								pt = padd;
-								pt[strlen(pt)-1] = 0;
+								pt[strlen(pt)] = 0;
 							}else{
 								if(virgule == 1 || virgule == 0){
 									l = virgule;
@@ -74,7 +74,7 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 									free(dot);
 									pt = padd;
 								}
-								pt[strlen(pt)-1] = 0;
+								pt[strlen(pt)] = 0;
 							}
 						}else pt[strlen(pt)-1] = 0;
 						free(ppt);
@@ -128,7 +128,7 @@ char *racine_carree(char *argv, unsigned long int virgule, int approximation){
 			break;
 	}
 	do{
-		i_ = division(i, tableau[2], 0, 1);
+		i_ = division(i, tableau[z], 0, 1);
 		j = multiplication(i_,i_);
 		if(equal(j, result) <= 0){
 			break;
