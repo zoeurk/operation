@@ -42,14 +42,16 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 	}
 	while(dotlen <= virgule && end == 0){
 		for(k = 57; k > 47;k--){
+		//printf("%i::%lu\n", end, dotlen);
 			t = multiplication(add,&k);
 			pt = addition(i_,t);
 			ppt = multiplication(pt, pt);
 			if(equal(ppt, result) < 0){
 				if((padd = strchr(pt,'.')) != NULL){
-					if(strlen(padd) > virgule){
+					if(strlen(padd) >= virgule){
+						//printf("ok\n");
 						if(approximation){
-							if(strlen(pt)-1 > virgule && virgule > 1){
+							if(strlen(pt) > virgule && virgule > 1){
 								l = virgule;
 								padd = dot = allocation((void **)&dot, virgule+3, sizeof(char));
 								strcpy(dot,"0.");
@@ -126,7 +128,7 @@ char *racine_carree(char *argv, unsigned long int virgule, int approximation){
 			break;
 	}
 	do{
-		i_ = division(i, tableau[z], 0, 1);
+		i_ = division(i, tableau[2], 0, 1);
 		j = multiplication(i_,i_);
 		if(equal(j, result) <= 0){
 			break;
