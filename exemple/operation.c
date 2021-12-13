@@ -183,7 +183,7 @@ int equal(void *num1, void *num2){
 }
 void *addition(void *num1, void *num2){
 	char *n1 = num1, *n2 = num2,
-		*dot1, *dot2,
+		*dot1 = NULL, *dot2 = NULL,
 		*val1, *val2,
 		v1[2] = { 0, 0 }, v2[2] = { 0, 0 },
 		*buffer, *pbuf, *ret, *pret,
@@ -193,7 +193,7 @@ void *addition(void *num1, void *num2){
 				val1_len = 0, val2_len = 0,
 				buflen = 0, z = 1;
 	long long int ii = 0, ij = 0;
-	NEG;
+	//NEG;
 	if(neg1 || neg2){
 		if(neg1 && neg2)
 			neg = 1;
@@ -204,15 +204,26 @@ void *addition(void *num1, void *num2){
 				if(!neg1 && neg2)
 					return soustraction(n1, n2);
 	}
-	ZERO;
+	//ZERO;
 	if(strlen(n1) == 0 && strlen(n2) == 0){
 		ret = allocation((void **)&ret, 2, sizeof(char));
 		*ret = '0';
 		return ret;
 	}
-	DOT_SEARCH(dot1, dot2, dot1_len, dot2_len, val1, val2);
+	//DOT_INIT;
+	//printf("%s\n", n1);
+	//printf("%s\n", n2);
+	dot1 = strchr(n1, '.');
+	dot2 = strchr(n2, '.');
+	dot1_len = (dot1) ? strlen(dot1) +1: 0;
+	dot2_len = (dot2) ? strlen(dot2) +1: 0;
+	val1 = (dot1) ? dot1 - 1: n1 + strlen(n1)-1;
+	val2 = (dot2) ? dot2 - 1: n2 + strlen(n2)-1;
+	if(dot1)dot1++;
+	if(dot2)dot2++;
+	//DOT_SEARCH(dot1, dot2, dot1_len, dot2_len, val1, val2);
 	val1_len = strlen(n1);
-	val2_len = strlen(n2);
+	val2_len = 0;//strlen(n2);
 	val1_len = (dot1_len) ? val1_len - dot1_len -1: val1_len; 
 	val2_len = (dot2_len) ? val2_len - dot2_len -1: val2_len;
 	pbuf = allocation((void **)&buffer,BUFFER, sizeof(char));
