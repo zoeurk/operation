@@ -65,7 +65,7 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 								pt = padd;
 								pt[strlen(pt)] = 0;
 							}else{
-								if(virgule == 1 || virgule == 0){
+								if(virgule == 0){
 									l = virgule;
 									padd = dot = allocation((void **)&dot, 2+3, sizeof(char));
 									*padd = '1';
