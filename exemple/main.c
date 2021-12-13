@@ -76,7 +76,7 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 								}
 								pt[strlen(pt)] = 0;
 							}
-						}else pt[strlen(pt)-1] = 0;
+						}else pt[strlen(pt)] = 0;
 						free(ppt);
 						dotlen = virgule;
 						end = 1;
