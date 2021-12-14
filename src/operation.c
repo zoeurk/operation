@@ -738,11 +738,10 @@ void *multiplication(void *num1, void *num2){
 			}else{
 				if(ij-1 == 0 && v1[0]*v2[0]+ z - retenue >= 10){
 					if(buflen+2 >= BUFFER){
-						//printf("ok\n");
 						iz++;
 						buflen = 0;
 						pbuf = reallocation((void **)&resultat, BUFFER*iz+1);
-						//pbuf = &resultat[strlen(resultat)];
+						pbuf = &resultat[strlen(resultat)];
 					}
 					sprintf(pbuf,"%i", v2[0]*v1[0]+z-retenue);
 					temp[0] = *(pbuf+1);
@@ -836,40 +835,30 @@ void *multiplication(void *num1, void *num2){
 			}
 			return result;
 		}
-		//pbuf = allocation((void **)&buffer, strlen(total)+2, sizeof(char));
-		//strcpy(pbuf, total);
-		pbuf = total;
-		buffer = total;
+		pbuf = allocation((void **)&buffer, strlen(total)+2, sizeof(char));
+		strcpy(pbuf, total);
 		for(pbuf = &buffer[strlen(buffer)-1], ii = 0; (unsigned long int)ii != dot1_len + dot2_len;pbuf--, ii++){
 			*(pbuf+1) = *(pbuf);
 		}
 		*(pbuf+1) = '.';
-		//free(total);
+		free(total);
 		free(resultat);
-		//exit(0);
 		for(pbuf = &buffer[strlen(buffer)-1];*pbuf == '0'; pbuf--)
 			*pbuf = 0;
-		//exit(0);
 		pbuf = strchr(buffer, '.');
 		if(pbuf && *(pbuf + 1) == 0)
 			*pbuf = 0;
-		//printf("%s\n", total);
-		//exit(0);
 		if(*buffer == '.'){
-			//printf("=================\n");
-			//exit(0);
-			buffer = reallocation((void **)&total,strlen(total)+2);
-			*buffer = '0';
-			//strcpy(&total[1], buffer);
-			//free(buffer);
-			//buffer = total;
+			total = allocation((void **)&total,strlen(buffer)+2, sizeof(char));
+			*total = '0';
+			strcpy(&total[1], buffer);
+			free(buffer);
+			buffer = total;
 		}
-		//printf("%s\n", total);
-		//exit(0);
-		/*if(neg){
-			VALEUR_NEGATIVE(total, pbuf, ii);
-		}*/
-		return total;
+		if(neg){
+			VALEUR_NEGATIVE(buffer, pbuf, ii);
+		}
+		return buffer;
 		exit(0);
 	}
 	if(neg){
@@ -903,7 +892,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	memcpy(diviseur, n2, strlen(n2));
 	memcpy(dividende, n1, strlen(n1));
 	do{
-		if((n1 = strchr(dividende, '.')) == NULL)
+		if((n2 = strchr(diviseur,'.')) == NULL  && (n1 = strchr(dividende, '.')) == NULL)
 				break;
 		temp = multiplication(diviseur, "10");
 		free(diviseur);
@@ -1157,6 +1146,8 @@ void *modulo(void *num1, void *num2){
 			zero_ = pzero_;
 		}
 	}while(1);
+	/*printf("%s::%s\n", diviseur, dividende);
+	exit(0);*/
 	preste = allocation((void **)&reste, BUFFER, sizeof(char));
 	len = strlen(dividende)-1;
 	do{
@@ -1170,7 +1161,7 @@ void *modulo(void *num1, void *num2){
 		preste++;
 		nreste++;
 		ii++;
-	}while((unsigned long int)ii < strlen(dividende) && equal(reste, diviseur) < 0);
+	}while((unsigned long int)ii < strlen(dividende) || equal(reste, diviseur) < 0);
 	while(equal(reste, diviseur) < 0){
 		temp = multiplication(reste, "10");
 		free(reste);
@@ -1223,15 +1214,20 @@ void *modulo(void *num1, void *num2){
 		}
 		ii++;
 	}
-	if(zero_){
+	pzero_ = division(reste, zero_, strlen(zero_)+1, 0);
+	//printf("==>%s::%s::%s\n",reste, zero_,pzero_);
+	//exit(0);
+	/*if(zero_){
 		pzero_ = division(reste, zero_, strlen(reste)+3, 0);
 		free(reste);
 		reste = pzero_;
-	}
-	if(zero_)
-		free(zero_);
+	}*/
+	/*if(zero_)
+		free(zero_);*/
+	free(reste);
+	free(zero_);
 	free(dividende);
 	free(diviseur);
-	return reste;
+	return pzero_;
 }
 
