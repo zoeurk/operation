@@ -738,10 +738,11 @@ void *multiplication(void *num1, void *num2){
 			}else{
 				if(ij-1 == 0 && v1[0]*v2[0]+ z - retenue >= 10){
 					if(buflen+2 >= BUFFER){
+						//printf("ok\n");
 						iz++;
 						buflen = 0;
 						pbuf = reallocation((void **)&resultat, BUFFER*iz+1);
-						pbuf = &resultat[strlen(resultat)];
+						//pbuf = &resultat[strlen(resultat)];
 					}
 					sprintf(pbuf,"%i", v2[0]*v1[0]+z-retenue);
 					temp[0] = *(pbuf+1);
@@ -835,30 +836,40 @@ void *multiplication(void *num1, void *num2){
 			}
 			return result;
 		}
-		pbuf = allocation((void **)&buffer, strlen(total)+2, sizeof(char));
-		strcpy(pbuf, total);
+		//pbuf = allocation((void **)&buffer, strlen(total)+2, sizeof(char));
+		//strcpy(pbuf, total);
+		pbuf = total;
+		buffer = total;
 		for(pbuf = &buffer[strlen(buffer)-1], ii = 0; (unsigned long int)ii != dot1_len + dot2_len;pbuf--, ii++){
 			*(pbuf+1) = *(pbuf);
 		}
 		*(pbuf+1) = '.';
-		free(total);
+		//free(total);
 		free(resultat);
+		//exit(0);
 		for(pbuf = &buffer[strlen(buffer)-1];*pbuf == '0'; pbuf--)
 			*pbuf = 0;
+		//exit(0);
 		pbuf = strchr(buffer, '.');
 		if(pbuf && *(pbuf + 1) == 0)
 			*pbuf = 0;
+		//printf("%s\n", total);
+		//exit(0);
 		if(*buffer == '.'){
-			total = allocation((void **)&total,strlen(buffer)+2, sizeof(char));
-			*total = '0';
-			strcpy(&total[1], buffer);
-			free(buffer);
-			buffer = total;
+			//printf("=================\n");
+			//exit(0);
+			buffer = reallocation((void **)&total,strlen(total)+2);
+			*buffer = '0';
+			//strcpy(&total[1], buffer);
+			//free(buffer);
+			//buffer = total;
 		}
-		if(neg){
-			VALEUR_NEGATIVE(buffer, pbuf, ii);
-		}
-		return buffer;
+		//printf("%s\n", total);
+		//exit(0);
+		/*if(neg){
+			VALEUR_NEGATIVE(total, pbuf, ii);
+		}*/
+		return total;
 		exit(0);
 	}
 	if(neg){
@@ -892,7 +903,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	memcpy(diviseur, n2, strlen(n2));
 	memcpy(dividende, n1, strlen(n1));
 	do{
-		if((n2 = strchr(diviseur,'.')) == NULL  && (n1 = strchr(dividende, '.')) == NULL)
+		if((n1 = strchr(dividende, '.')) == NULL)
 				break;
 		temp = multiplication(diviseur, "10");
 		free(diviseur);

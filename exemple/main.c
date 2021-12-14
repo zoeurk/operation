@@ -28,11 +28,11 @@ char *cosinus(char *arg){
 	return t;
 }
 char *find(char *i, char *result, unsigned long int virgule, int approximation){
-	char *i_ = multiplication(i,"1"), k, end = 0,
+	char *i_ = multiplication(i,"1"), k, end = 0, end_ = 0,
 		*ppt, *pt,*t, *dot = NULL,
 		*add = NULL, *padd;
 	unsigned long int len = 0, l = 0, dotlen = 0;
-	padd = allocation((void **)&add, strlen(i)+1, sizeof(char));
+	padd = allocation((void **)&add, BUFFER+1, sizeof(char));
 	memset(add, '0', strlen(i));
 	add[0] = '1';
 	if((dot = strchr(i,'.')) != NULL){
@@ -41,14 +41,17 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 		add[l] = '.';
 	}
 	while(dotlen <= virgule && end == 0){
-		for(k = 57; k > 47;k--){
+		for(k = 57, end_ = 0; end_ == 0 && k > 47;k--){
 		//printf("%i::%lu\n", end, dotlen);
 			t = multiplication(add,&k);
 			pt = addition(i_,t);
 			ppt = multiplication(pt, pt);
+			//printf("%s::%s\n", pt, ppt);
 			if(equal(ppt, result) < 0){
+				end_ = 1;
 				if((padd = strchr(pt,'.')) != NULL){
 					if(strlen(padd) >= virgule){
+						//printf("%c",k);
 						//printf("ok\n");
 						if(approximation){
 							if(strlen(pt) > virgule && virgule > 1){
@@ -65,7 +68,7 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 								pt = padd;
 								pt[strlen(pt)] = 0;
 							}else{
-								if(virgule == 1 /*|| virgule == 0*/){
+								if(virgule == 1){
 									l = virgule;
 									padd = dot = allocation((void **)&dot, 2, sizeof(char));
 									*padd = '1';
@@ -96,11 +99,13 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 				free(ppt);
 				i_ = pt;
 				free(t);
+				//if(end_ )printf("\n");
 			}else{
 				free(t);
 				free(pt);
 				free(ppt);
 			}
+			//printf("\n");
 		}
 		padd = add;
 		add = division(add,"10",virgule,0);
@@ -210,7 +215,7 @@ int main(int argc, char **argv){
 	printf("Verification: %s\n", check);
 	free(r);
 	free(check);
-	r = racine_carree(argv[1], atoi(argv[3]), 0);
+	/*r = racine_carree(argv[1], atoi(argv[3]), 0);
 	check = multiplication(r, r);
 	printf("Racine carree arbitraire de \'%s\':%s\n",argv[1], r);
 	printf("Verification: %s\n", check);
@@ -227,6 +232,6 @@ int main(int argc, char **argv){
 	printf("Racine carree de \'%s\':%s\n",argv[2], r);
 	printf("Verification: %s\n", check);
 	free(r);
-	free(check);
+	free(check);*/
 	return 0;
 }
