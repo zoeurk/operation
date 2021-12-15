@@ -1214,20 +1214,22 @@ void *modulo(void *num1, void *num2){
 		}
 		ii++;
 	}
-	pzero_ = division(reste, zero_, strlen(zero_)+1, 0);
+	//return NULL;
+	//fprintf(stderr,"%s\n", zero_);
+	//pzero_ = division(reste, zero_, strlen(zero_)+1, 0);
 	//printf("==>%s::%s::%s\n",reste, zero_,pzero_);
 	//exit(0);
-	/*if(zero_){
+	if(zero_){
 		pzero_ = division(reste, zero_, strlen(reste)+3, 0);
 		free(reste);
 		reste = pzero_;
-	}*/
-	/*if(zero_)
-		free(zero_);*/
-	free(reste);
+	}
+	if(zero_)
+		free(zero_);
+	//free(reste);
 	free(zero_);
 	free(dividende);
 	free(diviseur);
-	return pzero_;
+	return reste;
 }
 

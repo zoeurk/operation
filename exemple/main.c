@@ -44,8 +44,11 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 		for(k = 57, end_ = 0; end_ == 0 && k > 47;k--){
 		//printf("%i::%lu\n", end, dotlen);
 			t = multiplication(add,&k);
+			//printf("}}}>%s\n", t);
 			pt = addition(i_,t);
+			//printf("###>%s\n", pt);
 			ppt = multiplication(pt, pt);
+			//printf("~~~>%s\n", ppt);
 			//printf("%s::%s\n", pt, ppt);
 			if(equal(ppt, result) < 0){
 				end_ = 1;
@@ -117,13 +120,14 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 	return i_;
 }
 char *racine_carree(char *argv, unsigned long int virgule, int approximation){
-	char *r, *i = addition(argv, "0"),*i_ = NULL, *j = NULL, *result = multiplication("1", argv),
+	char *r, *i = multiplication(argv,"1"),*i_ = NULL, *j = NULL, *result = multiplication("1", argv),
 		*tableau[4] = {"7", "5", "3", "2"}, *mod = NULL;
 	int z = 0;
+	//printf("%s::%s\n", argv, i);
+	//exit(0);
 	//printf("%s\n", (char *)modulo(i, tableau[0]));
-	/*while(mod == NULL){
-		printf("%s\n", i);
-		mod = modulo(i, tableau[z]);
+	while(mod == NULL && z != 3){
+		mod = modulo(argv, tableau[z]);
 		if(mod && equal(mod,"0") == 0){
 			free(mod);
 			break;
@@ -131,19 +135,9 @@ char *racine_carree(char *argv, unsigned long int virgule, int approximation){
 		free(mod);
 		mod = NULL;
 		z++;
-		fprintf(stderr,"%i\n", z);
-		if(z == 3)
-			exit(0);
-		if(z == 1){
-			break;
-		}
-		z++;
-		if(z >= 3)
-			break;
-	}*/
-	//exit(0);
+	}
 	do{
-		i_ = division(i, tableau[3], 0, 1);
+		i_ = division(i, tableau[z], 0, 1);
 		j = multiplication(i_,i_);
 		if(equal(j, result) <= 0){
 			break;
