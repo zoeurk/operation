@@ -120,20 +120,30 @@ char *racine_carree(char *argv, unsigned long int virgule, int approximation){
 	char *r, *i = addition(argv, "0"),*i_ = NULL, *j = NULL, *result = multiplication("1", argv),
 		*tableau[4] = {"7", "5", "3", "2"}, *mod = NULL;
 	int z = 0;
-	while(mod == NULL){
+	//printf("%s\n", (char *)modulo(i, tableau[0]));
+	/*while(mod == NULL){
+		printf("%s\n", i);
 		mod = modulo(i, tableau[z]);
-		if(equal(mod,"0") == 0){
+		if(mod && equal(mod,"0") == 0){
 			free(mod);
 			break;
 		}
 		free(mod);
 		mod = NULL;
 		z++;
+		fprintf(stderr,"%i\n", z);
 		if(z == 3)
+			exit(0);
+		if(z == 1){
 			break;
-	}
+		}
+		z++;
+		if(z >= 3)
+			break;
+	}*/
+	//exit(0);
 	do{
-		i_ = division(i, tableau[z], 0, 1);
+		i_ = division(i, tableau[3], 0, 1);
 		j = multiplication(i_,i_);
 		if(equal(j, result) <= 0){
 			break;
@@ -210,11 +220,13 @@ int main(int argc, char **argv){
 	}
 	printf("++++++++++++++++++\n");
 	r = racine_carree(argv[1], atoi(argv[3]), 1);
-	check = multiplication(r, r);
-	printf("Racine carree arbitraire (arrondie) de \'%s\':%s\n",argv[1], r);
-	printf("Verification: %s\n", check);
-	free(r);
-	free(check);
+	if(r){
+		check = multiplication(r, r);
+		printf("Racine carree arbitraire (arrondie) de \'%s\':%s\n",argv[1], r);
+		printf("Verification: %s\n", check);
+		free(r);
+		free(check);
+	}
 	/*r = racine_carree(argv[1], atoi(argv[3]), 0);
 	check = multiplication(r, r);
 	printf("Racine carree arbitraire de \'%s\':%s\n",argv[1], r);
