@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <float.h>
 #include "operation.h"
 
 char *cosinus(char *arg){
@@ -32,7 +33,7 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 		*ppt, *pt,*t, *dot = NULL,
 		*add = NULL, *padd;
 	unsigned long int len = 0, l = 0, dotlen = 0;
-	padd = allocation((void **)&add, BUFFER+1, sizeof(char));
+	padd = allocation((void **)&add, strlen(i)+1, sizeof(char));
 	memset(add, '0', strlen(i));
 	add[0] = '1';
 	if((dot = strchr(i,'.')) != NULL){
@@ -48,6 +49,8 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 			pt = addition(i_,t);
 			//printf("###>%s\n", pt);
 			ppt = multiplication(pt, pt);
+			if(strchr(pt,'.') && strlen(strchr(pt,'.')+1) > virgule)
+				*(strchr(pt,'.')+1+virgule) = 0;
 			//printf("~~~>%s\n", ppt);
 			//printf("%s::%s\n", pt, ppt);
 			if(equal(ppt, result) < 0){
@@ -157,6 +160,8 @@ char *racine_carree(char *argv, unsigned long int virgule, int approximation){
 }
 
 int main(int argc, char **argv){
+	long double t = 0;
+	unsigned long int i = 0;
 	int ret;
 	char *r, *check;
 	if(argc != 4){
@@ -190,6 +195,16 @@ int main(int argc, char **argv){
 		printf("multiplication:%s\n", (char *)r);
 		free(r);
 	}
+	/*printf("%lu;%Lf\n", sizeof(long double),LDBL_MAX);
+	for(r = (char *)&t, i = 0; i < sizeof(long double);i++, r++){
+		*r = ~1;
+		if(i + 1 == sizeof(long double))
+			*r = 0;
+		//printf("%Lf, %i\n",t,*r);
+	}*/
+	//r = (char *)&t;
+	//printf("%.100000000Lf::%s\n", t, r);
+	//exit(0);
 	r = division(argv[1], argv[2], atoi(argv[3]),1);
 	if(r){
 		printf("division:%s\n", (char *)r);
@@ -239,5 +254,6 @@ int main(int argc, char **argv){
 	printf("Verification: %s\n", check);
 	free(r);
 	free(check);*/
+	printf("%Lf\n", sqrtl(strtold(argv[1], NULL)));
 	return 0;
 }
