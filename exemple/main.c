@@ -209,7 +209,7 @@ int main(int argc, char **argv){
 	//r = (char *)&t;
 	//printf("%.100000000Lf::%s\n", t, r);
 	//exit(0);
-	r = division(argv[1], argv[2], atoi(argv[3]),0);
+	r = division(argv[1], argv[2], atoi(argv[3]),1);
 	if(r){
 		printf("division:%s\n", (char *)r);
 		free(r);
@@ -244,7 +244,7 @@ int main(int argc, char **argv){
 	printf("Verification: %s\n", check);
 	free(r);
 	free(check);
-	/*r = racine_carree(argv[2], atoi(argv[3]), 1);
+	r = racine_carree(argv[2], atoi(argv[3]), 1);
 	check = multiplication(r, r);
 	printf("Racine carree (arrondie) de \'%s\':%s\n",argv[2], r);
 	printf("Verification: %s\n", check);
@@ -256,6 +256,6 @@ int main(int argc, char **argv){
 	printf("Verification: %s\n", check);
 	free(r);
 	free(check);
-	printf("%Lf\n", sqrtl(strtold(argv[1], NULL)));*/
+	/*printf("%Lf\n", sqrtl(strtold(argv[1], NULL)));*/
 	return 0;
 }
