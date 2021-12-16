@@ -892,7 +892,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	memcpy(diviseur, n2, strlen(n2));
 	memcpy(dividende, n1, strlen(n1));
 	do{
-		if((n2 = strchr(diviseur,'.')) == NULL  && (n1 = strchr(dividende, '.')) == NULL)
+		if((n2 = strchr(diviseur,'.')) == NULL/*  && (n1 = strchr(dividende, '.')) == NULL*/)
 				break;
 		temp = multiplication(diviseur, "10");
 		free(diviseur);
