@@ -223,7 +223,7 @@ int main(int argc, char **argv){
 	}
 	r = cosinus(argv[2]);
 	if(r){
-		printf("cosinus de \'%s\':%.12Lf\n", argv[2], cosl(strtold(r,NULL)));
+		printf("cosinus de \'%s\':%Lf\n", argv[2], cosl(strtold(r,NULL)));
 		free(r);
 	}
 	printf("++++++++++++++++++\n");
