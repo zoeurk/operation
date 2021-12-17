@@ -193,18 +193,7 @@ int main(int argc, char **argv){
 		printf("multiplication:%s\n", (char *)r);
 		free(r);
 	}
-	//printf("%lu;%Lf\n", sizeof(long double),LDBL_MAX);
-	/*for(r = (char *)&t, i = 0; i < sizeof(long double);i++, r++){
-		*r = ~1;
-		if(i + 1 == sizeof(long double))
-			*r = 0;
-		//printf("%Lf, %i\n",t,*r);
-	}*/
-	//r = (char *)&t;
-	//printf("%.100000000Lf::%s\n", t, r);
-	//exit(0);*/
 	r = division(argv[1], "10", atoi(argv[3]),1);
-	//printf("%s\n", (char *)division(r,"10", atoi(argv[3]), 1));
 	if(r){
 		printf("division:%s\n", (char *)r);
 		free(r);
