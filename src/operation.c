@@ -677,13 +677,14 @@ void *multiplication(void *num1, void *num2){
 	char *n1 = num1, *n2 = num2,
 		*dot1, *dot2,
 		v1[2] = { 0, 0 }, v2[2] = { 0, 0 }, temp[3] = { 0, 0, 0},
-		*buffer,
+		*buffer = NULL,
 		*resultat = NULL, 
 		*result = NULL, *presult, *total = NULL,*pbuf,
 		retenue = 0, neg = 0, neg1 = 0, neg2 = 0, z = 0;
 	unsigned long int dot1_len = 0, dot2_len = 0,
 				buflen = 0, iz = 1, zero = 0;
 	long long int ii = 0, ij = 0,ii_ = 0,x = 0;
+	//printf("%s\n", (char *)num1, (char *)num2);
 	NEG;
 	NEG_TEST;
 	if(equal("0", n1) == 0 || equal("0", n2) == 0){
