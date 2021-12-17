@@ -21,6 +21,9 @@ char *cosinus(char *arg){
 			free(t);
 			t = soustraction(arg, temp);
 			free(temp);
+		}else{
+			t = allocation((void *)&t, 2, sizeof(char));
+			*t = '0';
 		}
 	}
 	
