@@ -2,15 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <float.h>
 #include "operation.h"
 
 char *cosinus(char *arg){
 	char pi[512], npi[512],*pi_, *npi_ ,*temp, *t = NULL;
-	sprintf(npi,"-%.56Lf", 8*atanl(1));
-	sprintf(pi,"%.56Lf", 8*atanl(1));
+	sprintf(npi,"-%.54Lf", 8*atanl(1));
+	sprintf(pi,"%.54Lf", 8*atanl(1));
 	pi_ = multiplication(pi, "2");
 	npi_ = multiplication(pi,"-2");
+	//printf("%s", pi);
 	if(equal(arg, "0") == 1){
 		t = division(arg, pi_ , 0, 0);
 		free(t);
@@ -124,15 +124,9 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 }
 char *racine_carree(char *argv, unsigned long int virgule, int approximation){
 	char *r, *i = multiplication(argv,"1"),*i_ = NULL, *j = NULL, *result = multiplication("1", argv),
-		*tableau[4] = {"7", "5", "3", "2"}, *mod = NULL;
+		*tableau[4] = {"7", "5", "3", "2"}, *mod = NULL, *ppt;
+	unsigned long int x = 0;
 	int z = 0;
-	//printf("%s::%s\n", argv, i);
-	//exit(0);
-	//printf("%s\n", (char *)modulo(i, tableau[0]));
-	/*if(strtold(argv, NULL) >= DBL_MAX){
-		printf("OK\n");
-		exit(0);
-	}*/
 	while(mod == NULL && z != 3){
 		mod = modulo(argv, tableau[z]);
 		if(mod && equal(mod,"0") == 0){
@@ -164,8 +158,6 @@ char *racine_carree(char *argv, unsigned long int virgule, int approximation){
 }
 
 int main(int argc, char **argv){
-	long double t = 0;
-	unsigned long int i = 0;
 	int ret;
 	char *r, *check;
 	if(argc != 4){
@@ -200,16 +192,17 @@ int main(int argc, char **argv){
 		free(r);
 	}
 	//printf("%lu;%Lf\n", sizeof(long double),LDBL_MAX);
-	for(r = (char *)&t, i = 0; i < sizeof(long double);i++, r++){
+	/*for(r = (char *)&t, i = 0; i < sizeof(long double);i++, r++){
 		*r = ~1;
 		if(i + 1 == sizeof(long double))
 			*r = 0;
 		//printf("%Lf, %i\n",t,*r);
-	}
+	}*/
 	//r = (char *)&t;
 	//printf("%.100000000Lf::%s\n", t, r);
-	//exit(0);
-	r = division(argv[1], argv[2], atoi(argv[3]),1);
+	//exit(0);*/
+	r = division(argv[1], "10", atoi(argv[3]),1);
+	//printf("%s\n", (char *)division(r,"10", atoi(argv[3]), 1));
 	if(r){
 		printf("division:%s\n", (char *)r);
 		free(r);
