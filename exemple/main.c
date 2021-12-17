@@ -6,11 +6,10 @@
 
 char *cosinus(char *arg){
 	char pi[512], npi[512],*pi_, *npi_ ,*temp, *t = NULL;
-	sprintf(npi,"-%.54Lf", 8*atanl(1));
-	sprintf(pi,"%.54Lf", 8*atanl(1));
+	sprintf(npi,"-%.54Lf", 4*atanl(1));
+	sprintf(pi,"%.54Lf", 4*atanl(1));
 	pi_ = multiplication(pi, "2");
 	npi_ = multiplication(pi,"-2");
-	//printf("%s", pi);
 	if(equal(arg, "0") == 1){
 		t = division(arg, pi_ , 0, 0);
 		free(t);
@@ -24,6 +23,7 @@ char *cosinus(char *arg){
 			free(temp);
 		}
 	}
+	
 	free(pi_);
 	free(npi_);
 	return t;
@@ -124,8 +124,7 @@ char *find(char *i, char *result, unsigned long int virgule, int approximation){
 }
 char *racine_carree(char *argv, unsigned long int virgule, int approximation){
 	char *r, *i = multiplication(argv,"1"),*i_ = NULL, *j = NULL, *result = multiplication("1", argv),
-		*tableau[4] = {"7", "5", "3", "2"}, *mod = NULL, *ppt;
-	unsigned long int x = 0;
+		*tableau[4] = {"7", "5", "3", "2"}, *mod = NULL;
 	int z = 0;
 	while(mod == NULL && z != 3){
 		mod = modulo(argv, tableau[z]);
@@ -221,7 +220,7 @@ int main(int argc, char **argv){
 	}
 	r = cosinus(argv[2]);
 	if(r){
-		printf("cosinus de \'%s\':%Lf\n", argv[2], cosl(strtold(r,NULL)));
+		printf("cosinus de \'%s\':%.12Lf\n", argv[2], cosl(strtold(r,NULL)));
 		free(r);
 	}
 	printf("++++++++++++++++++\n");
