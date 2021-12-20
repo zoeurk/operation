@@ -11,9 +11,11 @@ char *cosinus(char *arg){
 	pi_ = multiplication(pi, "2");
 	npi_ = multiplication(pi,"-2");
 	if(equal(arg, "0") == 1){
-		t = division(arg, pi_ , 0, 0);
-		free(t);
-		t = multiplication(arg, "1");
+			t = division(arg, pi_ , 0, 0);
+			temp = multiplication(t,pi_);
+			free(t);
+			t = soustraction(arg, temp);
+			free(temp);
 	}else{
 		if(equal(arg, "0") == -1){
 			t = division(arg, npi_ , 0, 0);
