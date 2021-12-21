@@ -777,13 +777,13 @@ void *multiplication(void *num1, void *num2, int do_it){
 					pbuf = resultat;
 					if(total == NULL){
 						total = result;
-						printf("%s::%s\n", total, resultat);
+						//printf("%s::%s\n", total, resultat);
 					}else{
 						/*ICI*/
 						//dot_len-=1;
 						//result[strlen(result)-1] = 0;
 						//total[strlen(total)-1] = 0;
-						printf("}}>%s::%s\n", total, result);
+						//printf("}}>%s::%s\n", total, result);
 						presult = addition(total,result);
 						free(total);
 						free(result);
@@ -829,12 +829,12 @@ void *multiplication(void *num1, void *num2, int do_it){
 							}
 							if(total == NULL){
 								total = result;
-								printf("##>%s::%s\n", total, resultat);
+								//printf("##>%s::%s\n", total, resultat);
 							}else{
 								/*ICI*/
 								//printf("%s::%s\n", total, result);				
 								presult = addition(total, result);
-								printf("~~>%s::%s\n", total, result);
+								//printf("~~>%s::%s\n", total, result);
 								free(result);
 								free(total);
 								total = presult;
