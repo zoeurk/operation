@@ -195,7 +195,7 @@ int main(int argc, char **argv){
 		printf("multiplication:%s\n", (char *)r);
 		free(r);
 	}
-	r = division(argv[1], "10", atoi(argv[3]),1);
+	r = division(argv[1], argv[2], atoi(argv[3]),1);
 	if(r){
 		printf("division:%s\n", (char *)r);
 		free(r);
