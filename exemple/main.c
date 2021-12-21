@@ -180,7 +180,7 @@ int main(int argc, char **argv){
 			printf("%s < %s\n", argv[1], argv[2]);
 			break;
 	}
-	/*r = addition(argv[1], argv[2]);
+	r = addition(argv[1], argv[2]);
 	if(r){
 		printf("addition:%s\n", (char *)r);
 		free(r);
@@ -189,13 +189,13 @@ int main(int argc, char **argv){
 	if(r){
 		printf("soustraction:%s\n", (char *)r);
 		free(r);
-	}*/
+	}
 	r = multiplication(argv[1], argv[2], 2);
 	if(r){
 		printf("multiplication:%s\n", (char *)r);
 		free(r);
 	}
-	/*r = division(argv[1], "10", atoi(argv[3]),1);
+	r = division(argv[1], "10", atoi(argv[3]),1);
 	if(r){
 		printf("division:%s\n", (char *)r);
 		free(r);
@@ -245,7 +245,7 @@ int main(int argc, char **argv){
 		printf("Verification: %s\n", check);
 		free(r);
 		free(check);
-	}*/
+	}
 	/*printf("%Lf\n", sqrtl(strtold(argv[1], NULL)));*/
 	return 0;
 }
