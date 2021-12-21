@@ -51,7 +51,7 @@ void *reallocation(void **ptr, unsigned long int size);
 int equal(void *num1, void *num2);
 void *addition(void *num1, void *num2);
 void *soustraction(void *num1, void *num2);
-void *multiplication(void *num1, void *num2);
+void *multiplication(void *num1, void *num2, int do_it);
 void *division(void *num1, void *num2, unsigned long int virgule, int approximation);
 void *modulo(void *num1, void *num2);
 #endif
