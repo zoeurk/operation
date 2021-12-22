@@ -760,7 +760,7 @@ void *multiplication(void *num1, void *num2, int do_it){
 					if(buflen+2 >= BUFFER){
 						iz++;
 						buflen = 0;
-						pbuf = reallocation((void **)&resultat, BUFFER*iz);
+						pbuf = reallocation((void **)&resultat, BUFFER*iz+1);
 						//pbuf = &resultat[strlen(resultat)];
 					}
 					sprintf(pbuf,"%i", v2[0]*v1[0]+z-retenue);
