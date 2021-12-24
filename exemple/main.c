@@ -79,7 +79,7 @@ char *racine_carree(void *num1, unsigned long int virgule){
 			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
 			strcpy(last, check);
 		}
-		printf("%s\n",check);
+		//printf("%s\n",check);
 	}while(equal(num1, check) < 0);
 	if(last)
 		free(last);
