@@ -673,14 +673,14 @@ void *soustraction(void *num1, void *num2){
 	free(pbuf);
 	return ret;
 }
-void *multiplication(void *num1, void *num2, int do_it){
+void *multiplication(void *num1, void *num2){
 	char *n1 = num1, *n2 = num2,
 		*dot1, *dot2,
 		v1[2] = { 0, 0 }, v2[2] = { 0, 0 }, temp[3] = { 0, 0, 0},
 		*buffer = NULL,
 		*resultat = NULL, 
 		*result = NULL, *presult, *total = NULL,*pbuf,
-		retenue = 0, neg = 0, neg1 = 0, neg2 = 0, z = 0, count = 0, c = 0;
+		retenue = 0, neg = 0, neg1 = 0, neg2 = 0, z = 0;
 	unsigned long int dot1_len = 0, dot2_len = 1, dot_len = 1,
 				buflen = 0, iz = 1, zero = 0;
 	long long int ii = 0, ij = 0,ii_ = 0,x = 0;
@@ -697,7 +697,6 @@ void *multiplication(void *num1, void *num2, int do_it){
 	dot1_len = (dot1) ? strlen(dot1) -1: 0;
 	dot2_len = (dot2) ? strlen(dot2) -1: 0;
 	dot_len = dot1_len + dot2_len;
-	//len2 = strlen(n2);
 	pbuf = allocation((void **)&resultat, BUFFER, sizeof(char));
 	for(n1 = n1,
 		ii = strlen(n1);
@@ -709,34 +708,17 @@ void *multiplication(void *num1, void *num2, int do_it){
 		v1[0] = atoi(v1);
 		if(zero){
 			for(x = 0; (unsigned long int)x < zero; x++){
-				if(c == 0){
-					if(buflen+1 >= BUFFER){
-						iz++;
-						buflen = 0;
-						pbuf = reallocation((void **)&resultat, BUFFER*iz);
-					}
-					//printf("%s\n",resultat);
-					sprintf(pbuf,"0");
-					pbuf++;
-					buflen++;
-				}else{
-						c--;
-						zero--;
-						break;
-					//pbuf--;
-					//buflen--;
-					//*pbuf = 0;
-					//dot_len--;
+				if(buflen+1 >= BUFFER){
+					iz++;
+					buflen = 0;
+					pbuf = reallocation((void **)&resultat, BUFFER*iz);
 				}
+				sprintf(pbuf,"0");
+				pbuf++;
+				buflen++;
 			}
-			//printf("==>%s\n", resultat);
 		}
 		for(n2 = n2, ij = strlen(n2); ij > 0;ij--){
-			if(count > 0){
-				count--;
-				dot_len--;
-				continue;
-			}
 			if(n2[ij-1] == '.')continue;
 			v2[0] = n2[ij-1];
 			v2[0] = atoi(v2);
@@ -761,10 +743,8 @@ void *multiplication(void *num1, void *num2, int do_it){
 						iz++;
 						buflen = 0;
 						pbuf = reallocation((void **)&resultat, BUFFER*iz+1);
-						//pbuf = &resultat[strlen(resultat)];
 					}
 					sprintf(pbuf,"%i", v2[0]*v1[0]+z-retenue);
-				//printf("==>%i\n",v1[0]*v2[0]+ z - retenue);
 					temp[0] = *(pbuf+1);
 					temp[1] = *pbuf;
 					*pbuf = temp[0];
@@ -777,13 +757,7 @@ void *multiplication(void *num1, void *num2, int do_it){
 					pbuf = resultat;
 					if(total == NULL){
 						total = result;
-						//printf("%s::%s\n", total, resultat);
 					}else{
-						/*ICI*/
-						//dot_len-=1;
-						//result[strlen(result)-1] = 0;
-						//total[strlen(total)-1] = 0;
-						//printf("}}>%s::%s\n", total, result);
 						presult = addition(total,result);
 						free(total);
 						free(result);
@@ -829,19 +803,11 @@ void *multiplication(void *num1, void *num2, int do_it){
 							}
 							if(total == NULL){
 								total = result;
-								//printf("##>%s::%s\n", total, resultat);
 							}else{
-								/*ICI*/
-								//printf("%s::%s\n", total, result);				
 								presult = addition(total, result);
-								//printf("~~>%s::%s\n", total, result);
 								free(result);
 								free(total);
 								total = presult;
-								/*(presult +2) = 0;
-								printf("=>>%s\n", total);*/
-								//pbuf--;
-								//buflen--;
 							}
 							pbuf = resultat;
 							memset(resultat,0,BUFFER*iz);
@@ -853,8 +819,6 @@ void *multiplication(void *num1, void *num2, int do_it){
 			}
 		}
 	}
-	//printf("%lu::%s\n", dot_len, total);
-	//exit(0);
 	if(total && dot_len > 0){
 		if(strlen(total) < dot_len){
 			pbuf = allocation((void **)&buffer, dot_len +2, sizeof(char));
@@ -924,6 +888,11 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 		*quotient = '0';
 		return quotient;
 	}
+	if(equal(n1,n2) == 0){
+		 quotient = allocation((void **)&quotient,2,sizeof(char));
+		*quotient = '1';
+		return quotient;
+	}
 	diviseur = allocation((void **)&diviseur, strlen(n2)+1, sizeof(char));
 	dividende = allocation((void **)&dividende, strlen(n1)+1, sizeof(char));
 	memcpy(diviseur, n2, strlen(n2));
@@ -931,10 +900,10 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	do{
 		if((n2 = strchr(diviseur,'.')) == NULL/*  && (n1 = strchr(dividende, '.')) == NULL*/)
 				break;
-		temp = multiplication(diviseur, "10", 0);
+		temp = multiplication(diviseur, "10");
 		free(diviseur);
 		diviseur = temp;
-		temp = multiplication(dividende, "10", 0);
+		temp = multiplication(dividende, "10");
 		free(dividende);
 		dividende = temp;
 	}while(1);
@@ -954,7 +923,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 		ii++;
 	}while((unsigned long int)ii < strlen(dividende) && equal(reste, diviseur) < 0);
 	while(equal(reste, diviseur) < 0 && virgule_ <= virgule){
-		temp = multiplication(reste, "10", 0);
+		temp = multiplication(reste, "10");
 		free(reste);
 		reste = temp;
 		if(point == 0){
@@ -990,7 +959,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	}
 	for(x = 9; x >= 0;x--){
 		sprintf(t,"%i", x);
-		temp = multiplication(t, diviseur, 0);
+		temp = multiplication(t, diviseur);
 		temp_ = soustraction(reste, temp);
 		if(equal(temp_,"0") >= 0){
 			free(reste);
@@ -1010,7 +979,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	pr++;
 	buflen++;
 	while(((unsigned long int)ii <= len || equal(reste,"0") != 0)){
-		temp = multiplication(reste, "10", 0);
+		temp = multiplication(reste, "10");
 		free(reste);
 		reste = temp;
 		if((unsigned long int)ii <= len){
@@ -1036,7 +1005,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 		}
 		for(x = 9; x >= 0; x--){
 			sprintf(t, "%i", x);
-			temp = multiplication(t, diviseur, 0);
+			temp = multiplication(t, diviseur);
 			temp_ = soustraction(reste, temp);
 			if(equal(temp_,"0") >= 0){
 				free(reste);
@@ -1169,16 +1138,16 @@ void *modulo(void *num1, void *num2){
 	do{
 		if((n2 = strchr(diviseur,'.')) == NULL  && (n1 = strchr(dividende, '.')) == NULL)
 				break;
-		temp = multiplication(diviseur, "10", 0);
+		temp = multiplication(diviseur, "10");
 		free(diviseur);
 		diviseur = temp;
-		temp = multiplication(dividende, "10", 0);
+		temp = multiplication(dividende, "10");
 		free(dividende);
 		dividende = temp;
 		if(zero_ == NULL)
-			zero_ = multiplication("1", "10", 0);
+			zero_ = multiplication("1", "10");
 		else{
-			pzero_ = multiplication(zero_,"10", 0);
+			pzero_ = multiplication(zero_,"10");
 			free(zero_);
 			zero_ = pzero_;
 		}
@@ -1200,7 +1169,7 @@ void *modulo(void *num1, void *num2){
 		ii++;
 	}while((unsigned long int)ii < strlen(dividende) || equal(reste, diviseur) < 0);
 	while(equal(reste, diviseur) < 0){
-		temp = multiplication(reste, "10", 0);
+		temp = multiplication(reste, "10");
 		free(reste);
 		reste = temp;
 		point = 1;
@@ -1208,7 +1177,7 @@ void *modulo(void *num1, void *num2){
 	}
 	for(x = 9; x >= 0;x--){
 		sprintf(t,"%i", x);
-		temp = multiplication(t, diviseur, 0);
+		temp = multiplication(t, diviseur);
 		temp_ = soustraction(reste, temp);
 		if(equal(temp_,"0") >= 0){
 			free(reste);
@@ -1220,7 +1189,7 @@ void *modulo(void *num1, void *num2){
 		free(temp_);
 	}
 	while(((unsigned long int)ii <= len)){
-		temp = multiplication(reste, "10", 0);
+		temp = multiplication(reste, "10");
 		free(reste);
 		reste = temp;
 		if((unsigned long int)ii <= len){
@@ -1237,7 +1206,7 @@ void *modulo(void *num1, void *num2){
 		}
 		for(x = 9; x >= 0; x--){
 			sprintf(t, "%i", x);
-			temp = multiplication(t, diviseur, 0);
+			temp = multiplication(t, diviseur);
 			temp_ = soustraction(reste, temp);
 			if(equal(temp_,"0") >= 0){
 				free(reste);
