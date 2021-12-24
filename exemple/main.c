@@ -28,7 +28,6 @@ char *cosinus(char *arg){
 			*t = '0';
 		}
 	}
-	
 	free(pi_);
 	free(npi_);
 	return t;
@@ -48,6 +47,7 @@ char *racine_carree(void *num1, unsigned long int virgule){
 	result = addition(buf, pbuf);
 	free(buf);
 	presult = multiplication(result,"0.5");
+	//printf("%s\n", result);
 	do{
 		free(pbuf);
 		free(result);
@@ -57,8 +57,12 @@ char *racine_carree(void *num1, unsigned long int virgule){
 		presult = multiplication(result,"0.5");
 		if(check)
 			free(check);
+		//printf("%s\n",presult);
+		if((test = strchr(presult,'.')) == NULL){
+			test = strchr(presult, '.');
+			*(test+1+v) = 0; 
+		}
 		check = multiplication(presult, presult);
-		test = strchr(presult, '.');
 		if(test && strlen(test+1) > v){
 				*(test+v) = 0;
 		}
@@ -75,6 +79,7 @@ char *racine_carree(void *num1, unsigned long int virgule){
 			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
 			strcpy(last, check);
 		}
+		printf("%s\n",check);
 	}while(equal(num1, check) < 0);
 	if(last)
 		free(last);
