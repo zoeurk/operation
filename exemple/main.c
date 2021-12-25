@@ -34,7 +34,7 @@ char *cosinus(char *arg){
 }
 char *racine_carree(void *num1, unsigned long int virgule){
 	unsigned long int len = strlen(num1)-(strchr(num1, '.') != NULL), v = virgule;
-	char buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test, *last = NULL, c = 0;
+	char buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test, *last = NULL;
 	if((test = strchr(num1,'.')) != NULL){
 		test++;
 		if(virgule < strlen(test)){
@@ -49,29 +49,31 @@ char *racine_carree(void *num1, unsigned long int virgule){
 	presult = multiplication(result,"0.5");
 	//printf("%s\n", result);
 	do{
+		//printf("______\n");
 		free(pbuf);
 		free(result);
+		test = strchr(presult,'.');
+		if(test){
+			if(strlen(test)> 1+v/8)
+				test[1+v/8] = 0;
+			//printf("%s:%lu,%lu\n", test+1, strlen(test+1),v/8);
+		}
 		pbuf = division(num1, presult, v, 0);
 		result = addition(presult, pbuf);
 		free(presult);
 		presult = multiplication(result,"0.5");
+		//printf("==============\n");
 		if(check)
 			free(check);
 		//printf("%s\n",presult);
 		if((test = strchr(presult,'.')) != NULL){
-			c = *(test+1+v/8);
-			//*(test+1+v) = 0; 
+			test = strchr(presult, '.');
+			*(test+1+v) = 0; 
 		}
-		//printf("%s\n", presult);
 		check = multiplication(presult, presult);
-		if(test){
-			*(test+1+v/8) = c;
-			if(strlen(test+1) >= v)
-				*(test+1+v) = 0;
+		if(test && strlen(test+1) > v){
+				*(test+v) = 0;
 		}
-		/*if(strchr( > v){
-				*(test+1+v) = 0;
-		}*/
 		if(last == NULL){
 			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
 			strcpy(last, check);
