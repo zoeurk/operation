@@ -155,21 +155,29 @@ int main(int argc, char **argv){
 		free(r);
 	}
 	printf("++++++++++++++++++\n");
-	r = racine_carree(argv[1], atoi(argv[3]));
-	if(r){
-		check = multiplication(r, r);
-		printf("racine carree de '%s': %s\n", argv[1], r);
-		printf("Verification:%s\n", check);
-		free(r);
-		free(check);
+	if(equal(argv[1],"0") < 0)
+		fprintf(stderr, "Racine carree non applicable sur un nombre negatif:%s\n", argv[1]);
+	else{
+		r = racine_carree(argv[1], atoi(argv[3]));
+		if(r){
+			check = multiplication(r, r);
+			printf("racine carree de '%s': %s\n", argv[1], r);
+			printf("Verification:%s\n", check);
+			free(r);
+			free(check);
+		}
 	}
-	r = racine_carree(argv[2], atoi(argv[3]));
-	if(r){
-		check = multiplication(r, r);
-		printf("racine carree de '%s': %s\n", argv[2], r);
-		printf("Verification:%s\n", check);
-		free(r);
-		free(check);
+	if(equal(argv[2], "0") < 0)
+		fprintf(stderr, "Racine carree non applicable sur un nombre negatif:%s\n", argv[1]);
+	else{
+		r = racine_carree(argv[2], atoi(argv[3]));
+		if(r){
+			check = multiplication(r, r);
+			printf("racine carree de '%s': %s\n", argv[2], r);
+			printf("Verification:%s\n", check);
+			free(r);
+			free(check);
+		}
 	}
 	/*printf("%Lf\n", sqrtl(strtold(argv[1], NULL)));*/
 	return 0;
