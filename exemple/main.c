@@ -67,8 +67,8 @@ char *racine_carree(void *num1, unsigned long int virgule){
 			free(check);
 		//printf("%s\n",presult);
 		if((test = strchr(presult,'.')) != NULL){
-			test = strchr(presult, '.');
-			*(test+1+v) = 0; 
+			if(strlen(test+1)>=v)
+				*(test+1+v) = 0; 
 		}
 		check = multiplication(presult, presult);
 		if(test && strlen(test+1) > v){
