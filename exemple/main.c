@@ -168,7 +168,7 @@ int main(int argc, char **argv){
 		}
 	}
 	if(equal(argv[2], "0") < 0)
-		fprintf(stderr, "Racine carree non applicable sur un nombre negatif:%s\n", argv[1]);
+		fprintf(stderr, "Racine carree non applicable sur un nombre negatif:%s\n", argv[2]);
 	else{
 		r = racine_carree(argv[2], atoi(argv[3]));
 		if(r){
