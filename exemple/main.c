@@ -66,7 +66,8 @@ char *racine_carree(void *num1, unsigned long int virgule){
 		check = multiplication(presult, presult);
 		if(test){
 			*(test+1+v/8) = c;
-			*(test+1+v) = 0;
+			if(strlen(test+1) >= v)
+				*(test+1+v) = 0;
 		}
 		/*if(strchr( > v){
 				*(test+1+v) = 0;
