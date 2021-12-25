@@ -53,11 +53,11 @@ char *racine_carree(void *num1, unsigned long int virgule){
 		free(pbuf);
 		free(result);
 		test = strchr(presult,'.');
-		if(test){
-			if(strlen(test)> 1+v/8)
-				test[1+v/8] = 0;
+		/*if(test){
+			if(strlen(test)> 1+v)
+				test[1+v] = 0;
 			//printf("%s:%lu,%lu\n", test+1, strlen(test+1),v/8);
-		}
+		}*/
 		pbuf = division(num1, presult, v, 0);
 		result = addition(presult, pbuf);
 		free(presult);
@@ -71,9 +71,9 @@ char *racine_carree(void *num1, unsigned long int virgule){
 				*(test+1+v) = 0; 
 		}
 		check = multiplication(presult, presult);
-		if(test && strlen(test+1) > v){
+		/*if(test && strlen(test+1) > v){
 				*(test+v) = 0;
-		}
+		}*/
 		if(last == NULL){
 			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
 			strcpy(last, check);
