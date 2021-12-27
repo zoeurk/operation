@@ -888,11 +888,6 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 		*quotient = '0';
 		return quotient;
 	}
-	if(equal(n1,n2) == 0){
-		 quotient = allocation((void **)&quotient,2,sizeof(char));
-		*quotient = '1';
-		return quotient;
-	}
 	diviseur = allocation((void **)&diviseur, strlen(n2)+1, sizeof(char));
 	dividende = allocation((void **)&dividende, strlen(n1)+1, sizeof(char));
 	memcpy(diviseur, n2, strlen(n2));
@@ -1152,8 +1147,6 @@ void *modulo(void *num1, void *num2){
 			zero_ = pzero_;
 		}
 	}while(1);
-	/*printf("%s::%s\n", diviseur, dividende);
-	exit(0);*/
 	preste = allocation((void **)&reste, BUFFER, sizeof(char));
 	len = strlen(dividende)-1;
 	do{
@@ -1220,11 +1213,6 @@ void *modulo(void *num1, void *num2){
 		}
 		ii++;
 	}
-	//return NULL;
-	//fprintf(stderr,"%s\n", zero_);
-	//pzero_ = division(reste, zero_, strlen(zero_)+1, 0);
-	//printf("==>%s::%s::%s\n",reste, zero_,pzero_);
-	//exit(0);
 	if(zero_){
 		pzero_ = division(reste, zero_, strlen(reste)+3, 0);
 		free(reste);
