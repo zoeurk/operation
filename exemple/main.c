@@ -32,8 +32,8 @@ char *cosinus(char *arg){
 	free(npi_);
 	return t;
 }
-char *racine_carree(void *num1, unsigned long int virgule){
-	unsigned long int len = strlen(num1)-(strchr(num1, '.') != NULL), v = virgule;
+char *racine_carree(void *num1, unsigned long int virgule, int approximation){
+	unsigned long int len = strlen(num1)-(strchr(num1, '.') != NULL), v = virgule+1;
 	char buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test, *last = NULL;
 	if((test = strchr(num1,'.')) != NULL){
 		test++;
@@ -47,33 +47,21 @@ char *racine_carree(void *num1, unsigned long int virgule){
 	result = addition(buf, pbuf);
 	free(buf);
 	presult = multiplication(result,"0.5");
-	//printf("%s\n", result);
 	do{
-		//printf("______\n");
 		free(pbuf);
 		free(result);
 		test = strchr(presult,'.');
-		/*if(test){
-			if(strlen(test)> 1+v)
-				test[1+v] = 0;
-			//printf("%s:%lu,%lu\n", test+1, strlen(test+1),v/8);
-		}*/
 		pbuf = division(num1, presult, v, 0);
 		result = addition(presult, pbuf);
 		free(presult);
 		presult = multiplication(result,"0.5");
-		//printf("==============\n");
 		if(check)
 			free(check);
-		//printf("%s\n",presult);
 		if((test = strchr(presult,'.')) != NULL){
 			if(strlen(test+1)>=v)
 				*(test+1+v) = 0; 
 		}
 		check = multiplication(presult, presult);
-		/*if(test && strlen(test+1) > v){
-				*(test+v) = 0;
-		}*/
 		if(last == NULL){
 			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
 			strcpy(last, check);
@@ -94,6 +82,43 @@ char *racine_carree(void *num1, unsigned long int virgule){
 	free(pbuf);
 	free(result);
 	free(check);
+	if((result = strchr(presult, '.'))){
+		if(!approximation)
+			result[strlen(result)-1] = 0;
+		else{
+			test = allocation((void **)&test, 3, sizeof(char));
+			strcpy(test,"0.");
+			if(v == 1){
+				check = reallocation((void **)&test,4);
+				strcat(test, "1");
+				check = addition(presult, test);
+				free(presult);
+				presult = check;
+				//printf("%s::%s\n", check, test);
+			}else{
+				while(strlen(test) +1 < v){
+					check = reallocation((void **)&test,strlen(test)+1);
+					strcat(test, "0");
+					check = addition(presult, test);
+					free(presult);
+					presult = check;
+					//printf("%s::%s\n", check, test);
+				}
+				//test[strlen(test)-1] = 0;
+				check = reallocation((void **)&test,strlen(test)+1);
+				test[strlen(test)] = '1';
+				//printf("%s\n", test);
+				check = addition(presult, test);
+				free(presult);
+				presult = check;
+				//printf("%s::%s\n", check, test);
+				presult[strlen(presult)-1] = 0;
+			}
+			free(test);
+			//presult[strlen(presult)-1] = 0;
+			for(result = &presult[strlen(presult)-1]; *result == '0'; *result = 0, result--);;
+		}
+	}
 	if(presult[strlen(presult)-1] == '.')
 		presult[strlen(presult)-1] = 0;
 	return presult;
@@ -158,7 +183,15 @@ int main(int argc, char **argv){
 	if(equal(argv[1],"0") < 0)
 		fprintf(stderr, "Racine carree non applicable sur un nombre negatif:%s\n", argv[1]);
 	else{
-		r = racine_carree(argv[1], atoi(argv[3]));
+		r = racine_carree(argv[1], atoi(argv[3]),1);
+		if(r){
+			check = multiplication(r, r);
+			printf("racine carree aproximatif de '%s': %s\n", argv[1], r);
+			printf("Verification:%s\n", check);
+			free(r);
+			free(check);
+		}
+		r = racine_carree(argv[1], atoi(argv[3]),0);
 		if(r){
 			check = multiplication(r, r);
 			printf("racine carree de '%s': %s\n", argv[1], r);
@@ -170,7 +203,15 @@ int main(int argc, char **argv){
 	if(equal(argv[2], "0") < 0)
 		fprintf(stderr, "Racine carree non applicable sur un nombre negatif:%s\n", argv[2]);
 	else{
-		r = racine_carree(argv[2], atoi(argv[3]));
+		r = racine_carree(argv[2], atoi(argv[3]),1);
+		if(r){
+			check = multiplication(r, r);
+			printf("racine carree aproximatif de '%s': %s\n", argv[2], r);
+			printf("Verification:%s\n", check);
+			free(r);
+			free(check);
+		}
+		r = racine_carree(argv[2], atoi(argv[3]),0);
 		if(r){
 			check = multiplication(r, r);
 			printf("racine carree de '%s': %s\n", argv[2], r);
