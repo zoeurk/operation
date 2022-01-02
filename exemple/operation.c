@@ -739,7 +739,7 @@ void *multiplication(void *num1, void *num2){
 				buflen++;
 			}else{
 				if(ij-1 == 0 && v1[0]*v2[0]+ z - retenue >= 10){
-					if(buflen+2 >= BUFFER){
+					if(buflen + 2 >= BUFFER){
 						iz++;
 						buflen = 0;
 						pbuf = reallocation((void **)&resultat, BUFFER*iz+1);
@@ -1120,6 +1120,17 @@ void *modulo(void *num1, void *num2){
 		//*result = '0';
 		return temp;
 	}
+	reste = division(n1, n2, 0,0);
+	preste = multiplication(reste, n2);
+	//printf("%s::%s::%s\n",preste, n1, n2);
+	if(equal(preste, n1) == 0){
+		free(reste);
+		*preste = '0';
+		*(preste + 1) = 0;
+		return preste;
+	}
+	free(reste);
+	free(preste);
 	//return NULL;
 	if(equal(n1,"0") == 0){
 		 quotient = allocation((void **)&quotient,2,sizeof(char));
@@ -1131,7 +1142,7 @@ void *modulo(void *num1, void *num2){
 	memcpy(diviseur, n2, strlen(n2));
 	memcpy(dividende, n1, strlen(n1));
 	do{
-		if((n2 = strchr(diviseur,'.')) == NULL  && (n1 = strchr(dividende, '.')) == NULL)
+		if((n2 = strchr(diviseur,'.')) == NULL  /*&& (n1 = strchr(dividende, '.')) == NULL*/)
 				break;
 		temp = multiplication(diviseur, "10");
 		free(diviseur);
@@ -1181,7 +1192,10 @@ void *modulo(void *num1, void *num2){
 		free(temp);
 		free(temp_);
 	}
+	//printf("%s::%lu::%lu\n", reste, (long unsigned int)ii, len);
+	//ii = 0;
 	while(((unsigned long int)ii <= len)){
+		printf("******\n");
 		temp = multiplication(reste, "10");
 		free(reste);
 		reste = temp;
