@@ -1096,9 +1096,9 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 void *modulo(void *num1, void *num2){
 	char *n1 = num1, *n2 = num2,
 		*quotient = NULL, *dividende = NULL, *diviseur = NULL, *reste = NULL, *preste, *zero_ = NULL, *pzero_,
-		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}, point = 0,
+		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}/*, point = 0*/,
 		neg1 = 0, neg2 = 0, neg;
-	unsigned long int len = 0, virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
+	unsigned long int /*len = 0,*/ zero = 0, nreste = 0, qreste = 1;
 	long long int ii = 0;
 	int x;
 	NEG;
@@ -1148,7 +1148,7 @@ void *modulo(void *num1, void *num2){
 		}
 	}while(1);
 	preste = allocation((void **)&reste, BUFFER, sizeof(char));
-	len = strlen(dividende)-1;
+	//len = strlen(dividende)-1;
 	do{
 		if(nreste +1 >= BUFFER){
 			qreste++;
@@ -1165,7 +1165,7 @@ void *modulo(void *num1, void *num2){
 		temp = multiplication(reste, "10");
 		free(reste);
 		reste = temp;
-		point = 1;
+		//point = 1;
 		zero++;
 	}
 	for(x = 9; x >= 0;x--){
@@ -1183,7 +1183,8 @@ void *modulo(void *num1, void *num2){
 	}
 	//printf("%s::%lu::%lu\n", reste, (long unsigned int)ii, len);
 	//ii = 0;
-	while(((unsigned long int)ii <= len)){
+	/*while(((unsigned long int)ii <= len)){
+		//printf("*****\n");
 		temp = multiplication(reste, "10");
 		free(reste);
 		reste = temp;
@@ -1214,7 +1215,7 @@ void *modulo(void *num1, void *num2){
 			}
 		}
 		ii++;
-	}
+	}*/
 	while(equal(reste, diviseur) > 0){
 		temp = modulo(reste, diviseur);
 		free(reste);
