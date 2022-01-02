@@ -1184,7 +1184,6 @@ void *modulo(void *num1, void *num2){
 	//printf("%s::%lu::%lu\n", reste, (long unsigned int)ii, len);
 	//ii = 0;
 	while(((unsigned long int)ii <= len)){
-		printf("******\n");
 		temp = multiplication(reste, "10");
 		free(reste);
 		reste = temp;
@@ -1215,6 +1214,11 @@ void *modulo(void *num1, void *num2){
 			}
 		}
 		ii++;
+	}
+	while(equal(reste, diviseur) > 0){
+		temp = modulo(reste, diviseur);
+		free(reste);
+		reste = temp;
 	}
 	//printf("==>%s\n", reste);
 	if(zero_){
