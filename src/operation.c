@@ -1120,17 +1120,6 @@ void *modulo(void *num1, void *num2){
 		//*result = '0';
 		return temp;
 	}
-	reste = division(n1, n2, 0,0);
-	preste = multiplication(reste, n2);
-	//printf("%s::%s::%s\n",preste, n1, n2);
-	if(equal(preste, n1) == 0){
-		free(reste);
-		*preste = '0';
-		*(preste + 1) = 0;
-		return preste;
-	}
-	free(reste);
-	free(preste);
 	//return NULL;
 	if(equal(n1,"0") == 0){
 		 quotient = allocation((void **)&quotient,2,sizeof(char));
@@ -1195,7 +1184,7 @@ void *modulo(void *num1, void *num2){
 	//printf("%s::%lu::%lu\n", reste, (long unsigned int)ii, len);
 	//ii = 0;
 	while(((unsigned long int)ii <= len)){
-		//printf("******\n");
+		printf("******\n");
 		temp = multiplication(reste, "10");
 		free(reste);
 		reste = temp;
@@ -1227,6 +1216,7 @@ void *modulo(void *num1, void *num2){
 		}
 		ii++;
 	}
+	//printf("==>%s\n", reste);
 	if(zero_){
 		pzero_ = division(reste, zero_, strlen(reste)+3, 0);
 		free(reste);
