@@ -1195,7 +1195,7 @@ void *modulo(void *num1, void *num2){
 	//printf("%s::%lu::%lu\n", reste, (long unsigned int)ii, len);
 	//ii = 0;
 	while(((unsigned long int)ii <= len)){
-		printf("******\n");
+		//printf("******\n");
 		temp = multiplication(reste, "10");
 		free(reste);
 		reste = temp;
