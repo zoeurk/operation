@@ -106,8 +106,8 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 				}
 				//test[strlen(test)-1] = 0;
 				check = reallocation((void **)&test,strlen(test)+1);
-				test[strlen(test)] = '1';
-				//printf("%s\n", test);
+				test[strlen(test)-1] = '1';
+				//printf("%s::%s\n", test, presult);
 				check = addition(presult, test);
 				free(presult);
 				presult = check;
