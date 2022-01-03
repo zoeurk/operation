@@ -1120,8 +1120,17 @@ void *modulo(void *num1, void *num2){
 		return temp;
 	}
 	if(equal(n1, n2) < 0){
-		temp = allocation((void **)&temp, strlen(n1)+1, sizeof(char));
-		strcpy(temp, n1);
+		if(neg){
+			//printf("-%s\n", reste);
+			temp = allocation((void **)&temp, strlen(n1)+2, sizeof(char));
+			*temp = '-';
+			strcpy(&temp[1], n1);
+			free(reste);
+			//reste = temp;
+		}else{
+			temp = allocation((void **)&temp, strlen(n1)+1, sizeof(char));
+			strcpy(temp, n1);
+		}
 		//*result = '0';
 		return temp;
 	}
@@ -1167,7 +1176,7 @@ void *modulo(void *num1, void *num2){
 		preste++;
 		nreste++;
 		ii++;
-	}while((unsigned long int)ii < strlen(dividende) || equal(reste, diviseur) < 0);
+	}while(equal(reste, diviseur) < 0);
 	while(equal(reste, diviseur) < 0){
 		temp = multiplication(reste, "10");
 		free(reste);
@@ -1236,7 +1245,7 @@ void *modulo(void *num1, void *num2){
 	//free(zero_);
 	free(dividende);
 	free(diviseur);
-	if(neg){
+	if(neg && equal(reste,"0") != 0){
 		//printf("-%s\n", reste);
 		temp = allocation((void **)&temp, strlen(reste)+2, sizeof(char));
 		*temp = '-';
