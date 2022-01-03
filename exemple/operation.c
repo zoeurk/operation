@@ -1216,7 +1216,7 @@ void *modulo(void *num1, void *num2){
 		}
 		ii++;
 	}*/
-	while(equal(reste, diviseur) > 0){
+	if(equal(reste, diviseur) > 0){
 		temp = modulo(reste, diviseur);
 		free(reste);
 		reste = temp;
