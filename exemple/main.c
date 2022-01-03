@@ -170,11 +170,11 @@ int main(int argc, char **argv){
 		printf("division:%s\n", (char *)r);
 		free(r);
 	}
-	/*r = modulo(argv[1], argv[2]);
+	r = modulo(argv[1], argv[2]);
 	if(r){
 		printf("modulo:%s\n", (char *)r);
 		free(r);
-	}*/
+	}
 	//No warrenty
 	printf("++++++++++++++++++\n");
 	r = cosinus(argv[1]);
