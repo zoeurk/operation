@@ -58,10 +58,6 @@ int equal(void *num1, void *num2){
 	DOT_INIT;
 	if(dot1)dot1++;
 	if(dot2)dot2++;
-	if(neg1 == 1 && neg2 == 0)
-		return -1;
-	if(neg2 == 1 && neg1 == 0)
-		return 1;
 	for(n1 = n1;*(n1+1) != '.' && (*n1 == '0' || *n1 == '+' || *n1 == '-'); n1++);;
 	for(n2 = n2;*(n2+1) != '.' && (*n2 == '0' || *n2 == '+' || *n2 == '-'); n2++);;
 	val1 = n1;
@@ -1007,7 +1003,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 			temp = multiplication(t, diviseur);
 			temp_ = soustraction(reste, temp);
 			if(equal(temp_,"0") >= 0){
-				//free(reste);
+				free(reste);
 				free(temp);
 				reste = temp_;
 				break;
@@ -1090,7 +1086,6 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 		if(temp && strlen(temp+1) > virgule)
 			*(temp+strlen(temp +1)) = 0;
 	}
-	//printf("%s\n", reste);
 	if((n1 = strchr(result,'.')) != NULL)
 		for(n2 = &result[strlen(result) - 1]; n2 != (n1-1) && (*n2 == '.' || *n2 == '0') ; *n2 = 0, n2--);;
 	free(reste);
@@ -1102,7 +1097,7 @@ void *modulo(void *num1, void *num2){
 	char *n1 = num1, *n2 = num2,
 		*quotient = NULL, *dividende = NULL, *diviseur = NULL, *reste = NULL, *preste, *zero_ = NULL, *pzero_,
 		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}, point = 0,
-		neg1 = 0, neg2 = 0, neg;
+		neg1 = 0, neg2 = 0, neg = 0;
 	unsigned long int len = 0, virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
 	long long int ii = 0;
 	int x;
@@ -1121,12 +1116,9 @@ void *modulo(void *num1, void *num2){
 	}
 	if(equal(n1, n2) < 0){
 		if(neg){
-			//printf("-%s\n", reste);
-			temp = allocation((void **)&temp, strlen(n1)+2, sizeof(char));
+			temp = allocation((void **)&temp,strlen(n1)+2, sizeof(char));
 			*temp = '-';
 			strcpy(&temp[1], n1);
-			free(reste);
-			//reste = temp;
 		}else{
 			temp = allocation((void **)&temp, strlen(n1)+1, sizeof(char));
 			strcpy(temp, n1);
@@ -1176,7 +1168,7 @@ void *modulo(void *num1, void *num2){
 		preste++;
 		nreste++;
 		ii++;
-	}while(equal(reste, diviseur) < 0);
+	}while(/*(unsigned long int)ii < strlen(dividende) || */equal(reste, diviseur) < 0);
 	while(equal(reste, diviseur) < 0){
 		temp = multiplication(reste, "10");
 		free(reste);
@@ -1243,16 +1235,14 @@ void *modulo(void *num1, void *num2){
 		free(zero_);
 	//free(reste);
 	//free(zero_);
-	free(dividende);
-	free(diviseur);
-	if(neg && equal(reste,"0") != 0){
-		//printf("-%s\n", reste);
-		temp = allocation((void **)&temp, strlen(reste)+2, sizeof(char));
+	if(neg){
+		temp = allocation((void **)&temp,strlen(reste)+2, sizeof(char));
 		*temp = '-';
 		strcpy(&temp[1], reste);
 		free(reste);
 		reste = temp;
 	}
-	//printf("%i::%i\n", neg1, neg2);
+	free(dividende);
+	free(diviseur);
 	return reste;
 }
