@@ -43,7 +43,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	}
 	sprintf(buffer,"%lu", len);
 	buf = multiplication(buffer,"100");
-	pbuf = division(num1, buf,virgule, 0);
+	pbuf = division(num1, buf,virgule, approximation);
 	result = addition(buf, pbuf);
 	free(buf);
 	presult = multiplication(result,"0.5");
@@ -51,7 +51,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		free(pbuf);
 		free(result);
 		test = strchr(presult,'.');
-		pbuf = division(num1, presult, v, 0);
+		pbuf = division(num1, presult, v, approximation);
 		result = addition(presult, pbuf);
 		free(presult);
 		presult = multiplication(result,"0.5");
