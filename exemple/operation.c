@@ -127,9 +127,9 @@ int equal(void *num1, void *num2){
 		}
 		return 1;
 	}else	if(val1_len < val2_len){
-			if(neg1 && neg2)
+			if(neg1 && neg2){
 				return 1;
-			else	return -1;
+			}else	return -1;
 		}
 	for(val1 = val1, val2 = val2, ii = 0;ii < (long long int)val1_len; ii++, val1++, val2++){
 		v1[0] = *val1;
@@ -153,9 +153,8 @@ int equal(void *num1, void *num2){
 		){
 			if(*dot1 > *dot2){
 				if(*n1 == '-' && *n2 == '-')
-					return -1;
-				return 1;
-			}
+					return 1;
+				return -1;
 			if(*dot1 < *dot2){
 				if(*n1 == '-' && *n2 == '-')
 					return 1;
