@@ -1115,7 +1115,7 @@ void *modulo(void *num1, void *num2){
 		return temp;
 	}
 	if(equal(n1, n2) < 0){
-		if(neg){
+		if(neg1){
 			temp = allocation((void **)&temp,strlen(n1)+2, sizeof(char));
 			*temp = '-';
 			strcpy(&temp[1], n1);
@@ -1235,7 +1235,7 @@ void *modulo(void *num1, void *num2){
 		free(zero_);
 	//free(reste);
 	//free(zero_);
-	if(neg){
+	if(neg1){
 		temp = allocation((void **)&temp,strlen(reste)+2, sizeof(char));
 		*temp = '-';
 		strcpy(&temp[1], reste);
