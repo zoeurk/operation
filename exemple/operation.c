@@ -152,12 +152,12 @@ int equal(void *num1, void *num2){
 			dot1++, dot2++
 		){
 			if(*dot1 > *dot2){
-				if(neg1 == 1 && neg2 == 1)
+				if(neg1 && neg2)
 					return -1;
 				return 1;
 			}
-			if(*dot1 < *dot2 && !neg1 && !neg2){
-				if(neg1 == 0 && neg2 == 0)
+			if(*dot1 < *dot2){
+				if(neg1 && neg2)
 					return 1;
 				return -1;
 			}
@@ -166,9 +166,9 @@ int equal(void *num1, void *num2){
 	if((!dot1 || *dot1 == 0 )&& dot2 && *dot2 != 0){
 		for(dot2 = dot2; *dot2 != 0; dot2++)
 			if(*dot2 > '0'){
-				if(neg1 == 1 && neg2 == 1)
-					return -1;
-				return 1;
+				if(*n1 == '-' && *n2 == '-')
+					return 1;
+				return -1;
 			}
 	}
 	if((dot1 && *dot1 != 0) && (!dot2 || *dot2 == 0)){
