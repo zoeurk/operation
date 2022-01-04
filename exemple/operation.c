@@ -1069,7 +1069,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 								if(!neg)
 									reste = addition(result ,arrondi);
 								else	reste = soustraction(result, arrondi);
-								//free(arrondi);
+								free(arrondi);
 								free(result);
 								result = reste;
 								reste = temp;
@@ -1081,7 +1081,6 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 						}
 				}
 		}
-		//printf("%s\n", arrondi);
 	}else{
 		temp = strchr(result,'.');
 		if(temp && strlen(temp+1) > virgule)
@@ -1098,12 +1097,12 @@ void *modulo(void *num1, void *num2){
 	char *n1 = num1, *n2 = num2,
 		*quotient = NULL, *dividende = NULL, *diviseur = NULL, *reste = NULL, *preste, *zero_ = NULL, *pzero_,
 		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}, point = 0,
-		neg1 = 0, neg2 = 0;
+		neg1 = 0, neg2 = 0, neg = 0;
 	unsigned long int len = 0, virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
 	long long int ii = 0;
 	int x;
 	NEG;
-	//NEG_TEST;
+	NEG_TEST;
 	if(equal(n2,"0") == 0 || equal(n2,"-0") == 0){
 		fprintf(stderr, "Erreur: Division par 0\n");
 		return NULL;
@@ -1116,7 +1115,7 @@ void *modulo(void *num1, void *num2){
 		return temp;
 	}
 	if(equal(n1, n2) < 0){
-		if(neg1){
+		if(neg){
 			temp = allocation((void **)&temp,strlen(n1)+2, sizeof(char));
 			*temp = '-';
 			strcpy(&temp[1], n1);
@@ -1236,7 +1235,7 @@ void *modulo(void *num1, void *num2){
 		free(zero_);
 	//free(reste);
 	//free(zero_);
-	if(neg1){
+	if(neg){
 		temp = allocation((void **)&temp,strlen(reste)+2, sizeof(char));
 		*temp = '-';
 		strcpy(&temp[1], reste);
