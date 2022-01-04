@@ -1097,12 +1097,12 @@ void *modulo(void *num1, void *num2){
 	char *n1 = num1, *n2 = num2,
 		*quotient = NULL, *dividende = NULL, *diviseur = NULL, *reste = NULL, *preste, *zero_ = NULL, *pzero_,
 		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}, point = 0,
-		neg1 = 0, neg2 = 0, neg = 0;
+		neg1 = 0, neg2 = 0;
 	unsigned long int len = 0, virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
 	long long int ii = 0;
 	int x;
 	NEG;
-	NEG_TEST;
+	//NEG_TEST;
 	if(equal(n2,"0") == 0 || equal(n2,"-0") == 0){
 		fprintf(stderr, "Erreur: Division par 0\n");
 		return NULL;
