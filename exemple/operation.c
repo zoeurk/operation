@@ -1069,7 +1069,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 								if(!neg)
 									reste = addition(result ,arrondi);
 								else	reste = soustraction(result, arrondi);
-								free(arrondi);
+								//free(arrondi);
 								free(result);
 								result = reste;
 								reste = temp;
@@ -1081,6 +1081,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 						}
 				}
 		}
+		//printf("%s\n", arrondi);
 	}else{
 		temp = strchr(result,'.');
 		if(temp && strlen(temp+1) > virgule)
