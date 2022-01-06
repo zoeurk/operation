@@ -80,12 +80,17 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
 			strcpy(last, check);
 		}
-		//printf("%s\n",check);
 	}while(equal(num1, check) < 0);
+	//printf("===>%s;%s\n", check, test);
 	if(last)
 		free(last);
 	free(pbuf);
 	free(result);
+	/*last = multiplication(check, check);
+	if(equal(num1, last) == 0){
+		free(last);
+		return check;
+	}*/
 	free(check);
 	if((result = strchr(presult, '.'))){
 		if(!approximation)
@@ -119,13 +124,14 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 				free(presult);
 				presult = check;
 				//printf("%s::%s\n", check, test);
-				presult[strlen(presult)-1] = 0;
+				presult[strlen(presult)] = 0;
 
 			}
 			free(test);
-			}else presult[strlen(presult)-1] = 0;
+			}else presult[strlen(presult)] = 0;
 			//presult[strlen(presult)-1] = 0;
-			for(result = &presult[strlen(presult)-1]; *result == '0'; *result = 0, result--);;
+			//printf("==>%s\n", result);
+			for(result = &presult[strlen(presult)]; *result == '0'; *result = 0, result--);;
 		}
 	}
 	/*if((test = strchr(presult, '.'))){
