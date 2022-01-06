@@ -35,6 +35,11 @@ char *cosinus(char *arg){
 char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	unsigned long int len = strlen(num1)-(strchr(num1, '.') != NULL), v = virgule+1;
 	char buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test, *last = NULL;
+	if(equal(num1, "0") == 0){
+		result = allocation((void **)&result, 2, sizeof(char));
+		*result = '0';
+		return result;
+	}
 	if((test = strchr(num1,'.')) != NULL){
 		test++;
 		if(virgule < strlen(test)){
