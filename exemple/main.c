@@ -81,7 +81,19 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 			strcpy(last, check);
 		}
 	}while(equal(num1, check) < 0);
-	//printf("===>%s;%s\n", check, test);
+	//free(test);
+	test = multiplication(check, check);
+	if(equal(test, num1) <= 0){
+		free(test);
+		free(pbuf);
+		if(last)
+			free(last);
+		free(result);
+		free(check);
+		//printf("===>%s;%s\n", presult, test);
+		return presult;
+	}
+	free(test);
 	if(last)
 		free(last);
 	free(pbuf);
