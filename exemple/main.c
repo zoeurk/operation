@@ -84,7 +84,6 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		free(pbuf);
 		free(check);
 		free(result);
-		for(result = &presult[strlen(presult)-1]; *result == '0'; *result = 0, result--);;
 		return presult;
 	}
 	free(test);
