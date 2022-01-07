@@ -33,17 +33,17 @@ char *cosinus(char *arg){
 	return t;
 }
 char *racine_carree(void *num1, unsigned long int virgule, int approximation){
-	unsigned long int len = strlen(num1)-(strchr(num1, '.') != NULL), v = virgule+1;
+	unsigned long int len = strlen(num1)-(strchr(num1, '.') != NULL), v = virgule+(virgule != 0);
 	char buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test, *last = NULL;
-	if((test = strchr(num1,'.')) != NULL){
+	/*if((test = strchr(num1,'.')) != NULL){
 		test++;
 		if(virgule < strlen(test)){
 			v = strlen(test)+1;
 		}
-	}
+	}*/
 	sprintf(buffer,"%lu", len);
 	buf = multiplication(buffer,"100");
-	pbuf = division(num1, buf,virgule, 0);
+	pbuf = division(num1, buf,v, 0);
 	result = addition(buf, pbuf);
 	free(buf);
 	presult = multiplication(result,"0.5");
@@ -52,6 +52,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		free(result);
 		test = strchr(presult,'.');
 		pbuf = division(num1, presult, v, 0);
+		//printf("%s::%s::%s\n", pbuf, presult, (char *)num1);
 		result = addition(presult, pbuf);
 		free(presult);
 		presult = multiplication(result,"0.5");
@@ -85,6 +86,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		free(pbuf);
 		free(check);
 		free(result);
+		for(result = &presult[strlen(presult)-1]; *result == '0'; *result = 0, result--);;
 		return presult;
 	}
 	free(test);
@@ -140,6 +142,8 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	}*/
 	if(presult[strlen(presult)-1] == '.')
 		presult[strlen(presult)-1] = 0;
+	if(strlen(presult) == 0)
+		*presult = '0';
 	return presult;
 }
 int main(int argc, char **argv){
