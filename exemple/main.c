@@ -88,7 +88,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		if(!approximation)
 			result[strlen(result)] = 0;
 		else{
-			if(presult[strlen(presult)] > '5'){
+			if(presult[strlen(presult)-1] > '5'){
 			test = allocation((void **)&test, 3, sizeof(char));
 			strcpy(test,"0.");
 			if(v == 1){
