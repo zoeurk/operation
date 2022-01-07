@@ -33,17 +33,17 @@ char *cosinus(char *arg){
 	return t;
 }
 char *racine_carree(void *num1, unsigned long int virgule, int approximation){
-	unsigned long int len = strlen(num1)-(strchr(num1, '.') != NULL), v = virgule+(virgule != 0);
+	unsigned long int len = strlen(num1)-(strchr(num1, '.') != NULL), v = virgule;
 	char buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test, *last = NULL;
-	/*if((test = strchr(num1,'.')) != NULL){
+	if((test = strchr(num1,'.')) != NULL){
 		test++;
 		if(virgule < strlen(test)){
 			v = strlen(test)+1;
 		}
-	}*/
+	}
 	sprintf(buffer,"%lu", len);
 	buf = multiplication(buffer,"100");
-	pbuf = division(num1, buf,v, 0);
+	pbuf = division(num1, buf,virgule, 0);
 	result = addition(buf, pbuf);
 	free(buf);
 	presult = multiplication(result,"0.5");
@@ -52,7 +52,6 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		free(result);
 		test = strchr(presult,'.');
 		pbuf = division(num1, presult, v, 0);
-		//printf("%s::%s::%s\n", pbuf, presult, (char *)num1);
 		result = addition(presult, pbuf);
 		free(presult);
 		presult = multiplication(result,"0.5");
@@ -78,8 +77,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		}
 		//printf("%s\n",check);
 	}while(equal(num1, check) < 0);
-	test = multiplication(presult, presult);
-	//printf("%s::%s::%s::%s:%s\n", check, test, (char *)num1, last, presult);
+	test = multiplication(check, check);
 	if(equal(test,num1) == 0){
 		free(test);
 		free(last);
@@ -90,6 +88,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		return presult;
 	}
 	free(test);
+	//printf("%s\n", presult);
 	if(last)
 		free(last);
 	free(pbuf);
@@ -133,7 +132,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 			free(test);
 			}else presult[strlen(presult)-1] = 0;
 			//presult[strlen(presult)-1] = 0;
-			for(result = &presult[strlen(presult)]; *result == '0'; *result = 0, result--);;
+			for(result = &presult[strlen(presult)-1]; *result == '0'; *result = 0, result--);;
 		}
 	}
 	/*if((test = strchr(presult, '.'))){
@@ -142,8 +141,6 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	}*/
 	if(presult[strlen(presult)-1] == '.')
 		presult[strlen(presult)-1] = 0;
-	if(strlen(presult) == 0)
-		*presult = '0';
 	return presult;
 }
 int main(int argc, char **argv){
