@@ -136,14 +136,14 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 				free(presult);
 				presult = check;
 				//printf("%s::%s\n", check, test);
-				presult[strlen(presult)] = 0;
+				presult[strlen(presult)-1] = 0;
 
 			}
 			free(test);
-			}else presult[strlen(presult)] = 0;
+			}else presult[strlen(presult)-1] = 0;
 			//presult[strlen(presult)-1] = 0;
 			//printf("==>%s\n", result);
-			for(result = &presult[strlen(presult)]; *result == '0'; *result = 0, result--);;
+			for(result = &presult[strlen(presult)-1]; *result == '0'; *result = 0, result--);;
 		}
 	}
 	/*if((test = strchr(presult, '.'))){
