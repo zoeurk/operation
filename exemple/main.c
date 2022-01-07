@@ -35,11 +35,6 @@ char *cosinus(char *arg){
 char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	unsigned long int len = strlen(num1)-(strchr(num1, '.') != NULL), v = virgule+1;
 	char buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test, *last = NULL;
-	if(equal(num1, "0") == 0){
-		result = allocation((void **)&result, 2, sizeof(char));
-		*result = '0';
-		return result;
-	}
 	if((test = strchr(num1,'.')) != NULL){
 		test++;
 		if(virgule < strlen(test)){
@@ -48,7 +43,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	}
 	sprintf(buffer,"%lu", len);
 	buf = multiplication(buffer,"100");
-	pbuf = division(num1, buf,virgule, approximation);
+	pbuf = division(num1, buf,virgule, 0);
 	result = addition(buf, pbuf);
 	free(buf);
 	presult = multiplication(result,"0.5");
@@ -56,7 +51,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		free(pbuf);
 		free(result);
 		test = strchr(presult,'.');
-		pbuf = division(num1, presult, v, approximation);
+		pbuf = division(num1, presult, v, 0);
 		result = addition(presult, pbuf);
 		free(presult);
 		presult = multiplication(result,"0.5");
@@ -80,29 +75,12 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
 			strcpy(last, check);
 		}
+		//printf("%s\n",check);
 	}while(equal(num1, check) < 0);
-	//free(test);
-	test = multiplication(check, check);
-	if(equal(test, num1) <= 0){
-		free(test);
-		free(pbuf);
-		if(last)
-			free(last);
-		free(result);
-		free(check);
-		//printf("===>%s;%s\n", presult, test);
-		return presult;
-	}
-	free(test);
 	if(last)
 		free(last);
 	free(pbuf);
 	free(result);
-	/*last = multiplication(check, check);
-	if(equal(num1, last) == 0){
-		free(last);
-		return check;
-	}*/
 	free(check);
 	if((result = strchr(presult, '.'))){
 		if(!approximation)
@@ -142,7 +120,6 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 			free(test);
 			}else presult[strlen(presult)-1] = 0;
 			//presult[strlen(presult)-1] = 0;
-			//printf("==>%s\n", result);
 			for(result = &presult[strlen(presult)-1]; *result == '0'; *result = 0, result--);;
 		}
 	}
