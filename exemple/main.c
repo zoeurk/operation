@@ -118,7 +118,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 
 			}
 			free(test);
-			}else presult[strlen(presult)-1] = 0;
+			}else presult[strlen(presult)] = 0;
 			//presult[strlen(presult)-1] = 0;
 			for(result = &presult[strlen(presult)-1]; *result == '0'; *result = 0, result--);;
 		}
@@ -127,6 +127,8 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		printf("%s::%lu\n", test, virgule);
 		*(test - virgule +1) = 0;
 	}*/
+	
+	for(result = &presult[strlen(presult)-1]; *result == '0'; *result = 0, result--);;
 	if(presult[strlen(presult)-1] == '.')
 		presult[strlen(presult)-1] = 0;
 	return presult;
