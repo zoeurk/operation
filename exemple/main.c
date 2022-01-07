@@ -133,7 +133,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 			free(test);
 			}else presult[strlen(presult)-1] = 0;
 			//presult[strlen(presult)-1] = 0;
-			for(result = &presult[strlen(presult)-1]; *result == '0'; *result = 0, result--);;
+			for(result = &presult[strlen(presult)]; *result == '0'; *result = 0, result--);;
 		}
 	}
 	/*if((test = strchr(presult, '.'))){
