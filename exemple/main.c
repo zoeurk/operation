@@ -33,7 +33,7 @@ char *cosinus(char *arg){
 	return t;
 }
 char *racine_carree(void *num1, unsigned long int virgule, int approximation){
-	unsigned long int len = strlen(num1)-(strchr(num1, '.') != NULL), v = virgule;
+	unsigned long int len = strlen(num1)-(strchr(num1, '.') != NULL), v = virgule+1;
 	char buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test, *last = NULL;
 	if((test = strchr(num1,'.')) != NULL){
 		test++;
@@ -77,16 +77,25 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		}
 		//printf("%s\n",check);
 	}while(equal(num1, check) < 0);
-	//printf("===>%s:%s\n", check, presult);
+	test = multiplication(presult, presult);
+	//printf("%s::%s::%s::%s:%s\n", check, test, (char *)num1, last, presult);
+	if(equal(test,num1) == 0){
+		free(test);
+		free(last);
+		free(pbuf);
+		free(check);
+		free(result);
+		return presult;
+	}
+	free(test);
 	if(last)
 		free(last);
 	free(pbuf);
 	free(result);
 	free(check);
 	if((result = strchr(presult, '.'))){
-		//printf("-->%s\n", presult);
 		if(!approximation)
-			result[strlen(result)] = 0;
+			result[strlen(result)-1] = 0;
 		else{
 			if(presult[strlen(presult)-1] > '5'){
 			test = allocation((void **)&test, 3, sizeof(char));
@@ -97,6 +106,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 				check = addition(presult, test);
 				free(presult);
 				presult = check;
+				//printf("%s::%s\n", check, test);
 			}else{
 				while(strlen(test) +1 <= v){
 					check = reallocation((void **)&test,strlen(test)+1);
@@ -115,11 +125,11 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 				free(presult);
 				presult = check;
 				//printf("%s::%s\n", check, test);
-				presult[strlen(presult)] = 0;
+				presult[strlen(presult)-1] = 0;
 
 			}
 			free(test);
-			}else presult[strlen(presult)] = 0;
+			}else presult[strlen(presult)-1] = 0;
 			//presult[strlen(presult)-1] = 0;
 			for(result = &presult[strlen(presult)-1]; *result == '0'; *result = 0, result--);;
 		}
