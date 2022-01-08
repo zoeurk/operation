@@ -95,7 +95,6 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 				check = addition(presult, test);
 				free(presult);
 				presult = check;
-				//printf("%s::%s\n", check, test);
 			}else{
 				while(strlen(test) <= v){
 					check = reallocation((void **)&test,strlen(test)+1);
@@ -103,39 +102,22 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 					check = addition(presult, test);
 					free(presult);
 					presult = check;
-					//printf("%s::%s\n", check, test);
 				}
-				//test[strlen(test)-1] = 0;
 				check = reallocation((void **)&test,strlen(test)+2);
 				test[strlen(test)-1] = '1';
-				//printf("%s\n", test);
-				//printf("%s::%s\n", test, presult);
 				check = addition(presult, test);
-				//printf("%s::%s\n",check, test);
-				//printf("==>%s::%s::%s\n", check, presult, test);
 				free(presult);
 				presult = check;
-				//printf("%s::%s\n", check, test);
 				presult[strlen(presult)-1] = 0;
 			}
 			free(test);
-			}else{
-				//printf("==>%s\n", presult);
+			}else
 				presult[strlen(presult)-1] = 0;
-			}
-			//presult[strlen(presult)-1] = 0;
-			//for(result = &presult[strlen(presult)-1]; *result == '0'; *result = 0, result--);;
 		}
 	}
-	//printf("%s\n", presult);
-	if((test = strchr(presult, '.'))){
+	if((test = strchr(presult, '.')))
 		for(result = &presult[strlen(presult)-1]; *result == '0' && result != test; *result = 0, result--);;
-		//printf("%s::%lu\n", test, virgule);
-		//*(test - virgule +1) = 0;
-	}
-	//printf("%s\n", presult);
 	if(virgule == 0){
-		//printf("==============%s\n", presult);
 		test = strchr(presult,'.');
 		if(test && *(test+1) >= '5'){
 			result = addition(presult, "1");
