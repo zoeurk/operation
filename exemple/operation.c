@@ -874,7 +874,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}, *result = NULL, *pr, point = 0, *arrondi = NULL,
 		neg = 0, neg1 = 0, neg2 = 0;
 	unsigned long int buflen = 0, qbuf = 1, len = 0, virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
-	long long int ii = 0;
+	unsigned long int ii = 0;
 	int x;
 	NEG;
 	NEG_TEST;
@@ -1099,7 +1099,7 @@ void *modulo(void *num1, void *num2){
 		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}, point = 0,
 		neg1 = 0, neg2 = 0, neg = 0;
 	unsigned long int len = 0, virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
-	long long int ii = 0;
+	unsigned long int ii = 0;
 	int x;
 	NEG;
 	NEG_TEST;
