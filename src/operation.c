@@ -403,11 +403,11 @@ void *soustraction(void *num1, void *num2){
 		v1[2] = { 0, 0 }, v2[2] = { 0, 0 },
 		*buffer, *pbuf, *ret, *pret,
 		*ptr1 = NULL, *ptr2= NULL,
-		result = 0, retenue = 0, neg = 0, neg1 = 0, neg2 = 0;
+		result = 0, retenue = 0, neg = 0, neg1 = 0, neg2 = 0, stop, stop_;
 	unsigned long int dot1_len = 0, dot2_len = 0,
 				val1_len = 0, val2_len = 0,
 				buflen = 0, z = 1;
-	long long int ii = 0, ij = 0;
+	unsigned long int ii = 0, ij = 0;
 	NEG;
 	if(neg1 || neg2){
 		if(neg1 && neg2){
@@ -459,7 +459,7 @@ void *soustraction(void *num1, void *num2){
 	if(dot2 != NULL && dot2_len == 0)
 		val2_len--;
 	if(dot1_len > dot2_len){
-		for(ii = (long long int)dot1_len; ii >= 0 && (unsigned long int)ii != dot2_len; ii--){
+		for(ii = (long long int)dot1_len;stop = (ii -1 ==0), stop == 0 && (unsigned long int)ii != dot2_len; ii--){
 			if(buflen + 1 >= BUFFER){
 				z++;
 				buflen = 0;
@@ -469,7 +469,7 @@ void *soustraction(void *num1, void *num2){
 			pbuf++;
 			buflen++;
 		}
-		for(ii = ii, ij = dot2_len; ii > 0 && ij > 0; ii--, ij--){
+		for(ii = ii, ij = dot2_len; stop = (ii == 0), stop_ = (ij == 0), stop == 0 && stop_ == 0; ii--, ij--){
 			v1[0] = dot1[ii-1];
 			v2[0] = dot2[ij-1];
 			v1[0] = atoi(v1);
@@ -492,7 +492,7 @@ void *soustraction(void *num1, void *num2){
 		}
 	}
 	if(dot2_len > dot1_len){
-		for(ii = dot2_len; ii > 0 && ii != (long long int)dot1_len; ii--){
+		for(ii = dot2_len; stop = (ii == 0), stop == 0 && ii != dot1_len; ii--){
 			v1[0] = dot2[ii-1];
 			v1[0] = atoi(v1);
 			if(v1[0] - retenue > 0){
@@ -534,7 +534,7 @@ void *soustraction(void *num1, void *num2){
 		}
 	}else{
 		if(dot1_len == dot2_len){
-			for(ii = dot1_len; ii > 0 && (unsigned long int)ii != dot2_len; ii--){
+			for(ii = dot1_len; stop = (ii == 0), stop == 0 && ii != dot2_len; ii--){
 				v1[0] = dot1[ii-1];
 				v1[0] = atoi(v1);
 				if(v1[0] - retenue >= 0){
@@ -551,7 +551,7 @@ void *soustraction(void *num1, void *num2){
 				pbuf++;
 				buflen++;
 			}
-			for(ii = ii, ij = dot2_len; ii > 0 && ij > 0; ii--, ij--){
+			for(ii = ii, ij = dot2_len; stop = (ii == 0), stop_ = (ij == 0), stop == 0 && stop_ == 0; ii--, ij--){
 				v1[0] = dot1[ii-1];
 				v2[0] = dot2[ij-1];
 				v1[0] = atoi(v1);
@@ -585,7 +585,9 @@ void *soustraction(void *num1, void *num2){
 		buflen++;
 	}
 	for(ptr1 = val1, ptr2 = val2, ii = val1_len - (neg1 == 1), ij = val2_len - (dot2_len > 0);
-		ii > 0 && ij > 0;
+		stop = (ii == 0),
+		stop_ = (ij == 0),
+		stop == 0 && stop_ == 0;
 		ii--, ij--, ptr1--, ptr2--
 	){
 		v1[0] = *ptr1;
@@ -608,7 +610,7 @@ void *soustraction(void *num1, void *num2){
 		pbuf++;
 		buflen++;
 	}
-	for(ii = ii; ii > 0; ii--, ptr1--){
+	for(ii = ii; stop = (ii == 0), stop == 0; ii--, ptr1--){
 		if((ptr1 +1) == n1)break;
 		v1[0] = *ptr1;
 		v1[0] = atoi(v1);
@@ -630,24 +632,26 @@ void *soustraction(void *num1, void *num2){
 		pbuf++;
 		buflen++;
 	}
-	for(ij = ij-1, ptr2 = ptr2; ij > 0; ij--, ptr2++){
-		v2[0] = *ptr2;
-		v2[0] = atoi(v2);
-		if(v2[0] - retenue < 0){
-			result = v2[0] - retenue;
-			retenue = 0;
-		}else{
-			result = 10 - v2[0] - retenue;
-			retenue = 1;
+	if(ij > 0){
+		for(ij = ij-1, ptr2 = ptr2; stop = (ij == 0), stop == 0; ij--, ptr2++){
+			v2[0] = *ptr2;
+			v2[0] = atoi(v2);
+			if(v2[0] - retenue < 0){
+				result = v2[0] - retenue;
+				retenue = 0;
+			}else{
+				result = 10 - v2[0] - retenue;
+				retenue = 1;
+			}
+			if(buflen + 1 >= BUFFER){
+				z++;
+				buflen = 0;
+				pbuf = reallocation((void **)&buffer,z*BUFFER);
+			}
+			sprintf(pbuf, "%i", result);
+			pbuf++;
+			buflen++;
 		}
-		if(buflen + 1 >= BUFFER){
-			z++;
-			buflen = 0;
-			pbuf = reallocation((void **)&buffer,z*BUFFER);
-		}
-		sprintf(pbuf, "%i", result);
-		pbuf++;
-		buflen++;
 	}
 	pbuf = (*(pbuf) == '.') ? pbuf +1: pbuf;
 	while(strlen(buffer) > 1 && (buffer[strlen(buffer)-1] == '0'&& buffer[strlen(buffer)-2] != '.')){
@@ -667,7 +671,7 @@ void *soustraction(void *num1, void *num2){
 	pbuf = buffer;
 	ij = strlen(pbuf);
 	pret = allocation((void **)&ret, ij+1, sizeof(char));
-	for(ii = ij-1, pret = pret; ii >= 0; ii--, pret++)
+	for(ii = ij-1, pret = pret; stop = (ii+1 == 0), stop == 0; ii--, pret++)
 		*pret = pbuf[ii];
 	if(equal("0",ret) == 0){
 		strcpy(ret,"0");
