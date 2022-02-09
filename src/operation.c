@@ -188,11 +188,11 @@ void *addition(void *num1, void *num2){
 		v1[2] = { 0, 0 }, v2[2] = { 0, 0 },
 		*buffer, *pbuf, *ret, *pret,
 		*ptr1 = NULL, *ptr2= NULL,
-		result = 0, retenue = 0, neg = 0, neg1 = 0, neg2 = 0, set = 0;
+		result = 0, retenue = 0, neg = 0, neg1 = 0, neg2 = 0, set = 0, stop, stop_;
 	unsigned long int dot1_len = 0, dot2_len = 0,
 				val1_len = 0, val2_len = 0,
 				buflen = 0, z = 1;
-	long long int ii = 0, ij = 0;
+	unsigned long int ii = 0, ij = 0;
 	NEG;
 	if(neg1 || neg2){
 		if(neg1 && neg2)
@@ -232,7 +232,7 @@ void *addition(void *num1, void *num2){
 			ptr1 = &dot2[dot2_len-1];
 			ptr2 = &dot1[dot1_len-1];
 		}
-		for(ii = ii, ptr1 = ptr1; ii != ij && ii > 0; ii--, ptr1--){
+		for(stop = (ii == 0), ii = ii, ptr1 = ptr1; ii != ij && stop == 0; ii--, stop = (ii+1 == 0),ptr1-=(stop == 0)){
 			v1[0] = *ptr1;
 			if(buflen + 1 >= BUFFER){
 				z++;
@@ -243,24 +243,27 @@ void *addition(void *num1, void *num2){
 			pbuf++;
 			buflen++;
 		}
-		for(ii = ii, ptr1 = ptr1, ptr2 = ptr2; ii > 0; ii--, ptr1--, ptr2--){
-			v1[0] = *ptr1;
-			v2[0] = *ptr2;
-			v1[0] = atoi(v1);
-			v2[0] = atoi(v2);
-			result = v1[0] + v2[0] + retenue;
-			if(result >= 10){
-				retenue = 1;
-				result -= 10;
-			}else	retenue = 0;
-			if(buflen + 1 >= BUFFER){
-				z++;
-				buflen = 0;
-				pbuf = reallocation((void **)&buffer, BUFFER*z);
+		/*ICI*/
+		if(ii > 0){
+			for(stop = 0, ii = ii, ptr1 = ptr1, ptr2 = ptr2; stop = (ii == 0), stop == 0; ii--, stop = (ii + 1 == 0),ptr1-=(stop == 0), ptr2-=(stop == 0)){
+				v1[0] = *ptr1;
+				v2[0] = *ptr2;
+				v1[0] = atoi(v1);
+				v2[0] = atoi(v2);
+				result = v1[0] + v2[0] + retenue;
+				if(result >= 10){
+					retenue = 1;
+					result -= 10;
+				}else	retenue = 0;
+				if(buflen + 1 >= BUFFER){
+					z++;
+					buflen = 0;
+					pbuf = reallocation((void **)&buffer, BUFFER*z);
+				}
+				sprintf(pbuf, "%i", result);
+				pbuf++;
+				buflen++;
 			}
-			sprintf(pbuf, "%i", result);
-			pbuf++;
-			buflen++;
 		}
 	}else{
 		if(dot1 && !dot2){
@@ -272,7 +275,7 @@ void *addition(void *num1, void *num2){
 				ptr1 = &dot2[dot2_len-1];
 			}
 		}
-		for(ii = ii, ptr1 = ptr1; ii > 0;ii--, ptr1--){
+		for(stop = (ii == 0),ii = ii, ptr1 = ptr1; stop == 0;ii--,stop = (ii + 1 == 0), ptr1-=(stop == 0)){
 			if(buflen + 1 >= BUFFER){
 				z++;
 				buflen = 0;
@@ -294,7 +297,9 @@ void *addition(void *num1, void *num2){
 		buflen++;
 	}
 	for(ptr1 = val1, ptr2 = val2, ii = val1_len, ij = val2_len;
-		ii > 0 && ij > 0; ii--, ij--, ptr1--, ptr2--){
+		stop = (ii == 0),
+		stop_ = (ij == 0),
+		stop == 0 && stop_ == 0; ii--, ij--, ptr1--, ptr2--){
 		v1[0] = *ptr1;
 		v2[0] = *ptr2;
 		v1[0] = atoi(v1);
@@ -318,7 +323,7 @@ void *addition(void *num1, void *num2){
 			ii = ij;
 			ptr1 = ptr2;
 		}
-		for(ii = ii, ptr1 = ptr1; ii > 0; ii--,ptr1--){
+		for(ii = ii, ptr1 = ptr1; stop = (ii == 0), stop == 0; ii--,ptr1--){
 			v1[0] = *ptr1;
 			v1[0] = atoi(v1);
 			result = v1[0] + retenue;
@@ -356,7 +361,7 @@ void *addition(void *num1, void *num2){
 	}
 	ij = strlen(buffer);
 	pret = allocation((void **)&ret, ij+1, sizeof(char));
-	for(ii = ij-1, pret = pret; ii >= 0; ii--, pret++)
+	for(ii = ij-1, pret = pret; stop = (ii +1 == 0), stop == 0; ii--, pret++)
 		*pret = buffer[ii];
 	free(buffer);
 	buffer = ret;
