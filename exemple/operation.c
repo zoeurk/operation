@@ -459,7 +459,7 @@ void *soustraction(void *num1, void *num2){
 	if(dot2 != NULL && dot2_len == 0)
 		val2_len--;
 	if(dot1_len > dot2_len){
-		for(ii = (long long int)dot1_len;stop = (ii -1 ==0), stop == 0 && (unsigned long int)ii != dot2_len; ii--){
+		for(ii = dot1_len;stop = (ii -1 ==0), stop == 0 && (unsigned long int)ii != dot2_len; ii--){
 			if(buflen + 1 >= BUFFER){
 				z++;
 				buflen = 0;
