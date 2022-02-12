@@ -1189,6 +1189,7 @@ void *modulo(void *num1, void *num2){
 		point = 1;
 		zero++;
 	}
+	printf("%s\n", reste);
 	for(x = 9; x >= 0;x--){
 		sprintf(t,"%i", x);
 		temp = multiplication(t, diviseur);
@@ -1234,11 +1235,7 @@ void *modulo(void *num1, void *num2){
 		}
 		ii++;
 	}
-	//return NULL;
-	//fprintf(stderr,"%s\n", zero_);
-	//pzero_ = division(reste, zero_, strlen(zero_)+1, 0);
-	//printf("==>%s::%s::%s\n",reste, zero_,pzero_);
-	//exit(0);
+	//printf("%lu\n",ii);
 	if(zero_){
 		pzero_ = division(reste, zero_, strlen(reste)+3, 0);
 		free(reste);
@@ -1246,8 +1243,6 @@ void *modulo(void *num1, void *num2){
 	}
 	if(zero_)
 		free(zero_);
-	//free(reste);
-	//free(zero_);
 	if(neg){
 		temp = allocation((void **)&temp,strlen(reste)+2, sizeof(char));
 		*temp = '-';
