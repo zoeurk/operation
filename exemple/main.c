@@ -171,6 +171,7 @@ int main(int argc, char **argv){
 		printf("division:%s\n", (char *)r);
 		free(r);
 	}
+	/*BUG*/
 	r = modulo(argv[1], argv[2]);
 	if(r){
 		printf("modulo:%s\n", (char *)r);

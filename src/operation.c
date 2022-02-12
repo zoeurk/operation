@@ -1103,6 +1103,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	free(diviseur);
 	return result;
 }
+/*BUG*/
 void *modulo(void *num1, void *num2){
 	char *n1 = num1, *n2 = num2,
 		*quotient = NULL, *dividende = NULL, *diviseur = NULL, *reste = NULL, *preste, *zero_ = NULL, *pzero_,
