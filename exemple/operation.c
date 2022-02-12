@@ -181,6 +181,7 @@ int equal(void *num1, void *num2){
 	}
 	return 0;
 }
+/*BUG*/
 void *addition(void *num1, void *num2){
 	char *n1 = num1, *n2 = num2,
 		*dot1, *dot2,
@@ -286,16 +287,17 @@ void *addition(void *num1, void *num2){
 			buflen++;
 		}
 	}
-	if(dot1_len || dot2_len){
-		if(buflen + 1 >= BUFFER){
-			z++;
-			buflen = 0;
-			pbuf = reallocation((void **)&buffer, BUFFER*z);
-		}
-		sprintf(pbuf,".");
-		pbuf++;
-		buflen++;
-	}
+	//if(dot1_len || dot2_len){
+		//if(buflen + 1 >= BUFFER){
+		//	z++;
+		//	buflen = 0;
+		//	pbuf = reallocation((void **)&buffer, BUFFER*z);
+		//}
+		//sprintf(pbuf,".");
+		//printf("%s\n", buffer);
+		//pbuf++;
+		//buflen++;
+	//}
 	for(ptr1 = val1, ptr2 = val2, ii = val1_len, ij = val2_len;
 		stop = (ii == 0),
 		stop_ = (ij == 0),
@@ -352,6 +354,7 @@ void *addition(void *num1, void *num2){
 		buflen++;
 	}
 	pbuf = buffer;
+	printf("===%s\n", buffer);
 	ii = 0;
 	while(*pbuf == '0'){
 		if(*(pbuf+1) == 0)
@@ -366,6 +369,7 @@ void *addition(void *num1, void *num2){
 	free(buffer);
 	buffer = ret;
 	set = 0;
+	printf("%s\n", buffer);
 	if(dot1 || dot2){
 		while(*buffer == '0'&& *(buffer+1) == '0'){
 			*buffer = 0;
@@ -1103,7 +1107,6 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	free(diviseur);
 	return result;
 }
-/*BUG*/
 void *modulo(void *num1, void *num2){
 	char *n1 = num1, *n2 = num2,
 		*quotient = NULL, *dividende = NULL, *diviseur = NULL, *reste = NULL, *preste, *zero_ = NULL, *pzero_,
