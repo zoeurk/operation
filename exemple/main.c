@@ -35,7 +35,7 @@ char *cosinus(char *arg){
 	}
 	free(pi_);
 	free(npi_);
-	printf("%s\n", t);
+	//printf("%s\n", t);
 	return t;
 }
 char *racine_carree(void *num1, unsigned long int virgule, int approximation){
@@ -206,46 +206,33 @@ int main(int argc, char **argv){
 	if(equal(argv[1],"0") < 0)
 		fprintf(stderr, "Racine carree non applicable sur un nombre negatif:%s\n", argv[1]);
 	else{
-		r = racine_carree(argv[1], atoi(argv[3]),0);
-		if(r){
-			check = multiplication(r, r);
-			printf("racine carree aproximatif de '%s': %s\n", argv[1], r);
-			printf("Verification:%s:%s\n", check, r);
-			free(r);
-			//if(equal(check,"0") != 0)
-			free(check);
-		}
-		/*r = racine_carree(argv[1], atoi(argv[3]),0);
-		if(r){
-			check = NULL;
-			check = multiplication(r, r);
-			printf("racine carree de '%s': %s\n", argv[1], r);
-			printf("Verification:%s\n", check);
-			//free(r);
-			fprintf(stderr, "=====================\n");
-			//if(equal(check,"1") > 0)
+		if(equal(argv[1],"1") < 0)
+			fprintf(stderr,"Je ne sais pas faire la racines carree d'un nombre < 1");
+		else{
+			r = racine_carree(argv[1], atoi(argv[3]),0);
+			if(r){
+				check = multiplication(r, r);
+				printf("racine carree aproximatif de '%s': %s\n", argv[1], r);
+				printf("Verification:%s:%s\n", check, r);
+				free(r);
 				free(check);
-			fprintf(stderr,"______________________\n");
-		}*/
+			}
+		}
 	}
 	if(equal(argv[2], "0") < 0)
 		fprintf(stderr, "Racine carree non applicable sur un nombre negatif:%s\n", argv[2]);
 	else{
-		r = racine_carree(argv[2], atoi(argv[3]),1);
-		if(r){
-			check = multiplication(r, r);
-			printf("racine carree aproximatif de '%s': %s\n", argv[2], r);
-			printf("Verification:%s\n", check);
-			free(r);
-			free(check);
-		}
-		r = racine_carree(argv[2], atoi(argv[3]),0);
-		if(r){
-			check = multiplication(r, r);
-			printf("racine carree de '%s': %s\n", argv[2], r);
-			printf("Verification:%s\n", check);
-			free(r);
-			free(check);
+		if(equal(argv[2],"1") < 0)
+			fprintf(stderr,"Je ne sais pas faire la racines carree d'un nombre < 1");
+		else{
+			r = racine_carree(argv[2], atoi(argv[3]),1);
+			if(r){
+				check = multiplication(r, r);
+				printf("racine carree aproximatif de '%s': %s\n", argv[2], r);
+				printf("Verification:%s\n", check);
+				free(r);
+				free(check);
+			}
 		}
 	}
 	/*printf("%Lf\n", sqrtl(strtold(argv[1], NULL)));*/

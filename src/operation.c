@@ -1105,7 +1105,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	free(diviseur);
 	return result;
 }
-/*BUG*/
+/*BUG POSSIBLE*/
 void *modulo(void *num1, void *num2){
 	char *n1 = num1, *n2 = num2,
 		*quotient = NULL, *dividende = NULL, *diviseur = NULL, *reste = NULL, *preste, *zero_ = NULL, *pzero_,
@@ -1189,7 +1189,7 @@ void *modulo(void *num1, void *num2){
 		point = 1;
 		zero++;
 	}
-	printf("%s\n", reste);
+	//printf("%s\n", reste);
 	for(x = 9; x >= 0;x--){
 		sprintf(t,"%i", x);
 		temp = multiplication(t, diviseur);
