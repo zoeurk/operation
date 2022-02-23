@@ -42,7 +42,6 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	unsigned long int len = strlen(num1)-(strchr(num1, '.') != NULL), v = virgule + (virgule != 0);
 	char buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test, *last = NULL;
 	//int start = 0;
-	unsigned long int count = len -1, c = 0;
 	if((test = strchr(num1,'.')) != NULL){
 		test++;
 		if(virgule < strlen(test)){
@@ -70,7 +69,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 				*(test+1+v) = 0; 
 		}
 		check = multiplication(presult, presult);
-		/*if(last == NULL){
+		if(last == NULL){
 			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
 			strcpy(last, check);
 		}else{
@@ -82,10 +81,8 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 			free(last);
 			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
 			strcpy(last, check);
-		}*/
-		//printf("%s\n",check);
-		c++;
-	}while(equal(num1, check) < 0 && c < count);
+		}
+	}while(equal(num1, check) < 0);
 	//exit(0);
 	if(last)
 		free(last);
@@ -207,13 +204,21 @@ int main(int argc, char **argv){
 		fprintf(stderr, "Racine carree non applicable sur un nombre negatif:%s\n", argv[1]);
 	else{
 		if(equal(argv[1],"1") < 0)
-			fprintf(stderr,"Je ne sais pas faire la racines carree d'un nombre < 1");
+			fprintf(stderr,"Je ne sais pas faire la racines carree d'un nombre < 1\n");
 		else{
-			r = racine_carree(argv[1], atoi(argv[3]),0);
+			r = racine_carree(argv[1], atoi(argv[3]),1);
 			if(r){
 				check = multiplication(r, r);
 				printf("racine carree aproximatif de '%s': %s\n", argv[1], r);
-				printf("Verification:%s:%s\n", check, r);
+				printf("Verification:%s\n", check);
+				free(r);
+				free(check);
+			}
+			r = racine_carree(argv[1], atoi(argv[3]),0);
+			if(r){
+				check = multiplication(r, r);
+				printf("racine carree de %s': %s\n", argv[1], r);
+				printf("Verification:%s\n", check);
 				free(r);
 				free(check);
 			}
@@ -223,12 +228,20 @@ int main(int argc, char **argv){
 		fprintf(stderr, "Racine carree non applicable sur un nombre negatif:%s\n", argv[2]);
 	else{
 		if(equal(argv[2],"1") < 0)
-			fprintf(stderr,"Je ne sais pas faire la racines carree d'un nombre < 1");
+			fprintf(stderr,"Je ne sais pas faire la racines carree d'un nombre < 1\n");
 		else{
 			r = racine_carree(argv[2], atoi(argv[3]),1);
 			if(r){
 				check = multiplication(r, r);
 				printf("racine carree aproximatif de '%s': %s\n", argv[2], r);
+				printf("Verification:%s\n", check);
+				free(r);
+				free(check);
+			}
+			r = racine_carree(argv[2], atoi(argv[3]),0);
+			if(r){
+				check = multiplication(r, r);
+				printf("racine carree de '%s': %s\n", argv[2], r);
 				printf("Verification:%s\n", check);
 				free(r);
 				free(check);
