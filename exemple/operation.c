@@ -691,10 +691,10 @@ void *multiplication(void *num1, void *num2){
 		*buffer = NULL,
 		*resultat = NULL, 
 		*result = NULL, *presult, *total = NULL,*pbuf,
-		retenue = 0, neg = 0, neg1 = 0, neg2 = 0, z = 0, stop;
+		retenue = 0, neg = 0, neg1 = 0, neg2 = 0, z = 0;
 	unsigned long int dot1_len = 0, dot2_len = 1, dot_len = 1,
-				buflen = 0, iz = 1, zero = 0, x = 0;
-	unsigned long int ii = 0, ij = 0,ii_ = 0;
+				buflen = 0, iz = 1, zero = 0;
+	long long int ii = 0, ij = 0,ii_ = 0,x = 0;
 	NEG;
 	NEG_TEST;
 	if(equal("0", n1) == 0 || equal("0", n2) == 0){
@@ -711,15 +711,14 @@ void *multiplication(void *num1, void *num2){
 	pbuf = allocation((void **)&resultat, BUFFER, sizeof(char));
 	for(n1 = n1,
 		ii = strlen(n1);
-		stop = (ii == 0),
-		stop == 0; ii--,
-		zero += (ii >= 1 && n1[ii-1] != '.')
+		ii > 0; ii--,
+		zero += (ii > 0 && n1[ii-1] != '.')
 	){
 		if(n1[ii-1] == '.')continue;
 		v1[0] = n1[ii-1];
 		v1[0] = atoi(v1);
 		if(zero){
-			for(x = 0;x < zero; x++){
+			for(x = 0; (unsigned long int)x < zero; x++){
 				if(buflen+1 >= BUFFER){
 					iz++;
 					buflen = 0;
@@ -730,7 +729,7 @@ void *multiplication(void *num1, void *num2){
 				buflen++;
 			}
 		}
-		for(n2 = n2, ij = strlen(n2); stop = (ij == 0), stop == 0;ij--){
+		for(n2 = n2, ij = strlen(n2); ij > 0;ij--){
 			if(n2[ij-1] == '.')continue;
 			v2[0] = n2[ij-1];
 			v2[0] = atoi(v2);
@@ -762,7 +761,7 @@ void *multiplication(void *num1, void *num2){
 					*pbuf = temp[0];
 					*(pbuf+1) = temp[1];
 					result = allocation((void **)&result, strlen(resultat)+1, sizeof(char));
-					for(presult = result,ii_ = strlen(resultat); stop = (ii_ == 0), stop == 0; ii_--,presult++)
+					for(presult = result,ii_ = strlen(resultat); ii_ > 0; ii_--,presult++)
 						*presult = resultat[ii_-1];
 					memset(resultat, 0, strlen(resultat));
 					pbuf = reallocation((void **)&resultat,BUFFER);
@@ -810,7 +809,7 @@ void *multiplication(void *num1, void *num2){
 							pbuf++;
 							buflen++;
 							result = allocation((void **)&result, strlen(resultat)+1, sizeof(char));
-							for(presult = result,ii_ = strlen(resultat); stop = (ii_ == 0), stop == 0; ii_--,presult++){
+							for(presult = result,ii_ = strlen(resultat); ii_ > 0; ii_--,presult++){
 								*presult = resultat[ii_-1];
 							}
 							if(total == NULL){
@@ -834,7 +833,7 @@ void *multiplication(void *num1, void *num2){
 	if(total && dot_len > 0){
 		if(strlen(total) < dot_len){
 			pbuf = allocation((void **)&buffer, dot_len +2, sizeof(char));
-			for(result = &buffer[dot_len +1], ii = strlen(total)-1;stop = (ii -1 == 0), stop == 0;result--,ii--)
+			for(result = &buffer[dot_len +1], ii = strlen(total)-1;ii >= 0;result--,ii--)
 				*result = total[ii];
 			for(result = result, ii = 0;(unsigned long int)ii < dot_len-strlen(total);ii++, result--)
 				*result = '0';
