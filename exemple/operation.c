@@ -1238,13 +1238,15 @@ void *modulo(void *num1, void *num2){
 	}
 	if(set){
 		for(set = set; set > 0; set--){
-			temp = division(diviseur, "10", strlen(diviseur), 0);
-			free(diviseur);
-			diviseur = temp;
+			if(equal(diviseur, reste) < 0){
+				temp = division(diviseur, "10", strlen(diviseur), 0);
+				free(diviseur);
+				diviseur = temp;
+				temp = modulo(reste, diviseur);
+				free(reste);
+				reste = temp;
+			}else break;
 		}
-		temp = modulo(reste, diviseur);
-		free(reste);
-		reste = temp;
 	}
 	//printf("%s::%s\n", reste, diviseur);
 	//printf("%lu\n",ii);
