@@ -15,9 +15,9 @@
 	if(dot2)dot2++;
 
 #define NEG \
-	for(n1 = n1; *n1 == '-' || *n1 == '+'; n1++) \
+	for(n1 = n1; *n1 == '-'; n1++) \
 		neg1 = !neg1; \
-	for(n2 = n2; *n2 == '-' || *n2 == '+'; n2++) \
+	for(n2 = n2; *n2 == '-'; n2++) \
 		neg2 = !neg2;
 
 #define NEG_TEST \
@@ -25,9 +25,9 @@
 		neg = 1;
 
 #define ZERO \
-while(*n1 == '0' && *(n1+1) != '.') \
-	n1++;\
-while(*n2 == '0' && *(n2+1) != '.') \
+while(*n1 == '0' && *(n1+1) != '.' && *(n1+1) != 0) \
+	n1++; \
+while(*n2 == '0' && *(n2+1) != '.' && *(n2+1) != 0) \
 	n2++;
 
 #define VALEUR_NEGATIVE(buffer, pbuf, ii) \
@@ -45,7 +45,7 @@ while(*n2 == '0' && *(n2+1) != '.') \
 	} \
 	*buffer = '-';
 
-#define BUFFER 2
+#define BUFFER 54
 void *allocation(void **ptr, unsigned long int members, unsigned long int size);
 void *reallocation(void **ptr, unsigned long int size);
 int equal(void *num1, void *num2);

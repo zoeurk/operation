@@ -1235,6 +1235,7 @@ void *modulo(void *num1, void *num2){
 		}
 		ii++;
 	}
+	//printf("%s\n", reste);
 	if(set){
 		for(set = set; set > 0; set--){
 			if(equal(diviseur, reste) < 0){
