@@ -905,7 +905,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	memcpy(diviseur, n2, strlen(n2));
 	memcpy(dividende, n1, strlen(n1));
 	do{
-		if((n2 = strchr(diviseur,'.')) == NULL/*  && (n1 = strchr(dividende, '.')) == NULL*/)
+		if((n2 = strchr(diviseur,'.')) == NULL  && (n1 = strchr(dividende, '.')) == NULL)
 				break;
 		temp = multiplication(diviseur, "10");
 		free(diviseur);
@@ -1113,7 +1113,7 @@ void *modulo(void *num1, void *num2){
 		neg1 = 0, neg2 = 0, neg = 0;
 	unsigned long int len = 0, virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
 	unsigned long int ii = 0;
-	int x;
+	int x, set = 0;
 	NEG;
 	NEG_TEST;
 	if(equal(n2,"0") == 0 || equal(n2,"-0") == 0){
@@ -1165,6 +1165,7 @@ void *modulo(void *num1, void *num2){
 			free(zero_);
 			zero_ = pzero_;
 		}
+		set++;
 	}while(1);
 	/*printf("%s::%s\n", diviseur, dividende);
 	exit(0);*/
@@ -1235,6 +1236,17 @@ void *modulo(void *num1, void *num2){
 		}
 		ii++;
 	}
+	if(set){
+		for(set = set; set > 0; set--){
+			temp = division(diviseur, "10", strlen(diviseur), 0);
+			free(diviseur);
+			diviseur = temp;
+		}
+		temp = modulo(reste, diviseur);
+		free(reste);
+		reste = temp;
+	}
+	//printf("%s::%s\n", reste, diviseur);
 	//printf("%lu\n",ii);
 	if(zero_){
 		pzero_ = division(reste, zero_, strlen(reste)+3, 0);
