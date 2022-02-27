@@ -1100,6 +1100,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	}
 	if((n1 = strchr(result,'.')) != NULL)
 		for(n2 = &result[strlen(result) - 1]; n2 != (n1-1) && (*n2 == '.' || *n2 == '0') ; *n2 = 0, n2--);;
+	//printf("==>%s\n", reste);
 	free(reste);
 	free(dividende);
 	free(diviseur);
@@ -1258,13 +1259,13 @@ void *modulo(void *num1, void *num2){
 	}
 	if(zero_)
 		free(zero_);
-	if(neg){
+	/*if(neg){
 		temp = allocation((void **)&temp,strlen(reste)+2, sizeof(char));
 		*temp = '-';
 		strcpy(&temp[1], reste);
 		free(reste);
 		reste = temp;
-	}
+	}*/
 	free(dividende);
 	free(diviseur);
 	return reste;
