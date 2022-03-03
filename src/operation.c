@@ -60,6 +60,10 @@ int equal(void *num1, void *num2){
 	if(dot2)dot2++;
 	for(n1 = n1;*(n1+1) != '.' && (*n1 == '0' || *n1 == '+' || *n1 == '-'); n1++);;
 	for(n2 = n2;*(n2+1) != '.' && (*n2 == '0' || *n2 == '+' || *n2 == '-'); n2++);;
+	if(n1 != num1 && n2 == num2)
+		return -1;
+	if(n1 == num1 && n2 != num2)
+		return 1;
 	val1 = n1;
 	val2 = n2;
 	val1_len = strlen(n1);
