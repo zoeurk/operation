@@ -47,8 +47,8 @@ int equal(void *num1, void *num2){
 		v1[2] = { 0, 0 }, v2[2] = { 0, 0 },
 		neg1 = 0, neg2 = 0;
 	unsigned long int dot1_len = 0, dot2_len = 0,
-				val1_len = 0, val2_len = 0;
-	long long ii = 0, x, y;
+				val1_len = 0, val2_len = 0, ii;
+	//long long ii = 0;
 	for(val1 = n1; *val1 == '-' || *val1 == '+'; val1++)
 		if(*val1 == '-')
 			neg1 = !neg1;
@@ -139,7 +139,7 @@ int equal(void *num1, void *num2){
 				return 1;
 			else	return -1;
 		}
-	for(val1 = val1, val2 = val2, ii = 0;ii < (long long int)val1_len; ii++, val1++, val2++){
+	for(val1 = val1, val2 = val2, ii = 0;ii < val1_len; ii++, val1++, val2++){
 		v1[0] = *val1;
 		v2[0] = *val2;
 		v1[0] = atoi(v1);
