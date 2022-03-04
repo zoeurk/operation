@@ -48,7 +48,7 @@ int equal(void *num1, void *num2){
 		neg1 = 0, neg2 = 0;
 	unsigned long int dot1_len = 0, dot2_len = 0,
 				val1_len = 0, val2_len = 0;
-	unsigned long int ii = 0;
+	long long ii = 0, x, y;
 	for(val1 = n1; *val1 == '-' || *val1 == '+'; val1++)
 		if(*val1 == '-')
 			neg1 = !neg1;
@@ -58,12 +58,160 @@ int equal(void *num1, void *num2){
 	DOT_INIT;
 	if(dot1)dot1++;
 	if(dot2)dot2++;
-	for(n1 = n1;*(n1+1) != '.' && (*n1 == '0' || *n1 == '+' || *n1 == '-'); n1++);;
-	for(n2 = n2;*(n2+1) != '.' && (*n2 == '0' || *n2 == '+' || *n2 == '-'); n2++);;
-	if(n1 != num1 && n2 == num2)
+	//for(n1 = n1, x = 0;*(n1+1) != '.' && (*n1 == '0' || *n1 == '+' || *n1 == '-'); x += (*n1 == '+') - (*n1 == '-'),n1++);;
+	//for(n2 = n2, y = 0;*(n2+1) != '.' && (*n2 == '0' || *n2 == '+' || *n2 == '-'); y += (*n2 == '+') - (*n2 == '-'),n2++);;
+	//printf("%lli::%lli\n", x, y);
+	/*if(x < 0 && y >= 0){
+		printf("ok\n");
 		return -1;
-	if(n1 == num1 && n2 != num2)
+	}else if( x >= 0 && y < 0){
+			printf("Grrr!!!\n");
+			return 1;
+		}*/
+	val1 = n1;
+	val2 = n2;
+	val1_len = strlen(n1);
+	val2_len = strlen(n2);
+	val1_len = (dot1_len) ? val1_len - dot1_len -1: val1_len; 
+	val2_len = (dot2_len) ? val2_len - dot2_len -1: val2_len;
+	if(neg1 && !neg2){
+		if((pdot = strchr(val1, '.')) != NULL)
+			for(pdot = val1 +val1_len,
+				dot[0] = 0;
+				*pdot != 0 &&
+				dot[0] == 0;
+				pdot++
+			)if(*pdot != '0')dot[0] = *pdot;
+		if(strncmp(val1,val2, 1 ) == 0 && dot[0] == 0)
+			return 0;
+		return -1;
+	}
+	if(neg2 && !neg1){
+		if((pdot = strchr(val2, '.')) != NULL)
+			for(pdot = val2 +val2_len,
+				dot[0] = 0;
+				*pdot != 0 &&
+				dot[0] == 0;
+				pdot++
+			){
+				if(*pdot != '0')dot[0] = *pdot;
+			}
+		if(strncmp(val1,val2, 1 ) == 0 && dot[0] == 0){
+			return 0;
+		}
 		return 1;
+	}
+	if(strcmp(val1,"0") == 0 && strcmp(val2,"0") == 0)
+		return 0;
+	if(strcmp(val1,val2)==0)
+		return 0;
+	while(*val1 == '0' && *(val1+1) != '.'){
+		val1_len--;
+		val1++;
+	}
+	while(*val2 == '0' && *(val2+1) != '.'){
+		val2_len--;
+		val2++;
+	}
+	if(val1[strlen(val1)-1] == '.')
+		val1_len--;
+	if(val2[strlen(val2)-1] == '.')
+		val2_len--;
+	if(*val1 == '0'){
+		while(*val1 == '0' && *(val1+1) != 0){
+			val1_len--;
+			val1++;
+		}
+	}
+	if(*val2 == '0'){
+		while(*val2 == '0' && *(val2+1) != 0){
+			val2_len--;
+			val2++;
+		}
+	}
+	if(val1_len > val2_len){
+		if(neg1 && neg2){
+			return -1;
+		}
+		return 1;
+	}else	if(val1_len < val2_len){
+			if(neg1 && neg2)
+				return 1;
+			else	return -1;
+		}
+	for(val1 = val1, val2 = val2, ii = 0;ii < (long long int)val1_len; ii++, val1++, val2++){
+		v1[0] = *val1;
+		v2[0] = *val2;
+		v1[0] = atoi(v1);
+		v2[0] = atoi(v2);
+		if(v1[0] > v2[0]){
+			if(neg1 && neg2)
+				return -1;
+			return 1;
+		}else	if(v1[0] < v2[0]){
+				if(neg1 && neg2)
+					return 1;
+				return -1;
+			}
+	}
+	if(dot1 && dot2){
+		for(dot1 = dot1, dot2 = dot2;
+			*dot1 != 0 && *dot2 !=0;
+			dot1++, dot2++
+		){
+			if(*dot1 > *dot2){
+				if(neg1 && neg2)
+					return -1;
+				return 1;
+			}
+			if(*dot1 < *dot2){
+				if(neg1 && neg2)
+					return 1;
+				return -1;
+			}
+		}
+	}
+	if((!dot1 || *dot1 == 0 )&& dot2 && *dot2 != 0){
+		for(dot2 = dot2; *dot2 != 0; dot2++)
+			if(*dot2 > '0'){
+				if(*n1 == '-' && *n2 == '-')
+					return 1;
+				return -1;
+			}
+	}
+	if((dot1 && *dot1 != 0) && (!dot2 || *dot2 == 0)){
+		for(dot1 = dot1; *dot1 != 0; dot1++)
+			if(*dot1 > '0'){
+				if(*n1 == '-' && *n2 == '-')
+					return -1;
+				return 1;
+			}
+	}
+	return 0;
+}
+/*int equal(void *num1, void *num2){
+	char *n1 = num1, *n2 = num2,
+		*dot1, *dot2, *pdot, dot[2] = {0, 0},
+		*val1, *val2,
+		v1[2] = { 0, 0 }, v2[2] = { 0, 0 },
+		neg1 = 0, neg2 = 0,
+		plus = 0, moin = 0, plus_;
+	unsigned long int dot1_len = 0, dot2_len = 0,
+				val1_len = 0, val2_len = 0;
+	unsigned long int ii = 0;
+	long long int y,z;
+	for(val1 = n1,y = 0;*val1 == '-' || *val1 == '+'; y += -(*val1 == '-')+(*val1 == '+'), val1++)
+		if(*val1 == '-')
+			neg1 = !neg1;
+	for(val2 = n2, z = 0;*val2 == '-' || *val2 == '+'; z = (*val2 == '-'), val2++)
+		if(*val2 == '-')
+			neg2 = !neg2;
+	printf("%lli,%lli\n",y, z);
+	DOT_INIT;
+	if(dot1)dot1++;
+	if(dot2)dot2++;
+	for(n1 = n1; *(n1+1) != '.' && (*n1 == '0' || *n1 == '+' || *n1 == '-'); n1++);;
+	for(n2 = n2; *(n2+1) != '.' && (*n2 == '0' || *n2 == '+' || *n2 == '-'); n2++);;
 	val1 = n1;
 	val2 = n2;
 	val1_len = strlen(n1);
@@ -184,7 +332,7 @@ int equal(void *num1, void *num2){
 			}
 	}
 	return 0;
-}
+}*/
 void *addition(void *num1, void *num2){
 	char *n1 = num1, *n2 = num2,
 		*dot1, *dot2,
