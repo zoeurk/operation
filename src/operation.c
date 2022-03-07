@@ -683,7 +683,7 @@ void *multiplication(void *num1, void *num2){
 		retenue = 0, neg = 0, neg1 = 0, neg2 = 0, z = 0;
 	unsigned long int dot1_len = 0, dot2_len = 1, dot_len = 1,
 				buflen = 0, iz = 1, zero = 0;
-	long long int ii = 0, ij = 0,ii_ = 0,x = 0;
+	unsigned long int ii = 0, ij = 0,ii_ = 0,x = 0;
 	NEG;
 	NEG_TEST;
 	if(equal("0", n1) == 0 || equal("0", n2) == 0){
@@ -822,7 +822,7 @@ void *multiplication(void *num1, void *num2){
 	if(total && dot_len > 0){
 		if(strlen(total) < dot_len){
 			pbuf = allocation((void **)&buffer, dot_len +2, sizeof(char));
-			for(result = &buffer[dot_len +1], ii = strlen(total)-1;ii >= 0;result--,ii--)
+			for(result = &buffer[dot_len +1], ii = strlen(total)-1;ii+1 > 0;result--,ii--)
 				*result = total[ii];
 			for(result = result, ii = 0;(unsigned long int)ii < dot_len-strlen(total);ii++, result--)
 				*result = '0';
@@ -874,7 +874,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}, *result = NULL, *pr, point = 0, *arrondi = NULL,
 		neg = 0, neg1 = 0, neg2 = 0;
 	unsigned long int buflen = 0, qbuf = 1, len = 0, virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
-	long long int ii = 0;
+	unsigned long int ii = 0;
 	int x;
 	NEG;
 	NEG_TEST;
