@@ -15,19 +15,21 @@
 	if(dot2)dot2++;
 
 #define NEG \
-	for(n1 = n1; *n1 == '-'; n1++) \
-		neg1 = !neg1; \
-	for(n2 = n2; *n2 == '-'; n2++) \
-		neg2 = !neg2;
+	for(n1 = n1; *n1 == '-' || *n1 == '+'; n1++) \
+		if(*n1 == '-')\
+			neg1 = !neg1; \
+	for(n2 = n2; *n2 == '-' || *n2 == '+'; n2++) \
+		if(*n2 == '-') \
+			neg2 = !neg2;
 
 #define NEG_TEST \
 	if(neg1 != neg2)\
 		neg = 1;
 
 #define ZERO \
-while(*n1 == '0' && *(n1+1) != '.' && *(n1+1) != 0) \
-	n1++; \
-while(*n2 == '0' && *(n2+1) != '.' && *(n2+1) != 0) \
+while(*n1 == '0' && *(n1+1) != '.') \
+	n1++;\
+while(*n2 == '0' && *(n2+1) != '.') \
 	n2++;
 
 #define VALEUR_NEGATIVE(buffer, pbuf, ii) \
