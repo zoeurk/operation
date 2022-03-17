@@ -105,9 +105,10 @@ int equal(void *num1, void *num2){
 		val2_len--;
 		val2++;
 	}
-	if(val1[strlen(val1)-1] == '.')
+	//fprintf(stderr, "%lu\n",strlen(val1));
+	if(strlen(val1) > 0 && val1[strlen(val1)-1] == '.')
 		val1_len--;
-	if(val2[strlen(val2)-1] == '.')
+	if(strlen(val2) > 0 && val2[strlen(val2)-1] == '.')
 		val2_len--;
 	if(*val1 == '0'){
 		while(*val1 == '0' && *(val1+1) != 0){
@@ -1124,6 +1125,7 @@ void *modulo(void *num1, void *num2){
 			strcpy(temp, n1);
 		}
 		//*result = '0';
+		//printf("%s\n", temp);
 		return temp;
 	}
 	//return NULL;
@@ -1227,6 +1229,7 @@ void *modulo(void *num1, void *num2){
 	//printf("==>%s::%s::%s\n",reste, zero_,pzero_);
 	//exit(0);
 	if(zero_){
+		//printf("%s\n", reste);
 		pzero_ = division(reste, zero_, strlen(reste)+3, 0);
 		free(reste);
 		reste = pzero_;
