@@ -177,7 +177,7 @@ int main(int argc, char **argv){
 	}
 	r = modulo(argv[1], argv[2], atoi(argv[3]));
 	if(r){
-		printf("modulo etendu a '%s' chiffre apres la virgule:%s\n", argv[3], (char *)r);
+		printf("modulo etendu a (minimum) '%s' chiffre apres la virgule:%s\n", argv[3], (char *)r);
 		free(r);
 	}
 	//No warrenty
