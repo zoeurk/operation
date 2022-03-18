@@ -1127,7 +1127,7 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 		reste = temp;
 		/*ICI*/
 		if(virgule)
-			dix = multiplication("1","10");
+			dix = multiplication("1","1");
 		if(virgule){
 			diviseur = n2;
 			do{
@@ -1153,7 +1153,7 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 					}
 				}
 				virgule_++;
-			}while(virgule_ < virgule -1 && equal(reste,"0") != 0);
+			}while(virgule_ < virgule && equal(reste,"0") != 0);
 			temp = division(reste, dix, virgule, 0);
 			free(reste);
 			free(dix);
@@ -1291,11 +1291,13 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 				}
 				virgule_++;
 			}while(virgule_ < virgule -1 && equal(reste,"0") != 0);
+			//printf("%s\n", reste);
 			temp = division(reste, dix, virgule, 0);
 			free(reste);
 			free(dix);
 			reste = temp;
 		}
+		//printf("%s\n", reste);
 		pzero_ = division(reste, zero_, strlen(reste)+3, 0);
 		free(reste);
 		reste = pzero_;
