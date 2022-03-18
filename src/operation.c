@@ -1290,7 +1290,7 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 					}
 				}
 				virgule_++;
-			}while(virgule_ < virgule -1 && equal(reste,"0") != 0);
+			}while(virgule_ < virgule && equal(reste,"0") != 0);
 			//printf("%s\n", reste);
 			temp = division(reste, dix, virgule, 0);
 			free(reste);
