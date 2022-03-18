@@ -1093,11 +1093,12 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	free(diviseur);
 	return result;
 }
-void *modulo(void *num1, void *num2){
+void *modulo(void *num1, void *num2, unsigned long int virgule){
 	char *n1 = num1, *n2 = num2,
 		*quotient = NULL, *dividende = NULL, *diviseur = NULL, *reste = NULL, *preste, *zero_ = NULL, *pzero_,
 		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}, point = 0,
-		neg1 = 0, neg2 = 0, neg = 0;
+		neg1 = 0, neg2 = 0, neg = 0,
+		*dix, *pdix;
 	unsigned long int len = 0, virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
 	long long int ii = 0;
 	int x;
@@ -1123,8 +1124,43 @@ void *modulo(void *num1, void *num2){
 			temp = allocation((void **)&temp, strlen(n1)+1, sizeof(char));
 			strcpy(temp, n1);
 		}
+		reste = temp;
+		/*ICI*/
+		if(virgule)
+			dix = multiplication("1","10");
+		if(virgule){
+			diviseur = n2;
+			do{
+				pdix = multiplication(dix,"10");
+				free(dix);
+				dix = pdix;
+				temp = multiplication(reste,"10");
+				free(reste);
+				reste = temp;
+				for(x = 9; x >= 0; x--){
+					sprintf(t, "%i", x);
+					temp = multiplication(t, diviseur);
+					temp_ = soustraction(reste, temp);
+					if(equal(temp_,"0") >= 0){
+						free(reste);
+						free(temp);
+						reste = temp_;
+						//printf("===>%s::%s\n", reste, t);
+						break;
+					}else{
+						free(temp);
+						free(temp_);
+					}
+				}
+				virgule_++;
+			}while(virgule_ < virgule -1 && equal(reste,"0") != 0);
+			temp = division(reste, dix, virgule, 0);
+			free(reste);
+			free(dix);
+			reste = temp;
+		}
 		//*result = '0';
-		return temp;
+		return reste;
 	}
 	//return NULL;
 	if(equal(n1,"0") == 0){
@@ -1227,6 +1263,39 @@ void *modulo(void *num1, void *num2){
 	//printf("==>%s::%s::%s\n",reste, zero_,pzero_);
 	//exit(0);
 	if(zero_){
+		/*ICI*/
+		if(virgule)
+			dix = multiplication("1","1");
+		if(virgule){
+			do{
+				pdix = multiplication(dix,"10");
+				free(dix);
+				dix = pdix;
+				temp = multiplication(reste,"10");
+				free(reste);
+				reste = temp;
+				for(x = 9; x >= 0; x--){
+					sprintf(t, "%i", x);
+					temp = multiplication(t, diviseur);
+					temp_ = soustraction(reste, temp);
+					if(equal(temp_,"0") >= 0){
+						free(reste);
+						free(temp);
+						reste = temp_;
+						//printf("===>%s::%s\n", reste, t);
+						break;
+					}else{
+						free(temp);
+						free(temp_);
+					}
+				}
+				virgule_++;
+			}while(virgule_ < virgule -1 && equal(reste,"0") != 0);
+			temp = division(reste, dix, virgule, 0);
+			free(reste);
+			free(dix);
+			reste = temp;
+		}
 		pzero_ = division(reste, zero_, strlen(reste)+3, 0);
 		free(reste);
 		reste = pzero_;

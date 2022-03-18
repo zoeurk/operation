@@ -170,9 +170,14 @@ int main(int argc, char **argv){
 		printf("division:%s\n", (char *)r);
 		free(r);
 	}
-	r = modulo(argv[1], argv[2]);
+	r = modulo(argv[1], argv[2], 0);
 	if(r){
 		printf("modulo:%s\n", (char *)r);
+		free(r);
+	}
+	r = modulo(argv[1], argv[2], atoi(argv[3]));
+	if(r){
+		printf("modulo etendu a '%s' chiffre apres la virgule:%s\n", argv[3], (char *)r);
 		free(r);
 	}
 	//No warrenty
