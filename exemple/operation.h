@@ -16,11 +16,9 @@
 
 #define NEG \
 	for(n1 = n1; *n1 == '-' || *n1 == '+'; n1++) \
-		if(*n1 == '-')\
-			neg1 = !neg1; \
+		neg1 = !neg1; \
 	for(n2 = n2; *n2 == '-' || *n2 == '+'; n2++) \
-		if(*n2 == '-') \
-			neg2 = !neg2;
+		neg2 = !neg2;
 
 #define NEG_TEST \
 	if(neg1 != neg2)\
@@ -47,7 +45,7 @@ while(*n2 == '0' && *(n2+1) != '.') \
 	} \
 	*buffer = '-';
 
-#define BUFFER 54
+#define BUFFER 2
 void *allocation(void **ptr, unsigned long int members, unsigned long int size);
 void *reallocation(void **ptr, unsigned long int size);
 int equal(void *num1, void *num2);

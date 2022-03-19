@@ -58,8 +58,8 @@ int equal(void *num1, void *num2){
 	DOT_INIT;
 	if(dot1)dot1++;
 	if(dot2)dot2++;
-	for(n1 = n1;*(n1+1) != '.' && (*n1 == '0' || *n1 == '+' || *n1 == '-'); n1++);;
-	for(n2 = n2;*(n2+1) != '.' && (*n2 == '0' || *n2 == '+' || *n2 == '-'); n2++);;
+	for(n1 = n1;(*n1+1) != '.' && (*n1 == '0' || *n1 == '+' || *n1 == '-'); n1++);;
+	for(n2 = n2;(*n2+1) != '.' && (*n2 == '0' || *n2 == '+' || *n2 == '-'); n2++);;
 	val1 = n1;
 	val2 = n2;
 	val1_len = strlen(n1);
@@ -152,12 +152,12 @@ int equal(void *num1, void *num2){
 			dot1++, dot2++
 		){
 			if(*dot1 > *dot2){
-				if(neg1 == 1 && neg2 == 1)
+				if(*n1 == '-' && *n2 == '-')
 					return -1;
 				return 1;
 			}
-			if(*dot1 < *dot2 && !neg1 && !neg2){
-				if(neg1 == 0 && neg2 == 0)
+			if(*dot1 < *dot2){
+				if(*n1 == '-' && *n2 == '-')
 					return 1;
 				return -1;
 			}
@@ -166,9 +166,9 @@ int equal(void *num1, void *num2){
 	if((!dot1 || *dot1 == 0 )&& dot2 && *dot2 != 0){
 		for(dot2 = dot2; *dot2 != 0; dot2++)
 			if(*dot2 > '0'){
-				if(neg1 == 1 && neg2 == 1)
-					return -1;
-				return 1;
+				if(*n1 == '-' && *n2 == '-')
+					return 1;
+				return -1;
 			}
 	}
 	if((dot1 && *dot1 != 0) && (!dot2 || *dot2 == 0)){
@@ -192,7 +192,7 @@ void *addition(void *num1, void *num2){
 	unsigned long int dot1_len = 0, dot2_len = 0,
 				val1_len = 0, val2_len = 0,
 				buflen = 0, z = 1;
-	unsigned long int ii = 0, ij = 0;
+	long long int ii = 0, ij = 0;
 	NEG;
 	if(neg1 || neg2){
 		if(neg1 && neg2)
@@ -356,7 +356,7 @@ void *addition(void *num1, void *num2){
 	}
 	ij = strlen(buffer);
 	pret = allocation((void **)&ret, ij+1, sizeof(char));
-	for(ii = ij-1, pret = pret; ii+1 != 0; ii--, pret++)
+	for(ii = ij-1, pret = pret; ii >= 0; ii--, pret++)
 		*pret = buffer[ii];
 	free(buffer);
 	buffer = ret;
@@ -402,7 +402,7 @@ void *soustraction(void *num1, void *num2){
 	unsigned long int dot1_len = 0, dot2_len = 0,
 				val1_len = 0, val2_len = 0,
 				buflen = 0, z = 1;
-	unsigned long int ii = 0, ij = 0;
+	long long int ii = 0, ij = 0;
 	NEG;
 	if(neg1 || neg2){
 		if(neg1 && neg2){
@@ -454,7 +454,7 @@ void *soustraction(void *num1, void *num2){
 	if(dot2 != NULL && dot2_len == 0)
 		val2_len--;
 	if(dot1_len > dot2_len){
-		for(ii = (long long int)dot1_len; ii+1 != 0 && (unsigned long int)ii != dot2_len; ii--){
+		for(ii = (long long int)dot1_len; ii >= 0 && (unsigned long int)ii != dot2_len; ii--){
 			if(buflen + 1 >= BUFFER){
 				z++;
 				buflen = 0;
@@ -487,7 +487,7 @@ void *soustraction(void *num1, void *num2){
 		}
 	}
 	if(dot2_len > dot1_len){
-		for(ii = dot2_len; ii > 0 && ii != dot1_len; ii--){
+		for(ii = dot2_len; ii > 0 && ii != (long long int)dot1_len; ii--){
 			v1[0] = dot2[ii-1];
 			v1[0] = atoi(v1);
 			if(v1[0] - retenue > 0){
@@ -625,7 +625,7 @@ void *soustraction(void *num1, void *num2){
 		pbuf++;
 		buflen++;
 	}
-	for(ij = (ij > 0) ?ij-1 : 0, ptr2 = ptr2; ij > 0; ij--, ptr2++){
+	for(ij = ij-1, ptr2 = ptr2; ij > 0; ij--, ptr2++){
 		v2[0] = *ptr2;
 		v2[0] = atoi(v2);
 		if(v2[0] - retenue < 0){
@@ -662,7 +662,7 @@ void *soustraction(void *num1, void *num2){
 	pbuf = buffer;
 	ij = strlen(pbuf);
 	pret = allocation((void **)&ret, ij+1, sizeof(char));
-	for(ii = ij-1, pret = pret; ii+1 != 0; ii--, pret++)
+	for(ii = ij-1, pret = pret; ii >= 0; ii--, pret++)
 		*pret = pbuf[ii];
 	if(equal("0",ret) == 0){
 		strcpy(ret,"0");
@@ -677,13 +677,13 @@ void *multiplication(void *num1, void *num2){
 	char *n1 = num1, *n2 = num2,
 		*dot1, *dot2,
 		v1[2] = { 0, 0 }, v2[2] = { 0, 0 }, temp[3] = { 0, 0, 0},
-		*buffer = NULL,
+		*buffer,
 		*resultat = NULL, 
 		*result = NULL, *presult, *total = NULL,*pbuf,
 		retenue = 0, neg = 0, neg1 = 0, neg2 = 0, z = 0;
-	unsigned long int dot1_len = 0, dot2_len = 1, dot_len = 1,
+	unsigned long int dot1_len = 0, dot2_len = 0,
 				buflen = 0, iz = 1, zero = 0;
-	unsigned long int ii = 0, ij = 0,ii_ = 0,x = 0;
+	long long int ii = 0, ij = 0,ii_ = 0,x = 0;
 	NEG;
 	NEG_TEST;
 	if(equal("0", n1) == 0 || equal("0", n2) == 0){
@@ -696,7 +696,6 @@ void *multiplication(void *num1, void *num2){
 	dot2 = strchr(n2, '.');
 	dot1_len = (dot1) ? strlen(dot1) -1: 0;
 	dot2_len = (dot2) ? strlen(dot2) -1: 0;
-	dot_len = dot1_len + dot2_len;
 	pbuf = allocation((void **)&resultat, BUFFER, sizeof(char));
 	for(n1 = n1,
 		ii = strlen(n1);
@@ -728,7 +727,6 @@ void *multiplication(void *num1, void *num2){
 				do{
 					retenue += 10;
 				}while(v1[0]*v2[0]+ z - retenue >= 10);
-				//printf("%i\n",v1[0]*v2[0]+ z - retenue);
 				if(buflen+1 >= BUFFER){
 					iz++;
 					buflen = 0;
@@ -739,10 +737,11 @@ void *multiplication(void *num1, void *num2){
 				buflen++;
 			}else{
 				if(ij-1 == 0 && v1[0]*v2[0]+ z - retenue >= 10){
-					if(buflen + 2 >= BUFFER){
+					if(buflen+2 >= BUFFER){
 						iz++;
 						buflen = 0;
 						pbuf = reallocation((void **)&resultat, BUFFER*iz+1);
+						pbuf = &resultat[strlen(resultat)];
 					}
 					sprintf(pbuf,"%i", v2[0]*v1[0]+z-retenue);
 					temp[0] = *(pbuf+1);
@@ -755,9 +754,9 @@ void *multiplication(void *num1, void *num2){
 					memset(resultat, 0, strlen(resultat));
 					pbuf = reallocation((void **)&resultat,BUFFER);
 					pbuf = resultat;
-					if(total == NULL){
+					if(total == NULL)
 						total = result;
-					}else{
+					else{
 						presult = addition(total,result);
 						free(total);
 						free(result);
@@ -767,7 +766,7 @@ void *multiplication(void *num1, void *num2){
 					buflen = 0;
 				}else{
 					if(v1[0]*v2[0] + z >= 10){
-						do{ 
+						do{
 							retenue += 10;
 						}while(v1[0]*v2[0]+ z - retenue >= 10);
 						if(buflen+1 >= BUFFER){
@@ -819,12 +818,12 @@ void *multiplication(void *num1, void *num2){
 			}
 		}
 	}
-	if(total && dot_len > 0){
-		if(strlen(total) < dot_len){
-			pbuf = allocation((void **)&buffer, dot_len +2, sizeof(char));
-			for(result = &buffer[dot_len +1], ii = strlen(total)-1;ii+1 > 0;result--,ii--)
+	if(dot1_len + dot2_len > 0){
+		if(strlen(total) < dot1_len + dot2_len){
+			pbuf = allocation((void **)&buffer, dot1_len + dot2_len +2, sizeof(char));
+			for(result = &buffer[dot1_len + dot2_len +1], ii = strlen(total)-1;ii >= 0;result--,ii--)
 				*result = total[ii];
-			for(result = result, ii = 0;(unsigned long int)ii < dot_len-strlen(total);ii++, result--)
+			for(result = result, ii = 0;(unsigned long int)ii < dot1_len + dot2_len-strlen(total);ii++, result--)
 				*result = '0';
 			*result = '.';
 			result--;
@@ -834,12 +833,11 @@ void *multiplication(void *num1, void *num2){
 			if(neg){
 				VALEUR_NEGATIVE(result, pbuf, ii);
 			}
-			//printf("%s\n", result);
 			return result;
 		}
 		pbuf = allocation((void **)&buffer, strlen(total)+2, sizeof(char));
 		strcpy(pbuf, total);
-		for(pbuf = &buffer[strlen(buffer)-1], ii = 0; (unsigned long int)ii != dot_len;pbuf--, ii++){
+		for(pbuf = &buffer[strlen(buffer)-1], ii = 0; (unsigned long int)ii != dot1_len + dot2_len;pbuf--, ii++){
 			*(pbuf+1) = *(pbuf);
 		}
 		*(pbuf+1) = '.';
@@ -861,6 +859,7 @@ void *multiplication(void *num1, void *num2){
 			VALEUR_NEGATIVE(buffer, pbuf, ii);
 		}
 		return buffer;
+		exit(0);
 	}
 	if(neg){
 		VALEUR_NEGATIVE(total, pbuf, ii);
@@ -874,7 +873,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}, *result = NULL, *pr, point = 0, *arrondi = NULL,
 		neg = 0, neg1 = 0, neg2 = 0;
 	unsigned long int buflen = 0, qbuf = 1, len = 0, virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
-	unsigned long int ii = 0;
+	long long int ii = 0;
 	int x;
 	NEG;
 	NEG_TEST;
@@ -893,7 +892,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	memcpy(diviseur, n2, strlen(n2));
 	memcpy(dividende, n1, strlen(n1));
 	do{
-		if((n2 = strchr(diviseur,'.')) == NULL  && (n1 = strchr(dividende, '.')) == NULL)
+		if((n2 = strchr(diviseur,'.')) == NULL/*  && (n1 = strchr(dividende, '.')) == NULL*/)
 				break;
 		temp = multiplication(diviseur, "10");
 		free(diviseur);
@@ -1093,6 +1092,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	free(diviseur);
 	return result;
 }
+
 void *modulo(void *num1, void *num2, unsigned long int virgule){
 	char *n1 = num1, *n2 = num2,
 		*quotient = NULL, *dividende = NULL, *diviseur = NULL, *reste = NULL, *preste, *zero_ = NULL, *pzero_,
