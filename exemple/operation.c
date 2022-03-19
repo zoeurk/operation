@@ -1025,7 +1025,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	if(neg){
 		VALEUR_NEGATIVE(result, pr, ii);
 	}
-	if(approximation){
+	if(approximation && virgule){
 		if((temp = strchr(result, '.')) != NULL){
 			temp_ = &result[strlen(result)-1];
 				if(virgule == 0){
@@ -1077,6 +1077,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 									result[strlen(result)-1] = 0;
 							}else{	free(temp);
 								result[strlen(result)-1] = 0;
+
 							}
 						}
 				}
@@ -1091,6 +1092,10 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	free(reste);
 	free(dividende);
 	free(diviseur);
+	if(equal(result, "0") == 0){
+			*result = '0';
+			result[1] = 0;
+	}
 	return result;
 }
 void *modulo(void *num1, void *num2, unsigned long int virgule){
