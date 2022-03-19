@@ -1121,14 +1121,14 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 		return temp;
 	}
 	if(equal(n1, n2) < 0){
-		if(neg){
-			temp = allocation((void **)&temp,strlen(n1)+2, sizeof(char));
-			*temp = '-';
-			strcpy(&temp[1], n1);
-		}else{
+		//if(neg){
+			//temp = allocation((void **)&temp,strlen(n1)+2, sizeof(char));
+			//*temp = '-';
+			//strcpy(temp, n1);
+		//}else{
 			temp = allocation((void **)&temp, strlen(n1)+1, sizeof(char));
 			strcpy(temp, n1);
-		}
+		//}
 		reste = temp;
 		/*ICI*/
 		if(virgule)
@@ -1162,6 +1162,13 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 			temp = division(reste, dix, virgule, 0);
 			free(reste);
 			free(dix);
+			reste = temp;
+		}
+		if(neg){
+			temp = allocation((void **)&temp,strlen(reste)+2, sizeof(char));
+			*temp = '-';
+			strcpy(&temp[1], reste);
+			free(reste);
 			reste = temp;
 		}
 		//*result = '0';
