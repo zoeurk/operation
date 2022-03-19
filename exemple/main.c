@@ -2,19 +2,20 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <float.h>
 #include "operation.h"
 
 char *cosinus(char *arg){
 	char pi[512], npi[512],*pi_, *npi_ ,*temp, *t = NULL;
-	sprintf(npi,"-%.56Lf", 8*atanl(1));
-	sprintf(pi,"%.56Lf", 8*atanl(1));
+	sprintf(npi,"-%.54Lf", 4*atanl(1));
+	sprintf(pi,"%.54Lf", 4*atanl(1));
 	pi_ = multiplication(pi, "2");
 	npi_ = multiplication(pi,"-2");
 	if(equal(arg, "0") == 1){
-		t = division(arg, pi_ , 0, 0);
-		free(t);
-		t = multiplication(arg, "1");
+			t = division(arg, pi_ , 0, 0);
+			temp = multiplication(t,pi_);
+			free(t);
+			t = soustraction(arg, temp);
+			free(temp);
 	}else{
 		if(equal(arg, "0") == -1){
 			t = division(arg, npi_ , 0, 0);
@@ -22,150 +23,115 @@ char *cosinus(char *arg){
 			free(t);
 			t = soustraction(arg, temp);
 			free(temp);
+		}else{
+			t = allocation((void *)&t, 2, sizeof(char));
+			*t = '0';
 		}
 	}
 	free(pi_);
 	free(npi_);
 	return t;
 }
-char *find(char *i, char *result, unsigned long int virgule, int approximation){
-	char *i_ = multiplication(i,"1"), k, end = 0, end_ = 0,
-		*ppt, *pt,*t, *dot = NULL,
-		*add = NULL, *padd;
-	unsigned long int len = 0, l = 0, dotlen = 0;
-	padd = allocation((void **)&add, strlen(i)+1, sizeof(char));
-	memset(add, '0', strlen(i));
-	add[0] = '1';
-	if((dot = strchr(i,'.')) != NULL){
-		len = strlen(i);
-		l = len-strlen(dot);
-		add[l] = '.';
-	}
-	while(dotlen <= virgule && end == 0){
-		for(k = 57, end_ = 0; end_ == 0 && k > 47;k--){
-		//printf("%i::%lu\n", end, dotlen);
-			t = multiplication(add,&k);
-			//printf("}}}>%s\n", t);
-			pt = addition(i_,t);
-			//printf("###>%s\n", pt);
-			ppt = multiplication(pt, pt);
-			if(strchr(pt,'.') && strlen(strchr(pt,'.')+1) > virgule)
-				*(strchr(pt,'.')+1+virgule) = 0;
-			//printf("~~~>%s\n", ppt);
-			//printf("%s::%s\n", pt, ppt);
-			if(equal(ppt, result) < 0){
-				end_ = 1;
-				if((padd = strchr(pt,'.')) != NULL){
-					if(strlen(padd) >= virgule){
-						//printf("%c",k);
-						//printf("ok\n");
-						if(approximation){
-							if(strlen(pt) > virgule && virgule > 1){
-								l = virgule;
-								padd = dot = allocation((void **)&dot, virgule+3, sizeof(char));
-								strcpy(dot,"0.");
-								for(l = 0, padd += 2; l < virgule-2; l++, padd++){
-									*padd = '0';
-								}
-								*padd = '1';
-								padd = addition(pt,dot);
-								free(pt);
-								free(dot);
-								pt = padd;
-								pt[strlen(pt)] = 0;
-							}else{
-								if(virgule == 1){
-									l = virgule;
-									padd = dot = allocation((void **)&dot, 2, sizeof(char));
-									*padd = '1';
-									padd = addition(pt,dot);
-									free(pt);
-									free(dot);
-									pt = padd;
-								}
-								pt[strlen(pt)] = 0;
-							}
-						}else pt[strlen(pt)] = 0;
-						free(ppt);
-						dotlen = virgule;
-						end = 1;
-						free(i_);
-						i_ = pt;
-						free(t);
-						if((ppt = strchr(pt, '.')) != NULL){
-							for(pt = &i_[strlen(pt)-1];pt != i && (*pt == '0' && *pt != '.'); pt--)
-								*pt = 0;
-							if(*pt == '.')
-								*pt = 0;
-						}
-						break;
-					}
-				}
-				free(i_);
-				free(ppt);
-				i_ = pt;
-				free(t);
-				//if(end_ )printf("\n");
-			}else{
-				free(t);
-				free(pt);
-				free(ppt);
-			}
-			//printf("\n");
+char *racine_carree(void *num1, unsigned long int virgule, int approximation){
+	unsigned long int len = strlen(num1)-(strchr(num1, '.') != NULL), v = virgule+1;
+	char buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test, *last = NULL;
+	if((test = strchr(num1,'.')) != NULL){
+		test++;
+		if(virgule < strlen(test)){
+			v = strlen(test)+1;
 		}
-		padd = add;
-		add = division(add,"10",virgule,0);
-		free(padd);
-		if(virgule == 1)
-			break;
 	}
-	free(add);
-	return i_;
-}
-char *racine_carree(char *argv, unsigned long int virgule, int approximation){
-	char *r, *i = multiplication(argv,"1"),*i_ = NULL, *j = NULL, *result = multiplication("1", argv),
-		*tableau[4] = {"7", "5", "3", "2"}, *mod = NULL;
-	int z = 0;
-	//printf("%s::%s\n", argv, i);
-	//exit(0);
-	//printf("%s\n", (char *)modulo(i, tableau[0]));
-	/*if(strtold(argv, NULL) >= DBL_MAX){
-		printf("OK\n");
-		exit(0);
-	}*/
-	while(mod == NULL && z != 3){
-		mod = modulo(argv, tableau[z],0);
-		if(mod && equal(mod,"0") == 0){
-			free(mod);
-			break;
-		}
-		free(mod);
-		mod = NULL;
-		z++;
-	}
+	sprintf(buffer,"%lu", len);
+	buf = multiplication(buffer,"100");
+	pbuf = division(num1, buf,virgule, 0);
+	result = addition(buf, pbuf);
+	free(buf);
+	presult = multiplication(result,"0.5");
 	do{
-		i_ = division(i, tableau[z], 0, 1);
-		j = multiplication(i_,i_);
-		if(equal(j, result) <= 0){
-			break;
+		free(pbuf);
+		free(result);
+		test = strchr(presult,'.');
+		pbuf = division(num1, presult, v, 0);
+		result = addition(presult, pbuf);
+		free(presult);
+		presult = multiplication(result,"0.5");
+		if(check)
+			free(check);
+		if((test = strchr(presult,'.')) != NULL){
+			if(strlen(test+1)>=v)
+				*(test+1+v) = 0; 
 		}
-		free(i);
-		i = i_ ;
-		free(j);
-	}while(1);
-	if(equal(j, result) != 0){
-		r = find(i_, result, virgule+1, approximation);
-		free(i_);
-	}else r = i_;
-	free(i);
-	free(j);
+		check = multiplication(presult, presult);
+		if(last == NULL){
+			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
+			strcpy(last, check);
+		}else{
+			if(equal(last, check) == 0){
+				free(last);
+				last = NULL;
+				break;
+			}
+			free(last);
+			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
+			strcpy(last, check);
+		}
+		//printf("%s\n",check);
+	}while(equal(num1, check) < 0);
+	if(last)
+		free(last);
+	free(pbuf);
 	free(result);
-	return r;
-}
+	free(check);
+	if((result = strchr(presult, '.'))){
+		if(!approximation)
+			result[strlen(result)-1] = 0;
+		else{
+			if(presult[strlen(presult)-1] > '5'){
+			test = allocation((void **)&test, 3, sizeof(char));
+			strcpy(test,"0.");
+			if(v == 1){
+				check = reallocation((void **)&test,4);
+				strcat(test, "1");
+				check = addition(presult, test);
+				free(presult);
+				presult = check;
+				//printf("%s::%s\n", check, test);
+			}else{
+				while(strlen(test) +1 <= v){
+					check = reallocation((void **)&test,strlen(test)+1);
+					strcat(test, "0");
+					check = addition(presult, test);
+					free(presult);
+					presult = check;
+					//printf("%s::%s\n", check, test);
+				}
+				//test[strlen(test)-1] = 0;
+				check = reallocation((void **)&test,strlen(test)+2);
+				test[strlen(test)] = '1';
+				//printf("%s::%s\n", test, presult);
+				check = addition(presult, test);
+				//printf("==>%s::%s::%s\n", check, presult, test);
+				free(presult);
+				presult = check;
+				//printf("%s::%s\n", check, test);
+				presult[strlen(presult)-1] = 0;
 
+			}
+			free(test);
+			}else presult[strlen(presult)-1] = 0;
+			//presult[strlen(presult)-1] = 0;
+			for(result = &presult[strlen(presult)-1]; *result == '0'; *result = 0, result--);;
+		}
+	}
+	/*if((test = strchr(presult, '.'))){
+		printf("%s::%lu\n", test, virgule);
+		*(test - virgule +1) = 0;
+	}*/
+	if(presult[strlen(presult)-1] == '.')
+		presult[strlen(presult)-1] = 0;
+	return presult;
+}
 int main(int argc, char **argv){
-	long double t = 0;
-	unsigned long int i = 0;
 	int ret;
 	char *r, *check;
 	if(argc != 4){
@@ -199,16 +165,6 @@ int main(int argc, char **argv){
 		printf("multiplication:%s\n", (char *)r);
 		free(r);
 	}
-	//printf("%lu;%Lf\n", sizeof(long double),LDBL_MAX);
-	for(r = (char *)&t, i = 0; i < sizeof(long double);i++, r++){
-		*r = ~1;
-		if(i + 1 == sizeof(long double))
-			*r = 0;
-		//printf("%Lf, %i\n",t,*r);
-	}
-	//r = (char *)&t;
-	//printf("%.100000000Lf::%s\n", t, r);
-	//exit(0);
 	r = division(argv[1], argv[2], atoi(argv[3]),1);
 	if(r){
 		printf("division:%s\n", (char *)r);
@@ -228,16 +184,16 @@ int main(int argc, char **argv){
 	printf("++++++++++++++++++\n");
 	r = cosinus(argv[1]);
 	if(r){
-		printf("cosinus de \'%s\':%Lf\n", argv[1],cosl(strtold(r,NULL)));
+		printf("cosinus de \'%s\':%.56Lf\n", argv[1],cosl(strtold(r,NULL)));
 		free(r);
 	}
 	r = cosinus(argv[2]);
 	if(r){
-		printf("cosinus de \'%s\':%Lf\n", argv[2], cosl(strtold(r,NULL)));
+		printf("cosinus de \'%s\':%.56Lf\n", argv[2], cosl(strtold(r,NULL)));
 		free(r);
 	}
 	printf("++++++++++++++++++\n");
-		if(equal(argv[1],"0") < 0)
+	if(equal(argv[1],"0") < 0)
 		fprintf(stderr, "Racine carree non applicable sur un nombre negatif:%s\n", argv[1]);
 	else{
 		r = racine_carree(argv[1], atoi(argv[3]),1);

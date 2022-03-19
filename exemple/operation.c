@@ -58,8 +58,8 @@ int equal(void *num1, void *num2){
 	DOT_INIT;
 	if(dot1)dot1++;
 	if(dot2)dot2++;
-	for(n1 = n1;(*n1+1) != '.' && (*n1 == '0' || *n1 == '+' || *n1 == '-'); n1++);;
-	for(n2 = n2;(*n2+1) != '.' && (*n2 == '0' || *n2 == '+' || *n2 == '-'); n2++);;
+	for(n1 = n1;*(n1+1) != '.' && (*n1 == '0' || *n1 == '+' || *n1 == '-'); n1++);;
+	for(n2 = n2;*(n2+1) != '.' && (*n2 == '0' || *n2 == '+' || *n2 == '-'); n2++);;
 	val1 = n1;
 	val2 = n2;
 	val1_len = strlen(n1);
@@ -152,12 +152,12 @@ int equal(void *num1, void *num2){
 			dot1++, dot2++
 		){
 			if(*dot1 > *dot2){
-				if(*n1 == '-' && *n2 == '-')
+				if(neg1 && neg2)
 					return -1;
 				return 1;
 			}
 			if(*dot1 < *dot2){
-				if(*n1 == '-' && *n2 == '-')
+				if(neg1 && neg2)
 					return 1;
 				return -1;
 			}
@@ -677,11 +677,11 @@ void *multiplication(void *num1, void *num2){
 	char *n1 = num1, *n2 = num2,
 		*dot1, *dot2,
 		v1[2] = { 0, 0 }, v2[2] = { 0, 0 }, temp[3] = { 0, 0, 0},
-		*buffer,
+		*buffer = NULL,
 		*resultat = NULL, 
 		*result = NULL, *presult, *total = NULL,*pbuf,
 		retenue = 0, neg = 0, neg1 = 0, neg2 = 0, z = 0;
-	unsigned long int dot1_len = 0, dot2_len = 0,
+	unsigned long int dot1_len = 0, dot2_len = 1, dot_len = 1,
 				buflen = 0, iz = 1, zero = 0;
 	long long int ii = 0, ij = 0,ii_ = 0,x = 0;
 	NEG;
@@ -696,6 +696,7 @@ void *multiplication(void *num1, void *num2){
 	dot2 = strchr(n2, '.');
 	dot1_len = (dot1) ? strlen(dot1) -1: 0;
 	dot2_len = (dot2) ? strlen(dot2) -1: 0;
+	dot_len = dot1_len + dot2_len;
 	pbuf = allocation((void **)&resultat, BUFFER, sizeof(char));
 	for(n1 = n1,
 		ii = strlen(n1);
@@ -727,6 +728,7 @@ void *multiplication(void *num1, void *num2){
 				do{
 					retenue += 10;
 				}while(v1[0]*v2[0]+ z - retenue >= 10);
+				//printf("%i\n",v1[0]*v2[0]+ z - retenue);
 				if(buflen+1 >= BUFFER){
 					iz++;
 					buflen = 0;
@@ -737,11 +739,10 @@ void *multiplication(void *num1, void *num2){
 				buflen++;
 			}else{
 				if(ij-1 == 0 && v1[0]*v2[0]+ z - retenue >= 10){
-					if(buflen+2 >= BUFFER){
+					if(buflen + 2 >= BUFFER){
 						iz++;
 						buflen = 0;
 						pbuf = reallocation((void **)&resultat, BUFFER*iz+1);
-						pbuf = &resultat[strlen(resultat)];
 					}
 					sprintf(pbuf,"%i", v2[0]*v1[0]+z-retenue);
 					temp[0] = *(pbuf+1);
@@ -754,9 +755,9 @@ void *multiplication(void *num1, void *num2){
 					memset(resultat, 0, strlen(resultat));
 					pbuf = reallocation((void **)&resultat,BUFFER);
 					pbuf = resultat;
-					if(total == NULL)
+					if(total == NULL){
 						total = result;
-					else{
+					}else{
 						presult = addition(total,result);
 						free(total);
 						free(result);
@@ -766,7 +767,7 @@ void *multiplication(void *num1, void *num2){
 					buflen = 0;
 				}else{
 					if(v1[0]*v2[0] + z >= 10){
-						do{
+						do{ 
 							retenue += 10;
 						}while(v1[0]*v2[0]+ z - retenue >= 10);
 						if(buflen+1 >= BUFFER){
@@ -818,12 +819,12 @@ void *multiplication(void *num1, void *num2){
 			}
 		}
 	}
-	if(dot1_len + dot2_len > 0){
-		if(strlen(total) < dot1_len + dot2_len){
-			pbuf = allocation((void **)&buffer, dot1_len + dot2_len +2, sizeof(char));
-			for(result = &buffer[dot1_len + dot2_len +1], ii = strlen(total)-1;ii >= 0;result--,ii--)
+	if(total && dot_len > 0){
+		if(strlen(total) < dot_len){
+			pbuf = allocation((void **)&buffer, dot_len +2, sizeof(char));
+			for(result = &buffer[dot_len +1], ii = strlen(total)-1;ii >= 0;result--,ii--)
 				*result = total[ii];
-			for(result = result, ii = 0;(unsigned long int)ii < dot1_len + dot2_len-strlen(total);ii++, result--)
+			for(result = result, ii = 0;(unsigned long int)ii < dot_len-strlen(total);ii++, result--)
 				*result = '0';
 			*result = '.';
 			result--;
@@ -833,11 +834,12 @@ void *multiplication(void *num1, void *num2){
 			if(neg){
 				VALEUR_NEGATIVE(result, pbuf, ii);
 			}
+			//printf("%s\n", result);
 			return result;
 		}
 		pbuf = allocation((void **)&buffer, strlen(total)+2, sizeof(char));
 		strcpy(pbuf, total);
-		for(pbuf = &buffer[strlen(buffer)-1], ii = 0; (unsigned long int)ii != dot1_len + dot2_len;pbuf--, ii++){
+		for(pbuf = &buffer[strlen(buffer)-1], ii = 0; (unsigned long int)ii != dot_len;pbuf--, ii++){
 			*(pbuf+1) = *(pbuf);
 		}
 		*(pbuf+1) = '.';
@@ -859,7 +861,6 @@ void *multiplication(void *num1, void *num2){
 			VALEUR_NEGATIVE(buffer, pbuf, ii);
 		}
 		return buffer;
-		exit(0);
 	}
 	if(neg){
 		VALEUR_NEGATIVE(total, pbuf, ii);
@@ -1092,7 +1093,6 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	free(diviseur);
 	return result;
 }
-
 void *modulo(void *num1, void *num2, unsigned long int virgule){
 	char *n1 = num1, *n2 = num2,
 		*quotient = NULL, *dividende = NULL, *diviseur = NULL, *reste = NULL, *preste, *zero_ = NULL, *pzero_,
