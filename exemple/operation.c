@@ -1102,13 +1102,16 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 	char *n1 = num1, *n2 = num2,
 		*quotient = NULL, *dividende = NULL, *diviseur = NULL, *reste = NULL, *preste, *zero_ = NULL, *pzero_,
 		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}, point = 0,
-		neg1 = 0, neg2 = 0, neg = 0,
-		*dix, *pdix;
+		neg1 = 0, *dix, *pdix;
 	unsigned long int len = 0, virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
 	long long int ii = 0;
 	int x;
-	NEG;
-	NEG_TEST;
+	//NEG;
+	//NEG_TEST;
+	for(n1 = n1; *n1 == '-' || *n1 == '+'; n1++) 
+		if(*n1 == '-')
+			neg1 = !neg1;
+	for(n2 = n2; *n2 == '-' || *n2 == '+'; n2++);;
 	if(equal(n2,"0") == 0 || equal(n2,"-0") == 0){
 		fprintf(stderr, "Erreur: Division par 0\n");
 		return NULL;
@@ -1164,7 +1167,7 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 			free(dix);
 			reste = temp;
 		}
-		if(neg){
+		if(neg1){
 			temp = allocation((void **)&temp,strlen(reste)+2, sizeof(char));
 			*temp = '-';
 			strcpy(&temp[1], reste);
@@ -1318,7 +1321,7 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 		free(zero_);
 	//free(reste);
 	//free(zero_);
-	if(neg){
+	if(neg1){
 		temp = allocation((void **)&temp,strlen(reste)+2, sizeof(char));
 		*temp = '-';
 		strcpy(&temp[1], reste);
