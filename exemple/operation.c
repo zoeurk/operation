@@ -21,7 +21,7 @@ void *reallocation(void **ptr, unsigned long int size){
 		free(*ptr);
 		exit(EXIT_FAILURE);
 	}
-	if(size < strlen(*ptr) || size + 1 < size){
+	if(strlen(*ptr) + 1 > size){
 		fprintf(stderr,
 			"Erreur interne:\n\tLe nombre actuel >= Au nouveu nombre\n");
 		fprintf(stderr,
