@@ -16,16 +16,9 @@ void *allocation(void **ptr, unsigned long int members, unsigned long int size){
 void *reallocation(void **ptr, unsigned long int size){
 	char *buf;
 	unsigned long int i = 0, sz = 0;
-	if(size == (unsigned long int)~0){
+	for(sz = 0;sz != (unsigned long int)~0 && sz != size; sz++);;
+	if(sz == (unsigned long int)~0){
 		fprintf(stderr,"Taille de la chaine trop longue pour le systeme.\n");
-		free(*ptr);
-		exit(EXIT_FAILURE);
-	}
-	if(strlen(*ptr) + 1 > size){
-		fprintf(stderr,
-			"Erreur interne:\n\tLe nombre actuel >= Au nouveu nombre\n");
-		fprintf(stderr,
-			"Erreur possible:\n\tLe nombre est trop longue pour le systeme.");
 		free(*ptr);
 		exit(EXIT_FAILURE);
 	}
