@@ -15,8 +15,8 @@ void *allocation(void **ptr, unsigned long int members, unsigned long int size){
 }
 void *reallocation(void **ptr, unsigned long int size){
 	char *buf;
-	unsigned long int i = 0, sz = 0;
-	for(sz = 0;sz != (unsigned long int)~0 && sz != size; sz++);;
+	unsigned long int i = 0, sz = 0, sz_;
+	for(sz = strlen(*ptr)+1, sz_ = 0;sz != (unsigned long int)~0 && sz_ != size; sz++, sz_++);;
 	if(sz == (unsigned long int)~0){
 		fprintf(stderr,"Taille de la chaine trop longue pour le systeme.\n");
 		free(*ptr);
