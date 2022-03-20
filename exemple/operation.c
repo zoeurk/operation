@@ -7,7 +7,7 @@ void *allocation(void **ptr, unsigned long int members, unsigned long int size){
 		fprintf(stderr,"Taille de la chaine trop longue pour le systeme.\n");
 		exit(EXIT_FAILURE);
 	}
-	if((*ptr = calloc(members, size+1)) == NULL){
+	if((*ptr = calloc(members+1, size)) == NULL){
 		perror("calloc()");
 		exit(EXIT_FAILURE);
 	}
@@ -28,9 +28,8 @@ void *reallocation(void **ptr, unsigned long int size){
 	}
 	buf = (*ptr)+strlen(*ptr);
 	sz = size - strlen(*ptr);
-	for(i = 0; i < sz; i++){
+	for(i = 0; i < sz; i++)
 		buf[i] = 0;
-	}
 	return (*ptr)+strlen(*ptr);
 }
 int equal(void *num1, void *num2){
