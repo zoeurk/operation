@@ -29,7 +29,7 @@ void *reallocation(void **ptr, unsigned long int size){
 		free(*ptr);
 		exit(EXIT_FAILURE);
 	}
-	if((*ptr = realloc(*ptr, size+1)) == NULL){
+	if((*ptr = realloc(*ptr, size)) == NULL){
 		perror("realloc()");
 		exit(EXIT_FAILURE);
 	}
@@ -742,14 +742,14 @@ void *multiplication(void *num1, void *num2){
 					if(buflen + 2 >= BUFFER){
 						iz++;
 						buflen = 0;
-						pbuf = reallocation((void **)&resultat, BUFFER*iz+1);
+						pbuf = reallocation((void **)&resultat, BUFFER*iz);
 					}
 					sprintf(pbuf,"%i", v2[0]*v1[0]+z-retenue);
 					temp[0] = *(pbuf+1);
 					temp[1] = *pbuf;
 					*pbuf = temp[0];
 					*(pbuf+1) = temp[1];
-					result = allocation((void **)&result, strlen(resultat)+1, sizeof(char));
+					result = allocation((void **)&result, strlen(resultat), sizeof(char));
 					for(presult = result,ii_ = strlen(resultat); ii_ > 0; ii_--,presult++)
 						*presult = resultat[ii_-1];
 					memset(resultat, 0, strlen(resultat));
