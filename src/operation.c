@@ -355,7 +355,7 @@ void *addition(void *num1, void *num2){
 		pbuf++;
 	}
 	ij = strlen(buffer);
-	pret = allocation((void **)&ret, ij+1, sizeof(char));
+	pret = allocation((void **)&ret, ij, sizeof(char));
 	for(ii = ij-1, pret = pret; ii >= 0; ii--, pret++)
 		*pret = buffer[ii];
 	free(buffer);
@@ -368,7 +368,7 @@ void *addition(void *num1, void *num2){
 			set = 1;
 		}
 		if(set){
-			pbuf = allocation((void **)&pbuf, strlen(buffer)+1, sizeof(char));
+			pbuf = allocation((void **)&pbuf, strlen(buffer), sizeof(char));
 			strcpy(pbuf, buffer);
 			memset(ret, 0, strlen(ret));
 			strcpy(ret, pbuf);
@@ -661,7 +661,7 @@ void *soustraction(void *num1, void *num2){
 	}
 	pbuf = buffer;
 	ij = strlen(pbuf);
-	pret = allocation((void **)&ret, ij+1, sizeof(char));
+	pret = allocation((void **)&ret, ij, sizeof(char));
 	for(ii = ij-1, pret = pret; ii >= 0; ii--, pret++)
 		*pret = pbuf[ii];
 	if(equal("0",ret) == 0){
@@ -797,7 +797,7 @@ void *multiplication(void *num1, void *num2){
 							sprintf(pbuf,"%i", v2[0]*v1[0]+z-retenue);
 							pbuf++;
 							buflen++;
-							result = allocation((void **)&result, strlen(resultat)+1, sizeof(char));
+							result = allocation((void **)&result, strlen(resultat), sizeof(char));
 							for(presult = result,ii_ = strlen(resultat); ii_ > 0; ii_--,presult++){
 								*presult = resultat[ii_-1];
 							}
@@ -821,7 +821,7 @@ void *multiplication(void *num1, void *num2){
 	}
 	if(total && dot_len > 0){
 		if(strlen(total) < dot_len){
-			pbuf = allocation((void **)&buffer, dot_len +2, sizeof(char));
+			pbuf = allocation((void **)&buffer, dot_len +1, sizeof(char));
 			for(result = &buffer[dot_len +1], ii = strlen(total)-1;ii >= 0;result--,ii--)
 				*result = total[ii];
 			for(result = result, ii = 0;(unsigned long int)ii < dot_len-strlen(total);ii++, result--)
@@ -837,7 +837,7 @@ void *multiplication(void *num1, void *num2){
 			//printf("%s\n", result);
 			return result;
 		}
-		pbuf = allocation((void **)&buffer, strlen(total)+2, sizeof(char));
+		pbuf = allocation((void **)&buffer, strlen(total)+1, sizeof(char));
 		strcpy(pbuf, total);
 		for(pbuf = &buffer[strlen(buffer)-1], ii = 0; (unsigned long int)ii != dot_len;pbuf--, ii++){
 			*(pbuf+1) = *(pbuf);
@@ -851,7 +851,7 @@ void *multiplication(void *num1, void *num2){
 		if(pbuf && *(pbuf + 1) == 0)
 			*pbuf = 0;
 		if(*buffer == '.'){
-			total = allocation((void **)&total,strlen(buffer)+2, sizeof(char));
+			total = allocation((void **)&total,strlen(buffer)+1, sizeof(char));
 			*total = '0';
 			strcpy(&total[1], buffer);
 			free(buffer);
@@ -884,12 +884,12 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	}
 	ZERO;
 	if(equal(n1,"0") == 0){
-		 quotient = allocation((void **)&quotient,2,sizeof(char));
+		 quotient = allocation((void **)&quotient,1,sizeof(char));
 		*quotient = '0';
 		return quotient;
 	}
-	diviseur = allocation((void **)&diviseur, strlen(n2)+1, sizeof(char));
-	dividende = allocation((void **)&dividende, strlen(n1)+1, sizeof(char));
+	diviseur = allocation((void **)&diviseur, strlen(n2), sizeof(char));
+	dividende = allocation((void **)&dividende, strlen(n1), sizeof(char));
 	memcpy(diviseur, n2, strlen(n2));
 	memcpy(dividende, n1, strlen(n1));
 	do{
@@ -1044,11 +1044,11 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 					}
 				}else{
 						if(strlen(strchr(result,'.') +1) >= virgule){
-							temp = allocation((void **)&temp, strlen(result)+1, sizeof(char));
+							temp = allocation((void **)&temp, strlen(result), sizeof(char));
 							if(equal(temp_, "5") >= 0){
 								for(len = 0; len < virgule_; len++){
 									if(len == 0){
-										arrondi = allocation((void **)&arrondi, 3, sizeof(char));
+										arrondi = allocation((void **)&arrondi, 2, sizeof(char));
 										strcpy(arrondi, "0.");
 									}else{	
 										if((arrondi = realloc(arrondi,strlen(arrondi)+2)) == NULL){
@@ -1063,7 +1063,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 								}
 								free(reste);
 								if(len == 0){
-									arrondi = allocation((void **)&arrondi, 2,sizeof(char));
+									arrondi = allocation((void **)&arrondi, 1,sizeof(char));
 									strcpy(arrondi, "0");
 								}
 								if(!neg)
@@ -1119,7 +1119,7 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 	//printf("%i\n", neg);
 	ZERO;
 	if(equal(n1, n2) == 0 || equal(n2,"1") == 0){
-		temp = allocation((void **)&temp, 2, sizeof(char));
+		temp = allocation((void **)&temp, 1, sizeof(char));
 		*temp = '0';
 		return temp;
 	}
@@ -1129,7 +1129,7 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 			//*temp = '-';
 			//strcpy(temp, n1);
 		//}else{
-			temp = allocation((void **)&temp, strlen(n1)+1, sizeof(char));
+			temp = allocation((void **)&temp, strlen(n1), sizeof(char));
 			strcpy(temp, n1);
 		//}
 		reste = temp;
@@ -1168,7 +1168,7 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 			reste = temp;
 		}
 		if(neg1){
-			temp = allocation((void **)&temp,strlen(reste)+2, sizeof(char));
+			temp = allocation((void **)&temp,strlen(reste)+1, sizeof(char));
 			*temp = '-';
 			strcpy(&temp[1], reste);
 			free(reste);
@@ -1179,12 +1179,12 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 	}
 	//return NULL;
 	if(equal(n1,"0") == 0){
-		 quotient = allocation((void **)&quotient,2,sizeof(char));
+		 quotient = allocation((void **)&quotient,1,sizeof(char));
 		*quotient = '0';
 		return quotient;
 	}
-	diviseur = allocation((void **)&diviseur, strlen(n2)+1, sizeof(char));
-	dividende = allocation((void **)&dividende, strlen(n1)+1, sizeof(char));
+	diviseur = allocation((void **)&diviseur, strlen(n2), sizeof(char));
+	dividende = allocation((void **)&dividende, strlen(n1), sizeof(char));
 	memcpy(diviseur, n2, strlen(n2));
 	memcpy(dividende, n1, strlen(n1));
 	do{
@@ -1322,7 +1322,7 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 	//free(reste);
 	//free(zero_);
 	if(neg1){
-		temp = allocation((void **)&temp,strlen(reste)+2, sizeof(char));
+		temp = allocation((void **)&temp,strlen(reste)+1, sizeof(char));
 		*temp = '-';
 		strcpy(&temp[1], reste);
 		free(reste);
