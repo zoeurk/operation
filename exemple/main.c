@@ -97,13 +97,13 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 				presult = check;
 			}else{
 				while(strlen(test) +1 <= v){
-					check = reallocation((void **)&test,strlen(test));
+					check = reallocation((void **)&test,strlen(test)+2);
 					strcat(test, "0");
 					check = addition(presult, test);
 					free(presult);
 					presult = check;
 				}
-				check = reallocation((void **)&test,strlen(test));
+				check = reallocation((void **)&test,strlen(test)+2);
 				test[strlen(test)] = '1';
 				check = addition(presult, test);
 				free(presult);
@@ -127,6 +127,8 @@ int main(int argc, char **argv){
 		fprintf(stderr, "usage:\n\t%s num1 num2 virgule\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
+	//check_str(argv[1]);
+	//check_str(argv[2]);
 	ret = equal(argv[1],argv[2]);
 	switch(ret){
 		case 0:
