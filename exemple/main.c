@@ -75,7 +75,6 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
 			strcpy(last, check);
 		}
-		//printf("%s\n",check);
 	}while(equal(num1, check) < 0);
 	if(last)
 		free(last);
@@ -95,7 +94,6 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 				check = addition(presult, test);
 				free(presult);
 				presult = check;
-				//printf("%s::%s\n", check, test);
 			}else{
 				while(strlen(test) +1 <= v){
 					check = reallocation((void **)&test,strlen(test)+2);
@@ -103,30 +101,20 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 					check = addition(presult, test);
 					free(presult);
 					presult = check;
-					//printf("%s::%s\n", check, test);
 				}
-				//test[strlen(test)-1] = 0;
 				check = reallocation((void **)&test,strlen(test)+2);
 				test[strlen(test)] = '1';
-				//printf("%s::%s\n", test, presult);
 				check = addition(presult, test);
-				//printf("==>%s::%s::%s\n", check, presult, test);
 				free(presult);
 				presult = check;
-				//printf("%s::%s\n", check, test);
 				presult[strlen(presult)-1] = 0;
 
 			}
 			free(test);
 			}else presult[strlen(presult)-1] = 0;
-			//presult[strlen(presult)-1] = 0;
 			for(result = &presult[strlen(presult)-1]; *result == '0'; *result = 0, result--);;
 		}
 	}
-	/*if((test = strchr(presult, '.'))){
-		printf("%s::%lu\n", test, virgule);
-		*(test - virgule +1) = 0;
-	}*/
 	if(presult[strlen(presult)-1] == '.')
 		presult[strlen(presult)-1] = 0;
 	return presult;
@@ -233,6 +221,5 @@ int main(int argc, char **argv){
 			free(check);
 		}
 	}
-	/*printf("%Lf\n", sqrtl(strtold(argv[1], NULL)));*/
 	return 0;
 }
