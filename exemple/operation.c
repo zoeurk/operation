@@ -7,7 +7,7 @@ void *allocation(void **ptr, unsigned long int members, unsigned long int size){
 		fprintf(stderr,"Taille de la chaine trop longue pour le systeme.\n");
 		exit(EXIT_FAILURE);
 	}
-	if((*ptr = calloc(members+1, size)) == NULL){
+	if((*ptr = calloc(members, size+1)) == NULL){
 		perror("calloc()");
 		exit(EXIT_FAILURE);
 	}
@@ -28,8 +28,9 @@ void *reallocation(void **ptr, unsigned long int size){
 	}
 	buf = (*ptr)+strlen(*ptr);
 	sz = size - strlen(*ptr);
-	for(i = 0; i < sz; i++)
+	for(i = 0; i < sz; i++){
 		buf[i] = 0;
+	}
 	return (*ptr)+strlen(*ptr);
 }
 int equal(void *num1, void *num2){
@@ -720,6 +721,7 @@ void *multiplication(void *num1, void *num2){
 				do{
 					retenue += 10;
 				}while(v1[0]*v2[0]+ z - retenue >= 10);
+				//printf("%i\n",v1[0]*v2[0]+ z - retenue);
 				if(buflen+1 >= BUFFER){
 					iz++;
 					buflen = 0;
@@ -792,9 +794,9 @@ void *multiplication(void *num1, void *num2){
 							for(presult = result,ii_ = strlen(resultat); ii_ > 0; ii_--,presult++){
 								*presult = resultat[ii_-1];
 							}
-							if(total == NULL)
+							if(total == NULL){
 								total = result;
-							else{
+							}else{
 								presult = addition(total, result);
 								free(result);
 								free(total);
@@ -825,6 +827,7 @@ void *multiplication(void *num1, void *num2){
 			if(neg){
 				VALEUR_NEGATIVE(result, pbuf, ii);
 			}
+			//printf("%s\n", result);
 			return result;
 		}
 		pbuf = allocation((void **)&buffer, strlen(total)+1, sizeof(char));
@@ -1096,6 +1099,8 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 	unsigned long int len = 0, virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
 	long long int ii = 0;
 	int x;
+	//NEG;
+	//NEG_TEST;
 	for(n1 = n1; *n1 == '-' || *n1 == '+'; n1++) 
 		if(*n1 == '-')
 			neg1 = !neg1;
@@ -1104,6 +1109,7 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 		fprintf(stderr, "Erreur: Division par 0\n");
 		return NULL;
 	}
+	//printf("%i\n", neg);
 	ZERO;
 	if(equal(n1, n2) == 0 || equal(n2,"1") == 0){
 		temp = allocation((void **)&temp, 1, sizeof(char));
@@ -1111,9 +1117,16 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 		return temp;
 	}
 	if(equal(n1, n2) < 0){
-		temp = allocation((void **)&temp, strlen(n1), sizeof(char));
-		strcpy(temp, n1);
+		//if(neg){
+			//temp = allocation((void **)&temp,strlen(n1)+2, sizeof(char));
+			//*temp = '-';
+			//strcpy(temp, n1);
+		//}else{
+			temp = allocation((void **)&temp, strlen(n1), sizeof(char));
+			strcpy(temp, n1);
+		//}
 		reste = temp;
+		/*ICI*/
 		if(virgule)
 			dix = multiplication("1","1");
 		if(virgule){
@@ -1133,6 +1146,7 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 						free(reste);
 						free(temp);
 						reste = temp_;
+						//printf("===>%s::%s\n", reste, t);
 						break;
 					}else{
 						free(temp);
@@ -1153,8 +1167,10 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 			free(reste);
 			reste = temp;
 		}
+		//*result = '0';
 		return reste;
 	}
+	//return NULL;
 	if(equal(n1,"0") == 0){
 		 quotient = allocation((void **)&quotient,1,sizeof(char));
 		*quotient = '0';

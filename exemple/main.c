@@ -24,7 +24,7 @@ char *cosinus(char *arg){
 			t = soustraction(arg, temp);
 			free(temp);
 		}else{
-			t = allocation((void *)&t, 1, sizeof(char));
+			t = allocation((void *)&t, 2, sizeof(char));
 			*t = '0';
 		}
 	}
@@ -63,7 +63,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		}
 		check = multiplication(presult, presult);
 		if(last == NULL){
-			last = allocation((void **)&last,strlen(check), sizeof(char));
+			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
 			strcpy(last, check);
 		}else{
 			if(equal(last, check) == 0){
@@ -72,7 +72,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 				break;
 			}
 			free(last);
-			last = allocation((void **)&last,strlen(check), sizeof(char));
+			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
 			strcpy(last, check);
 		}
 		//printf("%s\n",check);
@@ -90,11 +90,12 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 			test = allocation((void **)&test, 3, sizeof(char));
 			strcpy(test,"0.");
 			if(v == 1){
-				check = reallocation((void **)&test,3);
+				check = reallocation((void **)&test,4);
 				strcat(test, "1");
 				check = addition(presult, test);
 				free(presult);
 				presult = check;
+				//printf("%s::%s\n", check, test);
 			}else{
 				while(strlen(test) +1 <= v){
 					check = reallocation((void **)&test,strlen(test)+2);
@@ -102,20 +103,30 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 					check = addition(presult, test);
 					free(presult);
 					presult = check;
+					//printf("%s::%s\n", check, test);
 				}
+				//test[strlen(test)-1] = 0;
 				check = reallocation((void **)&test,strlen(test)+2);
 				test[strlen(test)] = '1';
+				//printf("%s::%s\n", test, presult);
 				check = addition(presult, test);
+				//printf("==>%s::%s::%s\n", check, presult, test);
 				free(presult);
 				presult = check;
+				//printf("%s::%s\n", check, test);
 				presult[strlen(presult)-1] = 0;
 
 			}
 			free(test);
 			}else presult[strlen(presult)-1] = 0;
+			//presult[strlen(presult)-1] = 0;
 			for(result = &presult[strlen(presult)-1]; *result == '0'; *result = 0, result--);;
 		}
 	}
+	/*if((test = strchr(presult, '.'))){
+		printf("%s::%lu\n", test, virgule);
+		*(test - virgule +1) = 0;
+	}*/
 	if(presult[strlen(presult)-1] == '.')
 		presult[strlen(presult)-1] = 0;
 	return presult;
@@ -127,8 +138,6 @@ int main(int argc, char **argv){
 		fprintf(stderr, "usage:\n\t%s num1 num2 virgule\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
-	//check_str(argv[1]);
-	//check_str(argv[2]);
 	ret = equal(argv[1],argv[2]);
 	switch(ret){
 		case 0:
