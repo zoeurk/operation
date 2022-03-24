@@ -1099,8 +1099,6 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 	unsigned long int len = 0, virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
 	long long int ii = 0;
 	int x;
-	//NEG;
-	//NEG_TEST;
 	for(n1 = n1; *n1 == '-' || *n1 == '+'; n1++) 
 		if(*n1 == '-')
 			neg1 = !neg1;
@@ -1109,7 +1107,6 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 		fprintf(stderr, "Erreur: Division par 0\n");
 		return NULL;
 	}
-	//printf("%i\n", neg);
 	ZERO;
 	if(equal(n1, n2) == 0 || equal(n2,"1") == 0){
 		temp = allocation((void **)&temp, 1, sizeof(char));
@@ -1117,14 +1114,8 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 		return temp;
 	}
 	if(equal(n1, n2) < 0){
-		//if(neg){
-			//temp = allocation((void **)&temp,strlen(n1)+2, sizeof(char));
-			//*temp = '-';
-			//strcpy(temp, n1);
-		//}else{
-			temp = allocation((void **)&temp, strlen(n1), sizeof(char));
-			strcpy(temp, n1);
-		//}
+		temp = allocation((void **)&temp, strlen(n1), sizeof(char));
+		strcpy(temp, n1);
 		reste = temp;
 		/*ICI*/
 		if(virgule)
@@ -1146,7 +1137,6 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 						free(reste);
 						free(temp);
 						reste = temp_;
-						//printf("===>%s::%s\n", reste, t);
 						break;
 					}else{
 						free(temp);
@@ -1167,10 +1157,8 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 			free(reste);
 			reste = temp;
 		}
-		//*result = '0';
 		return reste;
 	}
-	//return NULL;
 	if(equal(n1,"0") == 0){
 		 quotient = allocation((void **)&quotient,1,sizeof(char));
 		*quotient = '0';
@@ -1197,8 +1185,6 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 			zero_ = pzero_;
 		}
 	}while(1);
-	/*printf("%s::%s\n", diviseur, dividende);
-	exit(0);*/
 	preste = allocation((void **)&reste, BUFFER, sizeof(char));
 	len = strlen(dividende)-1;
 	do{
@@ -1265,11 +1251,6 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 		}
 		ii++;
 	}
-	//return NULL;
-	//fprintf(stderr,"%s\n", zero_);
-	//pzero_ = division(reste, zero_, strlen(zero_)+1, 0);
-	//printf("==>%s::%s::%s\n",reste, zero_,pzero_);
-	//exit(0);
 	if(zero_){
 		/*ICI*/
 		if(virgule)
@@ -1290,7 +1271,6 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 						free(reste);
 						free(temp);
 						reste = temp_;
-						//printf("===>%s::%s\n", reste, t);
 						break;
 					}else{
 						free(temp);
@@ -1299,21 +1279,17 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 				}
 				virgule_++;
 			}while(virgule_ < virgule && equal(reste,"0") != 0);
-			//printf("%s\n", reste);
 			temp = division(reste, dix, virgule, 0);
 			free(reste);
 			free(dix);
 			reste = temp;
 		}
-		//printf("%s\n", reste);
 		pzero_ = division(reste, zero_, strlen(reste)+3, 0);
 		free(reste);
 		reste = pzero_;
 	}
 	if(zero_)
 		free(zero_);
-	//free(reste);
-	//free(zero_);
 	if(neg1){
 		temp = allocation((void **)&temp,strlen(reste)+1, sizeof(char));
 		*temp = '-';
