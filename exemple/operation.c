@@ -1284,9 +1284,11 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 			free(dix);
 			reste = temp;
 		}
-		pzero_ = division(reste, zero_, strlen(reste)+3, 0);
-		free(reste);
-		reste = pzero_;
+		if(*reste != '0' && equal(reste,"0") != 0){
+			pzero_ = division(reste, zero_, strlen(reste)+3, 0);
+			free(reste);
+			reste = pzero_;
+		}
 	}
 	if(zero_)
 		free(zero_);
