@@ -58,10 +58,11 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		//printf("%s\n", presult);
 		if(check)
 			free(check);
-		/*if((test = strchr(presult,'.')) != NULL){
+		if((test = strchr(presult,'.')) != NULL && *presult != '0'){
 			if(strlen(test+1)>=v)
 				*(test+1+v) = 0; 
-		}*/
+		}
+		//printf("%s\n", presult);
 		check = multiplication(presult, presult);
 		if(last == NULL){
 			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
