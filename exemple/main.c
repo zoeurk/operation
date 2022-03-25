@@ -85,34 +85,33 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	free(check);
 	if((result = strchr(presult, '.'))){
 		if(!approximation)
-			result[strlen(result)-1] = 0;
+			result[virgule+1] = 0;
 		else{
-			if(presult[strlen(presult)-1] > '5'){
-			test = allocation((void **)&test, 3, sizeof(char));
-			strcpy(test,"0.");
-			if(v == 1){
-				check = reallocation((void **)&test,4);
-				strcat(test, "1");
-				check = addition(presult, test);
-				free(presult);
-				presult = check;
-			}else{
-				while(strlen(test) +1 <= v){
-					check = reallocation((void **)&test,strlen(test)+2);
-					strcat(test, "0");
+			if(presult[strlen(presult)-1] >= '5'){
+				test = allocation((void **)&test, 3, sizeof(char));
+				strcpy(test,"0.");
+				if(v == 1){
+					check = reallocation((void **)&test,4);
+					strcat(test, "1");
 					check = addition(presult, test);
 					free(presult);
 					presult = check;
+				}else{
+					while(strlen(test) +1 <= v){
+						check = reallocation((void **)&test,strlen(test)+2);
+						strcat(test, "0");
+						check = addition(presult, test);
+						free(presult);
+						presult = check;
+					}
+					check = reallocation((void **)&test,strlen(test)+2);
+					test[strlen(test)] = '1';
+					check = addition(presult, test);
+					free(presult);
+					presult = check;
+					presult[strlen(presult)-1] = 0;
 				}
-				check = reallocation((void **)&test,strlen(test)+2);
-				test[strlen(test)] = '1';
-				check = addition(presult, test);
-				free(presult);
-				presult = check;
-				presult[strlen(presult)-1] = 0;
-
-			}
-			free(test);
+				free(test);
 			}else presult[strlen(presult)-1] = 0;
 			for(result = &presult[strlen(presult)-1]; *result == '0'; *result = 0, result--);;
 		}
