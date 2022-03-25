@@ -55,12 +55,13 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		result = addition(presult, pbuf);
 		free(presult);
 		presult = multiplication(result,"0.5");
+		//printf("%s\n", presult);
 		if(check)
 			free(check);
-		if((test = strchr(presult,'.')) != NULL){
+		/*if((test = strchr(presult,'.')) != NULL){
 			if(strlen(test+1)>=v)
 				*(test+1+v) = 0; 
-		}
+		}*/
 		check = multiplication(presult, presult);
 		if(last == NULL){
 			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
