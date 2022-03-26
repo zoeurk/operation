@@ -34,8 +34,22 @@ char *cosinus(char *arg){
 }
 char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	unsigned long int len = strlen(num1)-(strchr(num1, '.') != NULL), v = virgule+1;
-	char buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test, *last = NULL;
-	if((test = strchr(num1,'.')) != NULL){
+	char *num1_ = NULL, *pnum1_,*dix = NULL, *pdix, buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test, *last = NULL;
+	num1_ = multiplication(num1, "1");
+	while(equal(num1_, "1") < 0){
+		pnum1_ = multiplication(num1_,"100");
+		free(num1_);
+		num1_ = pnum1_;
+		if(dix == NULL)
+			dix = multiplication("1", "10");
+		else{
+			pdix = multiplication(dix, "10");
+			free(dix);
+			dix = pdix;
+		}
+	}
+	len = strlen(num1_)-(strchr(num1_, '.') != NULL);
+	if((test = strchr(num1_,'.')) != NULL){
 		test++;
 		if(virgule < strlen(test)){
 			v = strlen(test)+1;
@@ -43,7 +57,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	}
 	sprintf(buffer,"%lu", len);
 	buf = multiplication(buffer,"100");
-	pbuf = division(num1, buf,virgule, 0);
+	pbuf = division(num1_, buf,virgule, 0);
 	result = addition(buf, pbuf);
 	free(buf);
 	presult = multiplication(result,"0.5");
@@ -51,7 +65,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		free(pbuf);
 		free(result);
 		test = strchr(presult,'.');
-		pbuf = division(num1, presult, v, 0);
+		pbuf = division(num1_, presult, v, 0);
 		result = addition(presult, pbuf);
 		free(presult);
 		presult = multiplication(result,"0.5");
@@ -77,7 +91,8 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
 			strcpy(last, check);
 		}
-	}while(equal(num1, check) < 0);
+	}while(equal(num1_, check) < 0);
+	free(num1_);
 	if(last)
 		free(last);
 	free(pbuf);
@@ -109,12 +124,25 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 					check = addition(presult, test);
 					free(presult);
 					presult = check;
-					presult[strlen(presult)-1] = 0;
+					if(strlen(presult) > virgule+1)
+						presult[strlen(presult) - 1] = 0;
+					else
+						presult[strlen(presult)-1] = 0;
 				}
 				free(test);
 			}else presult[strlen(presult)-1] = 0;
 			for(result = &presult[strlen(presult)-1]; *result == '0'; *result = 0, result--);;
 		}
+	}
+	if(dix){
+		result = division(presult, dix,virgule, approximation);
+		free(presult);
+		presult = result;
+		free(dix);
+	}
+	if((result = strchr(presult,'.')) && strlen(result) > virgule){
+		result[virgule+1] = 0;
+		for(result = &presult[strlen(presult)-1]; *result == '0'; *result = 0, result--);;
 	}
 	if(presult[strlen(presult)-1] == '.')
 		presult[strlen(presult)-1] = 0;
