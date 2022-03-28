@@ -36,7 +36,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	unsigned long int len = strlen(num1)-(strchr(num1, '.') != NULL), v = virgule+1;
 	char *num1_ = NULL, *pnum1_,*dix = NULL, *pdix, buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test, *last = NULL;
 	num1_ = multiplication(num1, "1");
-	while(equal(num1_, "1") < 0){
+	while(strchr(num1_,'.') != NULL){
 		pnum1_ = multiplication(num1_,"100");
 		free(num1_);
 		num1_ = pnum1_;
