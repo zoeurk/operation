@@ -886,7 +886,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	memcpy(diviseur, n2, strlen(n2));
 	memcpy(dividende, n1, strlen(n1));
 	do{
-		if((n2 = strchr(diviseur,'.')) == NULL/*  && (n1 = strchr(dividende, '.')) == NULL*/)
+		if((n2 = strchr(diviseur,'.')) == NULL  && (n1 = strchr(dividende, '.')) == NULL)
 				break;
 		temp = multiplication(diviseur, "10");
 		free(diviseur);
@@ -1284,11 +1284,12 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 			free(dix);
 			reste = temp;
 		}
-		if(*reste != '0' && equal(reste,"0") != 0){
+		/*BUG POSSIBLE*/
+		/*if(*reste != '0' && equal(reste,"0") != 0){
 			pzero_ = division(reste, zero_, strlen(reste)+3, 0);
 			free(reste);
 			reste = pzero_;
-		}
+		}*/
 	}
 	if(zero_)
 		free(zero_);
