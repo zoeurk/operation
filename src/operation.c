@@ -2,6 +2,22 @@
 #include <stdlib.h>
 #include <string.h>
 #include "operation.h"
+int strtype(void *str){
+	unsigned char *_str_, dot = 0;
+	unsigned short int i;
+	for(_str_ = str;((*_str_ > 47 && *_str_ < 58) || (*_str_ == '.' && dot < 2)) && *_str_ != 0; _str_++)
+		if(*_str_ == '.' && dot == 0)
+			dot = 1;
+		else
+			if(dot == 1 && *_str_ == '.')
+				dot = 2;
+	if(*_str_ == 0 && dot < 2)
+		return 0;
+	for(_str_ = _str_;i = (unsigned short int) *_str_, ((i > 31 && i< 127) || (i > 128 && i < 256))  && *_str_ != 0; _str_++);;
+	if(*_str_ == 0)
+		return 1;
+	return 2;
+}
 void *allocation(void **ptr, unsigned long int members, unsigned long int size){
 	if(members == (unsigned long int)~0){
 		fprintf(stderr,"Taille de la chaine trop longue pour le systeme.\n");
