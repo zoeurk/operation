@@ -5,12 +5,12 @@
 int strtype(void *str){
 	unsigned char *_str_, dot = 0;
 	unsigned short int i;
+	if(*((char *)str) == '.')
+		dot = 2;
 	for(_str_ = str;((*_str_ > 47 && *_str_ < 58) || (*_str_ == '.' && dot < 2)) && *_str_ != 0; _str_++)
-		if(*_str_ == '.' && dot == 0){
-			if(_str_ == str)
-				break;
+		if(*_str_ == '.' && dot == 0)
 			dot = 1;
-		}else
+		else
 			if(dot == 1 && *_str_ == '.')
 				dot = 2;
 	if(*_str_ == 0 && dot < 2)
