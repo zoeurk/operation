@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include "operation.h"
-
+const unsigned long int BUFFER = 56;
 char *cosinus(char *arg){
 	char pi[512], npi[512],*pi_, *npi_ ,*temp, *t = NULL;
 	sprintf(npi,"-%.54Lf", 4*atanl(1));
@@ -149,12 +149,19 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	return presult;
 }
 int main(int argc, char **argv){
-	int ret;
+	int ret, i;
 	char *r, *check;
 	if(argc != 4){
 		fprintf(stderr, "usage:\n\t%s num1 num2 virgule\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
+	for(i = 1; i < 3; i++)
+		if((ret = strtype(argv[i])) != 0)
+			switch(ret){
+				case 1: case 2:
+					fprintf(stderr, "Donnee invalide\n");
+					exit(EXIT_FAILURE);
+			}
 	ret = equal(argv[1],argv[2]);
 	switch(ret){
 		case 0:

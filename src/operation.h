@@ -46,8 +46,7 @@ while(*n2 == '0' && *(n2+1) != '.') \
 		*pbuf = buffer[ii]; \
 	} \
 	*buffer = '-';
-
-#define BUFFER 2
+extern const unsigned long int BUFFER;
 int strtype(void *str);
 void *allocation(void **ptr, unsigned long int members, unsigned long int size);
 void *reallocation(void **ptr, unsigned long int size);
