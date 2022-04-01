@@ -3,7 +3,8 @@
 #include <string.h>
 #include <math.h>
 #include "operation.h"
-const unsigned long int BUFFER = 56;
+/*BUFFER > 1*/
+const unsigned long int BUFFER = 2;
 char *cosinus(char *arg){
 	char pi[512], npi[512],*pi_, *npi_ ,*temp, *t = NULL;
 	sprintf(npi,"-%.54Lf", 4*atanl(1));
