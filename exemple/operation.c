@@ -8,9 +8,11 @@ int strtype(void *str){
 	if(*((char *)str) == '.')
 		dot = 2;
 	for(_str_ = str;(((*_str_ > 47 && *_str_ < 58) || (*_str_ == '.' && dot < 2)) || (signe < 3 && (*_str_ == '+' || *_str_ == '-'))) && *_str_ != 0; _str_++){
-		if(*_str_ == '.' && dot == 0)
+		if(*_str_ == '.' && dot == 0){
 			dot = 1;
-		else
+			if(_str_[1] == 0)
+				*_str_ = 0;
+		}else
 			if(dot == 1 && *_str_ == '.')
 				dot = 2;
 		if(signe == 0 && (*_str_ == '+' || *_str_ == '-')){

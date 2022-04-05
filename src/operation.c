@@ -11,7 +11,7 @@ int strtype(void *str){
 		if(*_str_ == '.' && dot == 0){
 			dot = 1;
 			if(_str_[1] == 0)
-				break;
+				*_str_ = 0;
 		}else
 			if(dot == 1 && *_str_ == '.')
 				dot = 2;
