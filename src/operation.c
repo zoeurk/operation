@@ -2,11 +2,54 @@
 #include <stdlib.h>
 #include <string.h>
 #include "operation.h"
+#define DOT_INIT \
+	dot1 = strchr(n1, '.'); \
+	dot2 = strchr(n2, '.'); \
+	dot1_len = (dot1) ? strlen(dot1) -1: 0;\
+	dot2_len = (dot2) ? strlen(dot2) -1: 0;
+
+#define DOT_SEARCH(dot1,dot2, dot1_len, dot2_len, val1, val2)\
+	DOT_INIT; \
+	val1 = (dot1) ? dot1 - 1: n1 + strlen(n1)-1;\
+	val2 = (dot2) ? dot2 - 1: n2 + strlen(n2)-1;\
+	if(dot1)dot1++;\
+	if(dot2)dot2++;
+
+#define NEG \
+	for(n1 = n1; *n1 == '-' || *n1 == '+'; n1++) \
+		neg1 = !neg1; \
+	for(n2 = n2; *n2 == '-' || *n2 == '+'; n2++) \
+		neg2 = !neg2;
+
+#define NEG_TEST \
+	if(neg1 != neg2)\
+		neg = 1;
+
+#define ZERO \
+while(*n1 == '0' && *(n1+1) != '.') \
+	n1++;\
+while(*n2 == '0' && *(n2+1) != '.') \
+	n2++;
+
+#define VALEUR_NEGATIVE(buffer, pbuf, ii) \
+	if(strlen(buffer) +1 == (unsigned long int)~0 || strlen(buffer)+2 == (unsigned long int)~0){\
+		fprintf(stderr,"Taille de la chaine trop longue pour le systeme.\n");\
+		free(buffer);\
+		exit(EXIT_FAILURE);\
+	}\
+	if((buffer = realloc(buffer,strlen(buffer)+2)) == NULL){ \
+		perror("realloc()"); \
+		exit(EXIT_FAILURE); \
+	} \
+	for(pbuf = &buffer[strlen(buffer)+1], ii = strlen(buffer);pbuf != buffer; pbuf--, ii--){ \
+		*pbuf = buffer[ii]; \
+	} \
+	*buffer = '-';
+
+#define BUFFER 3
 int strtype(void *str){
 	unsigned char *_str_ = (unsigned char *)str, dot = 0;
 	unsigned short int i;
-	if(_str_[0] == 0)
-		return 1;
 	if(_str_[0] == '.')
 		dot = 2;
 	if(*_str_ == '-' || *_str_ == '+')
@@ -25,13 +68,12 @@ int strtype(void *str){
 		return 1;
 	return 2;
 }
-
 void *allocation(void **ptr, unsigned long int members, unsigned long int size){
 	if(members == (unsigned long int)~0){
 		fprintf(stderr,"Taille de la chaine trop longue pour le systeme.\n");
 		exit(EXIT_FAILURE);
 	}
-	if((*ptr = calloc(members, size+1)) == NULL){
+	if((*ptr = calloc(members, size)) == NULL){
 		perror("calloc()");
 		exit(EXIT_FAILURE);
 	}
@@ -39,14 +81,21 @@ void *allocation(void **ptr, unsigned long int members, unsigned long int size){
 }
 void *reallocation(void **ptr, unsigned long int size){
 	char *buf;
-	unsigned long int i = 0, sz = 0, sz_;
-	for(sz = strlen(*ptr)+1, sz_ = 0;sz != (unsigned long int)~0 && sz_ != size; sz++, sz_++);;
-	if(sz == (unsigned long int)~0){
+	unsigned long int i = 0, sz = 0;
+	if(size == (unsigned long int)~0){
 		fprintf(stderr,"Taille de la chaine trop longue pour le systeme.\n");
 		free(*ptr);
 		exit(EXIT_FAILURE);
 	}
-	if((*ptr = realloc(*ptr, size)) == NULL){
+	if(size < strlen(*ptr) || size + 1 < size){
+		fprintf(stderr,
+			"Erreur interne:\n\tLe nombre actuel >= Au nouveu nombre\n");
+		fprintf(stderr,
+			"Erreur possible:\n\tLe nombre est trop longue pour le systeme.");
+		free(*ptr);
+		exit(EXIT_FAILURE);
+	}
+	if((*ptr = realloc(*ptr, size+1)) == NULL){
 		perror("realloc()");
 		exit(EXIT_FAILURE);
 	}
@@ -75,14 +124,17 @@ int equal(void *num1, void *num2){
 	DOT_INIT;
 	if(dot1)dot1++;
 	if(dot2)dot2++;
-	for(n1 = n1;*(n1+1) != '.' && (*n1 == '0' || *n1 == '+' || *n1 == '-'); n1++);;
-	for(n2 = n2;*(n2+1) != '.' && (*n2 == '0' || *n2 == '+' || *n2 == '-'); n2++);;
+	for(n1 = n1;(*n1+1) != '.' && (*n1 == '0' || *n1 == '+' || *n1 == '-'); n1++);;
+		//n1++;
+	for(n2 = n2;(*n2+1) != '.' && (*n2 == '0' || *n2 == '+' || *n2 == '-'); n2++);;
+		//n2++;
 	val1 = n1;
 	val2 = n2;
 	val1_len = strlen(n1);
 	val2_len = strlen(n2);
 	val1_len = (dot1_len) ? val1_len - dot1_len -1: val1_len; 
 	val2_len = (dot2_len) ? val2_len - dot2_len -1: val2_len;
+	//printf("%s::%s\n", val1, val2);
 	if(neg1 && !neg2){
 		if((pdot = strchr(val1, '.')) != NULL)
 			for(pdot = val1 +val1_len,
@@ -90,9 +142,17 @@ int equal(void *num1, void *num2){
 				*pdot != 0 &&
 				dot[0] == 0;
 				pdot++
-			)if(*pdot != '0')dot[0] = *pdot;
-		if(strncmp(val1,val2, 1 ) == 0 && dot[0] == 0)
+			){	
+				//printf("%i\n", pdot[0]);
+				if(*pdot != '0')dot[0] = *pdot;
+			}
+		if(strncmp(val1,val2, 1 ) == 0 && dot[0] == 0){
+			//if(pdot)
+			//	*pdot = '.';
+			//printf("===>%s;%i\n",val1,dot[0]);
 			return 0;
+		}//else printf("merde\n");
+		//printf("%s\n", val1);
 		return -1;
 	}
 	if(neg2 && !neg1){
@@ -102,14 +162,42 @@ int equal(void *num1, void *num2){
 				*pdot != 0 &&
 				dot[0] == 0;
 				pdot++
-			){
+			){	
+				//printf("%i\n", pdot[0]);
 				if(*pdot != '0')dot[0] = *pdot;
 			}
 		if(strncmp(val1,val2, 1 ) == 0 && dot[0] == 0){
+			//if(pdot)
+			//	*pdot = '.';
+			//printf("===>%s;%i\n",val1,dot[0]);
+			return 0;
+		}//else printf("merde\n");
+		//printf("%s\n", val1);
+		/*if(strcmp(val2,"0") == 0){
+			//printf("===%s\n", dot1);
 			return 0;
 		}
+		//printf("===%s\n", dot2);*/
 		return 1;
 	}
+	/*if(dot1){
+		for(pdot = dot1;*pdot != 0 && dot[0] == 0;pdot++){
+			if(*pdot != '0')
+				dot[0] = 1;
+		}
+		//printf("******\n");
+	}
+	if(dot2){
+		for(pdot = dot2;*pdot != 0 && dot[1] == 0;pdot++){
+			if(*pdot != '0')
+				dot[1] = 1;
+		}
+		if(*pdot == 0){
+			//printf("******%s::%s\n", val2, dot2);
+			*(dot-1) = 0;
+		}
+	}*/
+	//printf("%s::%s\n", dot1, dot2);
 	if(strcmp(val1,"0") == 0 && strcmp(val2,"0") == 0)
 		return 0;
 	if(strcmp(val1,val2)==0)
@@ -169,12 +257,12 @@ int equal(void *num1, void *num2){
 			dot1++, dot2++
 		){
 			if(*dot1 > *dot2){
-				if(neg1 && neg2)
+				if(*n1 == '-' && *n2 == '-')
 					return -1;
 				return 1;
 			}
 			if(*dot1 < *dot2){
-				if(neg1 && neg2)
+				if(*n1 == '-' && *n2 == '-')
 					return 1;
 				return -1;
 			}
@@ -372,7 +460,7 @@ void *addition(void *num1, void *num2){
 		pbuf++;
 	}
 	ij = strlen(buffer);
-	pret = allocation((void **)&ret, ij, sizeof(char));
+	pret = allocation((void **)&ret, ij+1, sizeof(char));
 	for(ii = ij-1, pret = pret; ii >= 0; ii--, pret++)
 		*pret = buffer[ii];
 	free(buffer);
@@ -385,7 +473,7 @@ void *addition(void *num1, void *num2){
 			set = 1;
 		}
 		if(set){
-			pbuf = allocation((void **)&pbuf, strlen(buffer), sizeof(char));
+			pbuf = allocation((void **)&pbuf, strlen(buffer)+1, sizeof(char));
 			strcpy(pbuf, buffer);
 			memset(ret, 0, strlen(ret));
 			strcpy(ret, pbuf);
@@ -393,6 +481,14 @@ void *addition(void *num1, void *num2){
 		}
 	}
 	pret = &ret[strlen(ret)-1];
+	if(dot1 || dot2){
+		//printf("DOT\n");
+		/*while((*pret == '0' || *pret == '.')){
+			//printf("...:%i\n", *pret);
+			*pret = 0;
+			pret--;
+		}*/
+	}
 	if(neg){
 		if((ret = realloc(ret,strlen(ret)+2)) == NULL){
 			perror("realloc()");
@@ -403,9 +499,12 @@ void *addition(void *num1, void *num2){
 		}
 		*ret = '-';
 	}
-	if((n1 = strchr(ret,'.')) != NULL)
-		for(n2 = &ret[strlen(ret) - 1];(n2+1) != n1 && (*n2 == '0' || *n2 == '.'); n2--)
+	if((n1 = strchr(ret,'.')) != NULL){
+		for(n2 = &ret[strlen(ret) - 1];(n2+1) != n1 && (*n2 == '0' || *n2 == '.'); n2--){
+			//printf("%s\n", n2);
 			*n2 = 0;
+		}
+	}
 	return ret;
 }
 void *soustraction(void *num1, void *num2){
@@ -465,6 +564,8 @@ void *soustraction(void *num1, void *num2){
 		default: printf("ERROR\n");
 			exit(0);
 	}
+	//printf("%lu::%lu\n", val1_len, val2_len);
+	//exit(0);
 	pbuf = allocation((void **)&buffer,BUFFER, sizeof(char));
 	if(dot1 != NULL && dot1_len == 0)
 		val1_len--;
@@ -511,8 +612,7 @@ void *soustraction(void *num1, void *num2){
 				result = 10 - v1[0] - retenue;
 				retenue = 1;
 			}else{
-				result = 10- (v1[0] + retenue);
-				retenue = 1;
+				retenue = 0;
 			}
 			if(buflen + 1 >= BUFFER){
 				z++;
@@ -595,13 +695,30 @@ void *soustraction(void *num1, void *num2){
 		sprintf(pbuf, ".");
 		pbuf++;
 		buflen++;
+		//printf("%s\n", buffer);
 	}
+	//fprintf(stderr,"===>%s::%s\n", (char *)n1, (char *)n2);
+	//len = val2_len - val1_len;
+	//printf("%lu::%lu::%lli\n", val1_len, val2_len, len);
+	//exit(0);
 	for(ptr1 = val1, ptr2 = val2, ii = val1_len - (neg1 == 1), ij = val2_len - (dot2_len > 0);
-		ii > 0 && ij > 0;
+		ii > 0 && ij > 0; /*&&
+		*ptr1 != 0 && 
+		*ptr2 != 0;*/
 		ii--, ij--, ptr1--, ptr2--
 	){
+		//printf("++++++++++++++++++++++\n");
+		/*fprintf(stderr, "%s::%s\n",
+			ptr1,
+			ptr2
+		);*/
+		//printf("===>%lli::%lli\n", ii, ij);
+		//exit(0);
 		v1[0] = *ptr1;
 		v2[0] = *ptr2 ;
+		/*if(*(ptr2 +1) == 0 ){
+			fprintf(stderr,"ERROR::%lli\n", ij);
+		}*/
 		v1[0] = atoi(v1);
 		v2[0] = atoi(v2);
 		if(v1[0] - retenue >= v2[0]){
@@ -620,6 +737,8 @@ void *soustraction(void *num1, void *num2){
 		pbuf++;
 		buflen++;
 	}
+	//printf("==>%lli::%lli\n", ii, ij);
+	//exit(0);
 	for(ii = ii; ii > 0; ii--, ptr1--){
 		if((ptr1 +1) == n1)break;
 		v1[0] = *ptr1;
@@ -665,28 +784,46 @@ void *soustraction(void *num1, void *num2){
 	while(strlen(buffer) > 1 && (buffer[strlen(buffer)-1] == '0'&& buffer[strlen(buffer)-2] != '.')){
 		buffer[strlen(buffer)-1] = 0;
 		pbuf = &buffer[strlen(buffer)-2];
+
 	}
+	pbuf--;
+	buflen--;
+	if(buflen + 1 >= BUFFER){
+		z++;
+		buflen = 0;
+		pbuf = reallocation((void **)&buffer,z*BUFFER);
+	}
+	pbuf++;
+	buflen++;
 	if(neg){
+		/*BUG POSSIBLE*/
 		if(buflen + 1 >= BUFFER){
 			z++;
 			pbuf = reallocation((void **)&buffer,z*BUFFER);
-		}else
-			pbuf = buffer+strlen(buffer);
-		sprintf(pbuf,"-");
-		pbuf++;
-		buflen++;
+		}
+		pbuf = buffer+strlen(buffer);
+		if(*(pbuf-1) != '0'){
+			sprintf(pbuf,"-");
+			pbuf++;
+			buflen++;
+		}
 	}
 	pbuf = buffer;
 	ij = strlen(pbuf);
-	pret = allocation((void **)&ret, ij, sizeof(char));
+	pret = allocation((void **)&ret, ij+1, sizeof(char));
 	for(ii = ij-1, pret = pret; ii >= 0; ii--, pret++)
 		*pret = pbuf[ii];
 	if(equal("0",ret) == 0){
 		strcpy(ret,"0");
 	}
-	if((n1 = strchr(ret,'.')) != NULL)
-		for(n2 = &ret[strlen(ret) - 1];(n2+1) != n1 && (*n2 == '0' || *n2 == '.'); n2--)
+	//printf("%s\n", ret);
+	/*while((dot1_len|| dot2_len) && (ret[strlen(ret)-1] == '0' || ret[strlen(ret)-1] == '.'))
+		ret[strlen(ret)-1] = 0;*/
+	if((n1 = strchr(ret,'.')) != NULL){
+		for(n2 = &ret[strlen(ret) - 1];(n2+1) != n1 && (*n2 == '0' || *n2 == '.'); n2--){
 			*n2 = 0;
+		}
+	}
 	free(pbuf);
 	return ret;
 }
@@ -694,11 +831,11 @@ void *multiplication(void *num1, void *num2){
 	char *n1 = num1, *n2 = num2,
 		*dot1, *dot2,
 		v1[2] = { 0, 0 }, v2[2] = { 0, 0 }, temp[3] = { 0, 0, 0},
-		*buffer = NULL,
+		*buffer,
 		*resultat = NULL, 
 		*result = NULL, *presult, *total = NULL,*pbuf,
 		retenue = 0, neg = 0, neg1 = 0, neg2 = 0, z = 0;
-	unsigned long int dot1_len = 0, dot2_len = 1, dot_len = 1,
+	unsigned long int dot1_len = 0, dot2_len = 0,
 				buflen = 0, iz = 1, zero = 0;
 	long long int ii = 0, ij = 0,ii_ = 0,x = 0;
 	NEG;
@@ -713,7 +850,6 @@ void *multiplication(void *num1, void *num2){
 	dot2 = strchr(n2, '.');
 	dot1_len = (dot1) ? strlen(dot1) -1: 0;
 	dot2_len = (dot2) ? strlen(dot2) -1: 0;
-	dot_len = dot1_len + dot2_len;
 	pbuf = allocation((void **)&resultat, BUFFER, sizeof(char));
 	for(n1 = n1,
 		ii = strlen(n1);
@@ -745,7 +881,6 @@ void *multiplication(void *num1, void *num2){
 				do{
 					retenue += 10;
 				}while(v1[0]*v2[0]+ z - retenue >= 10);
-				//printf("%i\n",v1[0]*v2[0]+ z - retenue);
 				if(buflen+1 >= BUFFER){
 					iz++;
 					buflen = 0;
@@ -756,25 +891,26 @@ void *multiplication(void *num1, void *num2){
 				buflen++;
 			}else{
 				if(ij-1 == 0 && v1[0]*v2[0]+ z - retenue >= 10){
-					if(buflen + 2 >= BUFFER){
+					if(buflen+2 >= BUFFER){
 						iz++;
 						buflen = 0;
-						pbuf = reallocation((void **)&resultat, BUFFER*iz);
+						pbuf = reallocation((void **)&resultat, BUFFER*iz+1);
+						pbuf = &resultat[strlen(resultat)];
 					}
 					sprintf(pbuf,"%i", v2[0]*v1[0]+z-retenue);
 					temp[0] = *(pbuf+1);
 					temp[1] = *pbuf;
 					*pbuf = temp[0];
 					*(pbuf+1) = temp[1];
-					result = allocation((void **)&result, strlen(resultat), sizeof(char));
+					result = allocation((void **)&result, strlen(resultat)+1, sizeof(char));
 					for(presult = result,ii_ = strlen(resultat); ii_ > 0; ii_--,presult++)
 						*presult = resultat[ii_-1];
 					memset(resultat, 0, strlen(resultat));
 					pbuf = reallocation((void **)&resultat,BUFFER);
 					pbuf = resultat;
-					if(total == NULL){
+					if(total == NULL)
 						total = result;
-					}else{
+					else{
 						presult = addition(total,result);
 						free(total);
 						free(result);
@@ -784,7 +920,7 @@ void *multiplication(void *num1, void *num2){
 					buflen = 0;
 				}else{
 					if(v1[0]*v2[0] + z >= 10){
-						do{ 
+						do{
 							retenue += 10;
 						}while(v1[0]*v2[0]+ z - retenue >= 10);
 						if(buflen+1 >= BUFFER){
@@ -814,7 +950,7 @@ void *multiplication(void *num1, void *num2){
 							sprintf(pbuf,"%i", v2[0]*v1[0]+z-retenue);
 							pbuf++;
 							buflen++;
-							result = allocation((void **)&result, strlen(resultat), sizeof(char));
+							result = allocation((void **)&result, strlen(resultat)+1, sizeof(char));
 							for(presult = result,ii_ = strlen(resultat); ii_ > 0; ii_--,presult++){
 								*presult = resultat[ii_-1];
 							}
@@ -836,27 +972,10 @@ void *multiplication(void *num1, void *num2){
 			}
 		}
 	}
-	if(total && dot_len > 0){
-		if(strlen(total) < dot_len){
-			pbuf = allocation((void **)&buffer, dot_len +1, sizeof(char));
-			for(result = &buffer[dot_len +1], ii = strlen(total)-1;ii >= 0;result--,ii--)
-				*result = total[ii];
-			for(result = result, ii = 0;(unsigned long int)ii < dot_len-strlen(total);ii++, result--)
-				*result = '0';
-			*result = '.';
-			result--;
-			*result = '0';
-			free(total);
-			free(resultat);
-			if(neg){
-				VALEUR_NEGATIVE(result, pbuf, ii);
-			}
-			//printf("%s\n", result);
-			return result;
-		}
-		pbuf = allocation((void **)&buffer, strlen(total)+1, sizeof(char));
+	if(dot1_len + dot2_len > 0){
+		pbuf = allocation((void **)&buffer, strlen(total)+2, sizeof(char));
 		strcpy(pbuf, total);
-		for(pbuf = &buffer[strlen(buffer)-1], ii = 0; (unsigned long int)ii != dot_len;pbuf--, ii++){
+		for(pbuf = &buffer[strlen(buffer)-1], ii = 0; (unsigned long int)ii != dot1_len + dot2_len;pbuf--, ii++){
 			*(pbuf+1) = *(pbuf);
 		}
 		*(pbuf+1) = '.';
@@ -868,7 +987,7 @@ void *multiplication(void *num1, void *num2){
 		if(pbuf && *(pbuf + 1) == 0)
 			*pbuf = 0;
 		if(*buffer == '.'){
-			total = allocation((void **)&total,strlen(buffer)+1, sizeof(char));
+			total = allocation((void **)&total,strlen(buffer)+2, sizeof(char));
 			*total = '0';
 			strcpy(&total[1], buffer);
 			free(buffer);
@@ -885,7 +1004,7 @@ void *multiplication(void *num1, void *num2){
 	free(resultat);
 	return total;
 }
-void *division(void *num1, void *num2, unsigned long int virgule, int approximation){
+void *division(void *num1, void *num2, unsigned long int virgule){
 	char *n1 = num1, *n2 = num2,
 		*quotient = NULL, *dividende = NULL, *diviseur = NULL, *reste = NULL, *preste,
 		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}, *result = NULL, *pr, point = 0, *arrondi = NULL,
@@ -899,14 +1018,15 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 		fprintf(stderr, "Erreur: Division par 0\n");
 		return NULL;
 	}
+	//printf("%i\n", neg);
 	ZERO;
 	if(equal(n1,"0") == 0){
-		 quotient = allocation((void **)&quotient,1,sizeof(char));
+		 quotient = allocation((void **)&quotient,2,sizeof(char));
 		*quotient = '0';
 		return quotient;
 	}
-	diviseur = allocation((void **)&diviseur, strlen(n2), sizeof(char));
-	dividende = allocation((void **)&dividende, strlen(n1), sizeof(char));
+	diviseur = allocation((void **)&diviseur, strlen(n2)+1, sizeof(char));
+	dividende = allocation((void **)&dividende, strlen(n1)+1, sizeof(char));
 	memcpy(diviseur, n2, strlen(n2));
 	memcpy(dividende, n1, strlen(n1));
 	do{
@@ -934,7 +1054,7 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 		nreste++;
 		ii++;
 	}while((unsigned long int)ii < strlen(dividende) && equal(reste, diviseur) < 0);
-	while(equal(reste, diviseur) < 0 && virgule_ <= virgule){
+	while(equal(reste, diviseur) < 0 && virgule_ <= virgule+1){
 		temp = multiplication(reste, "10");
 		free(reste);
 		reste = temp;
@@ -1039,157 +1159,128 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 		buflen++;
 		ii++;
 	}
+	//printf("%s\n", result);
 	if(neg){
 		VALEUR_NEGATIVE(result, pr, ii);
 	}
-	if(approximation && virgule){
-		if((temp = strchr(result, '.')) != NULL){
-			temp_ = &result[strlen(result)-1];
-				if(virgule == 0){
-					if(equal(temp_, "5")>=0){
-						if(!neg)
-							temp_ = addition(result ,"1");
-						else	temp_ = soustraction(result, "1");
-						free(result);
-						result = temp_;
-						temp = strchr(result,'.');
-						if(temp)
-							*temp = 0;
-					}else{
-						temp = strchr(result,'.');
-						*temp = 0;
-					}
-				}else{
-						if(strlen(strchr(result,'.') +1) >= virgule){
-							temp = allocation((void **)&temp, strlen(result), sizeof(char));
-							if(equal(temp_, "5") >= 0){
-								for(len = 0; len < virgule_; len++){
-									if(len == 0){
-										arrondi = allocation((void **)&arrondi, 2, sizeof(char));
-										strcpy(arrondi, "0.");
-									}else{	
-										if((arrondi = realloc(arrondi,strlen(arrondi)+2)) == NULL){
-											perror("ralloc()");
-											exit(EXIT_FAILURE);
-										}
-										if(len+1 == virgule_){
-											strcat(arrondi, "1");
-										}else{	strcat(arrondi, "0");
-										}
-									}
+	//printf("%s\n", result);
+	if((temp = strchr(result, '.')) != NULL){
+		temp_ = &result[strlen(result)-1];
+		if(virgule == 0){
+			if(equal(temp_, "5")){
+				if(!neg)
+					temp_ = addition(result ,"1");
+				else	temp_ = soustraction(result, "1");
+				//temp_ = addition(result,"1");
+				free(result);
+				result = temp_;
+				temp = strchr(result,'.');
+				//exit(0);
+				if(temp)
+					*temp = 0;
+			}
+		}else{
+			//printf("ici\n");
+			//if(x == 0){
+			//printf("==>%s::%i:%i\n", result, x, neg);
+				if(strlen(strchr(result,'.') +1) >= virgule){
+					//printf("%lu\n", virgule_);
+					//printf("la\n");
+					temp = allocation((void **)&temp, strlen(result)+1, sizeof(char));
+					if(equal(temp_, "5") >= 0){
+						for(len = 0; len < virgule_; len++){
+							if(len == 0){
+								arrondi = allocation((void **)&arrondi, 3, sizeof(char));
+								strcpy(arrondi, "0.");
+							}else{	
+								if((arrondi = realloc(arrondi,strlen(arrondi)+2)) == NULL){
+									perror("ralloc()");
+									exit(EXIT_FAILURE);
 								}
-								free(reste);
-								if(len == 0){
-									arrondi = allocation((void **)&arrondi, 1,sizeof(char));
-									strcpy(arrondi, "0");
+								if(len+1 == virgule_){
+									strcat(arrondi, "1");
+								}else{	strcat(arrondi, "0");
 								}
-								if(!neg)
-									reste = addition(result ,arrondi);
-								else	reste = soustraction(result, arrondi);
-								free(arrondi);
-								free(result);
-								result = reste;
-								reste = temp;
-								if(strlen(result) > 0)
-									result[strlen(result)-1] = 0;
-							}else{	free(temp);
-								result[strlen(result)-1] = 0;
-
 							}
 						}
+						//printf("%s\n",arrondi);
+						//free(arrondi);
+						//printf("===>%s::%s\n",result, temp);
+						//printf("%s\n",reste);
+						free(reste);
+						if(!neg)
+							reste = addition(result ,arrondi);
+						else	reste = soustraction(result, arrondi);
+						free(arrondi);
+						free(result);
+						result = reste;
+						reste = temp;
+						//if(virgule_ >= virgule -1){
+						//	printf("==>%s::%lu;%lu\n", result, virgule_, virgule);
+							//exit(0);
+						//}
+						if(strlen(result) > 0)
+							result[strlen(result)-1] = 0;
+					}else{	free(temp);
+						//printf("%s\n", temp_);
+						result[strlen(result)-1] = 0;
+					}
 				}
-		}
-	}else{
-		temp = strchr(result,'.');
-		if(temp && strlen(temp+1) > virgule)
-			*(temp+strlen(temp +1)) = 0;
+			}
+		//}
+		//printf("%s\n", result);
 	}
 	if((n1 = strchr(result,'.')) != NULL)
 		for(n2 = &result[strlen(result) - 1]; n2 != (n1-1) && (*n2 == '.' || *n2 == '0') ; *n2 = 0, n2--);;
+	//printf("%s\n", result);
+	//printf("%s\n", result);
+	/*if(equal(result,"0") == 0 || equal(result,"-0") == 0){
+		*result = '0';
+		result[1] = 0;
+	}*/
+	//printf("%s\n", result);
+	//printf("%s\n", dividende);
+	//printf("%s\n", reste);
 	free(reste);
 	free(dividende);
 	free(diviseur);
-	if(equal(result, "0") == 0){
-			*result = '0';
-			result[1] = 0;
-	}
 	return result;
 }
-void *modulo(void *num1, void *num2, unsigned long int virgule){
+void *modulo(void *num1, void *num2){
 	char *n1 = num1, *n2 = num2,
 		*quotient = NULL, *dividende = NULL, *diviseur = NULL, *reste = NULL, *preste, *zero_ = NULL, *pzero_,
 		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}, point = 0,
-		neg1 = 0, *dix, *pdix;
+		neg1 = 0, neg2 = 0;
 	unsigned long int len = 0, virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
 	long long int ii = 0;
 	int x;
-	for(n1 = n1; *n1 == '-' || *n1 == '+'; n1++) 
-		if(*n1 == '-')
-			neg1 = !neg1;
-	for(n2 = n2; *n2 == '-' || *n2 == '+'; n2++);;
+	NEG;
+	//NEG_TEST;
 	if(equal(n2,"0") == 0 || equal(n2,"-0") == 0){
 		fprintf(stderr, "Erreur: Division par 0\n");
 		return NULL;
 	}
+	//printf("%i\n", neg);
 	ZERO;
 	if(equal(n1, n2) == 0 || equal(n2,"1") == 0){
-		temp = allocation((void **)&temp, 1, sizeof(char));
+		temp = allocation((void **)&temp, 2, sizeof(char));
 		*temp = '0';
 		return temp;
 	}
 	if(equal(n1, n2) < 0){
-		temp = allocation((void **)&temp, strlen(n1), sizeof(char));
+		temp = allocation((void **)&temp, strlen(n1)+1, sizeof(char));
 		strcpy(temp, n1);
-		reste = temp;
-		/*ICI*/
-		if(virgule)
-			dix = multiplication("1","1");
-		if(virgule){
-			diviseur = n2;
-			do{
-				pdix = multiplication(dix,"10");
-				free(dix);
-				dix = pdix;
-				temp = multiplication(reste,"10");
-				free(reste);
-				reste = temp;
-				for(x = 9; x >= 0; x--){
-					sprintf(t, "%i", x);
-					temp = multiplication(t, diviseur);
-					temp_ = soustraction(reste, temp);
-					if(equal(temp_,"0") >= 0){
-						free(reste);
-						free(temp);
-						reste = temp_;
-						break;
-					}else{
-						free(temp);
-						free(temp_);
-					}
-				}
-				virgule_++;
-			}while(virgule_ < virgule && equal(reste,"0") != 0);
-			temp = division(reste, dix, virgule, 0);
-			free(reste);
-			free(dix);
-			reste = temp;
-		}
-		if(neg1){
-			temp = allocation((void **)&temp,strlen(reste)+1, sizeof(char));
-			*temp = '-';
-			strcpy(&temp[1], reste);
-			free(reste);
-			reste = temp;
-		}
-		return reste;
+		//*result = '0';
+		return temp;
 	}
+	//return NULL;
 	if(equal(n1,"0") == 0){
-		 quotient = allocation((void **)&quotient,1,sizeof(char));
+		 quotient = allocation((void **)&quotient,2,sizeof(char));
 		*quotient = '0';
 		return quotient;
 	}
-	diviseur = allocation((void **)&diviseur, strlen(n2), sizeof(char));
-	dividende = allocation((void **)&dividende, strlen(n1), sizeof(char));
+	diviseur = allocation((void **)&diviseur, strlen(n2)+1, sizeof(char));
+	dividende = allocation((void **)&dividende, strlen(n1)+1, sizeof(char));
 	memcpy(diviseur, n2, strlen(n2));
 	memcpy(dividende, n1, strlen(n1));
 	do{
@@ -1210,6 +1301,7 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 		}
 	}while(1);
 	preste = allocation((void **)&reste, BUFFER, sizeof(char));
+	/*pr = allocation((void **)&result, BUFFER, sizeof(char));*/
 	len = strlen(dividende)-1;
 	do{
 		if(nreste +1 >= BUFFER){
@@ -1222,11 +1314,40 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 		preste++;
 		nreste++;
 		ii++;
-	}while(/*(unsigned long int)ii < strlen(dividende) || */equal(reste, diviseur) < 0);
+	}while((unsigned long int)ii < strlen(dividende) && equal(reste, diviseur) < 0);
 	while(equal(reste, diviseur) < 0){
+		//printf("%s::%s\n", reste, diviseur);
 		temp = multiplication(reste, "10");
 		free(reste);
 		reste = temp;
+		if(point == 0){
+			/*if(buflen + 1 >= BUFFER){
+				buflen = 0;
+				qbuf++;
+				pr = reallocation((void **)&result, qbuf * BUFFER);
+			}*/
+			/**pr = '0';
+			pr++;
+			buflen++;
+			if(buflen + 1 >= BUFFER){
+				buflen = 0;
+				qbuf++;
+				pr = reallocation((void **)&result, qbuf * BUFFER);
+			}
+			*pr = '.';
+			pr++;
+			buflen++;*/
+		}else{
+			/*if(buflen + 1 >= BUFFER){
+				buflen = 0;
+				qbuf++;
+				pr = reallocation((void **)&result, qbuf * BUFFER);
+			}
+			*pr = '0';
+			pr++;
+			buflen++;
+			virgule_++;*/
+		}
 		point = 1;
 		zero++;
 	}
@@ -1243,7 +1364,15 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 		free(temp);
 		free(temp_);
 	}
-	while(((unsigned long int)ii <= len)){
+	/*if(buflen + 1 >= BUFFER){
+		buflen = 0;
+		qbuf++;
+		pr = reallocation((void **)&result, qbuf * BUFFER);
+	}
+	*pr = *t;
+	pr++;
+	buflen++;*/
+	while(((unsigned long int)ii <= len /*|| equal(reste,"0") != 0*/)){
 		temp = multiplication(reste, "10");
 		free(reste);
 		reste = temp;
@@ -1254,10 +1383,19 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 			free(reste);
 			reste = temp;
 		}else{
-			if(point == 0)
+			if(point == 0){
 				point = 1;
-			else
+				/*if(buflen + 1 >= BUFFER){
+					buflen = 0;
+					qbuf++;
+					pr = reallocation((void **)&result, qbuf * BUFFER);
+				}
+				*pr = '.';
+				pr++;
+				buflen++;*/
+			}else
 				virgule_++;
+			//if(virgule_ >= virgule+1)break;
 		}
 		for(x = 9; x >= 0; x--){
 			sprintf(t, "%i", x);
@@ -1273,58 +1411,30 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 				free(temp_);
 			}
 		}
+		/*if(buflen + 1 >= BUFFER){
+			buflen = 0;
+			qbuf++;
+			pr = reallocation((void **)&result, qbuf * BUFFER);
+		}
+		*pr = *t;
+		pr++;
+		buflen++;*/
 		ii++;
 	}
 	if(zero_){
-		/*ICI*/
-		if(virgule)
-			dix = multiplication("1","1");
-		if(virgule){
-			do{
-				pdix = multiplication(dix,"10");
-				free(dix);
-				dix = pdix;
-				temp = multiplication(reste,"10");
-				free(reste);
-				reste = temp;
-				for(x = 9; x >= 0; x--){
-					sprintf(t, "%i", x);
-					temp = multiplication(t, diviseur);
-					temp_ = soustraction(reste, temp);
-					if(equal(temp_,"0") >= 0){
-						free(reste);
-						free(temp);
-						reste = temp_;
-						break;
-					}else{
-						free(temp);
-						free(temp_);
-					}
-				}
-				virgule_++;
-			}while(virgule_ < virgule && equal(reste,"0") != 0);
-			temp = division(reste, dix, virgule, 0);
-			free(reste);
-			free(dix);
-			reste = temp;
-		}
-		/*BUG POSSIBLE*/
-		/*if(*reste != '0' && equal(reste,"0") != 0){
-			pzero_ = division(reste, zero_, strlen(reste)+3, 0);
-			free(reste);
-			reste = pzero_;
-		}*/
+		pzero_ = division(reste, zero_, strlen(reste)+3);
+		free(reste);
+		reste = pzero_;
 	}
+	//printf("%s\n%s\n", reste, result);
+	//free(reste);
+	//free(reste);
 	if(zero_)
 		free(zero_);
-	if(neg1){
-		temp = allocation((void **)&temp,strlen(reste)+1, sizeof(char));
-		*temp = '-';
-		strcpy(&temp[1], reste);
-		free(reste);
-		reste = temp;
-	}
 	free(dividende);
 	free(diviseur);
+	//free(result);
 	return reste;
+	//return result;
 }
+

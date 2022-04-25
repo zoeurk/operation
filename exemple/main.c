@@ -3,166 +3,22 @@
 #include <string.h>
 #include <math.h>
 #include "operation.h"
-/*BUFFER > 1*/
-const unsigned long int BUFFER = 2;
-char *cosinus(char *arg){
-	char pi[512], npi[512],*pi_, *npi_ ,*temp, *t = NULL;
-	sprintf(npi,"-%.54Lf", 4*atanl(1));
-	sprintf(pi,"%.54Lf", 4*atanl(1));
-	pi_ = multiplication(pi, "2");
-	npi_ = multiplication(pi,"-2");
-	if(equal(arg, "0") == 1){
-			t = division(arg, pi_ , 0, 0);
-			temp = multiplication(t,pi_);
-			free(t);
-			t = soustraction(arg, temp);
-			free(temp);
-	}else{
-		if(equal(arg, "0") == -1){
-			t = division(arg, npi_ , 0, 0);
-			temp = multiplication(t,npi_);
-			free(t);
-			t = soustraction(arg, temp);
-			free(temp);
-		}else{
-			t = allocation((void *)&t, 2, sizeof(char));
-			*t = '0';
-		}
-	}
-	free(pi_);
-	free(npi_);
-	return t;
-}
-char *racine_carree(void *num1, unsigned long int virgule, int approximation){
-	unsigned long int len = strlen(num1)-(strchr(num1, '.') != NULL), v = virgule+1;
-	char *num1_ = NULL, *pnum1_,*dix = NULL, *pdix, buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test, *last = NULL;
-	num1_ = multiplication(num1, "1");
-	while(strchr(num1_,'.') != NULL){
-		pnum1_ = multiplication(num1_,"100");
-		free(num1_);
-		num1_ = pnum1_;
-		if(dix == NULL)
-			dix = multiplication("1", "10");
-		else{
-			pdix = multiplication(dix, "10");
-			free(dix);
-			dix = pdix;
-		}
-	}
-	len = strlen(num1_)-(strchr(num1_, '.') != NULL);
-	if((test = strchr(num1_,'.')) != NULL){
-		test++;
-		if(virgule < strlen(test)){
-			v = strlen(test)+1;
-		}
-	}
-	sprintf(buffer,"%lu", len);
-	buf = multiplication(buffer,"100");
-	pbuf = division(num1_, buf,virgule, 0);
-	result = addition(buf, pbuf);
-	free(buf);
-	presult = multiplication(result,"0.5");
-	do{
-		free(pbuf);
-		free(result);
-		test = strchr(presult,'.');
-		pbuf = division(num1_, presult, v, 0);
-		result = addition(presult, pbuf);
-		free(presult);
-		presult = multiplication(result,"0.5");
-		//printf("%s\n", presult);
-		if(check)
-			free(check);
-		if((test = strchr(presult,'.')) != NULL && *presult != '0'){
-			if(strlen(test+1)>=v)
-				*(test+1+v) = 0; 
-		}
-		//printf("%s\n", presult);
-		check = multiplication(presult, presult);
-		if(last == NULL){
-			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
-			strcpy(last, check);
-		}else{
-			if(equal(last, check) == 0){
-				free(last);
-				last = NULL;
-				break;
-			}
-			free(last);
-			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
-			strcpy(last, check);
-		}
-	}while(equal(num1_, check) < 0);
-	free(num1_);
-	if(last)
-		free(last);
-	free(pbuf);
-	free(result);
-	free(check);
-	if((result = strchr(presult, '.'))){
-		if(!approximation)
-			result[virgule+1] = 0;
-		else{
-			if(presult[strlen(presult)-1] >= '5'){
-				test = allocation((void **)&test, 3, sizeof(char));
-				strcpy(test,"0.");
-				if(v == 1){
-					check = reallocation((void **)&test,4);
-					strcat(test, "1");
-					check = addition(presult, test);
-					free(presult);
-					presult = check;
-				}else{
-					while(strlen(test) +1 <= v){
-						check = reallocation((void **)&test,strlen(test)+2);
-						strcat(test, "0");
-						check = addition(presult, test);
-						free(presult);
-						presult = check;
-					}
-					check = reallocation((void **)&test,strlen(test)+2);
-					test[strlen(test)] = '1';
-					check = addition(presult, test);
-					free(presult);
-					presult = check;
-					if(strlen(presult) > virgule+1)
-						presult[strlen(presult) - 1] = 0;
-					else
-						presult[strlen(presult)-1] = 0;
-				}
-				free(test);
-			}else presult[strlen(presult)-1] = 0;
-			for(result = &presult[strlen(presult)-1]; *result == '0'; *result = 0, result--);;
-		}
-	}
-	if(dix){
-		result = division(presult, dix,virgule, approximation);
-		free(presult);
-		presult = result;
-		free(dix);
-	}
-	if((result = strchr(presult,'.')) && strlen(result) > virgule){
-		result[virgule+1] = 0;
-		for(result = &presult[strlen(presult)-1]; *result == '0'; *result = 0, result--);;
-	}
-	if(presult[strlen(presult)-1] == '.')
-		presult[strlen(presult)-1] = 0;
-	return presult;
-}
 int main(int argc, char **argv){
-	int ret, i;
-	char *r, *check;
+	int ret;
+	char *r, pi[51], npi[52],*pi_, *npi_ ,*temp, *temp_, *temp__;
+	long double x;
+	memset(npi, 0, 51);
+	sprintf(npi,"-%.48Lf", (long double)M_PI);
+	memset(pi, 0, 51);
+	sprintf(pi,"%.48Lf", (long double)M_PI);
+	if(strtype(argv[1]) || strtype(argv[2])){
+		fprintf(stderr,"chaine de caractere invalid\n");
+		exit(0);
+	}
 	if(argc != 4){
 		fprintf(stderr, "usage:\n\t%s num1 num2 virgule\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
-	for(i = 1; i < 3; i++)
-		if((ret = strtype(argv[i])) != 0)
-			switch(ret){
-				case 1: case 2:
-					fprintf(stderr, "Donnee invalide\n");
-					exit(EXIT_FAILURE);
-			}
 	ret = equal(argv[1],argv[2]);
 	switch(ret){
 		case 0:
@@ -190,73 +46,70 @@ int main(int argc, char **argv){
 		printf("multiplication:%s\n", (char *)r);
 		free(r);
 	}
-	r = division(argv[1], argv[2], atoi(argv[3]),1);
+	r = division(argv[1], argv[2], atoi(argv[3]));
 	if(r){
 		printf("division:%s\n", (char *)r);
 		free(r);
 	}
-	r = modulo(argv[1], argv[2], 0);
+	r = modulo(argv[1], argv[2]);
 	if(r){
 		printf("modulo:%s\n", (char *)r);
 		free(r);
 	}
-	r = modulo(argv[1], argv[2], atoi(argv[3]));
-	if(r){
-		printf("modulo etendu:%s\n",  (char *)r);
-		free(r);
-	}
-	//No warrenty
-	printf("++++++++++++++++++\n");
-	r = cosinus(argv[1]);
-	if(r){
-		printf("cosinus de \'%s\':%.56Lf\n", argv[1],cosl(strtold(r,NULL)));
-		free(r);
-	}
-	r = cosinus(argv[2]);
-	if(r){
-		printf("cosinus de \'%s\':%.56Lf\n", argv[2], cosl(strtold(r,NULL)));
-		free(r);
-	}
-	printf("++++++++++++++++++\n");
-	if(equal(argv[1],"0") < 0)
-		fprintf(stderr, "Racine carree non applicable sur un nombre negatif:%s\n", argv[1]);
-	else{
-		r = racine_carree(argv[1], atoi(argv[3]),1);
-		if(r){
-			check = multiplication(r, r);
-			printf("racine carree aproximatif de '%s': %s\n", argv[1], r);
-			printf("Verification:%s\n", check);
-			free(r);
-			free(check);
+	//printf("++++++++++++++++++\n");
+	x = strtold(argv[1], NULL);
+	//printf("%.48Lf\n", (long double)2*M_PI);
+	//printf("%.48Lf\n%.48Lf\n%.48Lf\n", x-2*M_PI, cosl(x-2*M_PI), cosl(x));
+	pi_ = multiplication(pi, "2");
+	npi_ = multiplication(npi, "-2");
+	if(equal(argv[1], pi_) > 0 || equal(argv[1],npi_) < 0){
+		//if(equal(argv[1], pi_) > 0){
+		temp = division(argv[1], pi_, 48);
+		ret = 0;
+		if((temp_ = strchr(temp, '.')) != NULL){
+			*temp_ = 0;
+			ret = 1;
+		}else	temp = temp;
+		temp__ = multiplication(temp, pi_);
+		if(ret == 1){
+			*temp_ = '.';
+			ret = 0;
 		}
-		r = racine_carree(argv[1], atoi(argv[3]),0);
-		if(r){
-			check = multiplication(r, r);
-			printf("racine carree de '%s': %s\n", argv[1], r);
-			printf("Verification:%s\n", check);
-			free(r);
-			free(check);
-		}
+		temp_ = soustraction(argv[1], temp__);
+		//printf("%s\n", temp_);
+		x = strtold(temp_, NULL);
+		printf("Cosinus arbitraire de \'%s\': %.48Lf\n", argv[1], cosl(x));
+		//x = strtold(argv[1], NULL);
+		//x  -= 2*M_PI;
+		//printf("Cosinus  de \'%s\': %.48Lf\n", argv[1], cosl(x));
+		free(temp);
+		free(temp_);
+		free(temp__);
+	}else{
+		x = strtold(argv[1], NULL);
+		printf("Cosinus arbitraire de \'%s\': %.48Lf\n", argv[1], cosl(x));
 	}
-	if(equal(argv[2], "0") < 0)
-		fprintf(stderr, "Racine carree non applicable sur un nombre negatif:%s\n", argv[2]);
-	else{
-		r = racine_carree(argv[2], atoi(argv[3]),1);
-		if(r){
-			check = multiplication(r, r);
-			printf("racine carree aproximatif de '%s': %s\n", argv[2], r);
-			printf("Verification:%s\n", check);
-			free(r);
-			free(check);
-		}
-		r = racine_carree(argv[2], atoi(argv[3]),0);
-		if(r){
-			check = multiplication(r, r);
-			printf("racine carree de '%s': %s\n", argv[2], r);
-			printf("Verification:%s\n", check);
-			free(r);
-			free(check);
-		}
+	x = strtold(argv[1], NULL);
+	printf("Cosinus  de \'%s\': %.48Lf\n", argv[1], cosl(x));
+	if(equal(argv[2], pi_) > 0 && equal(argv[2],npi_) < 0){
+		temp = division(argv[2], pi_, 48);
+		temp_ = strchr(temp, '.');
+		*temp_ = 0;
+		temp__ = multiplication(temp, pi_);
+		*temp_ = '.';
+		temp_ = soustraction(argv[2], temp__);
+		x = strtold(temp_, NULL);
+		printf("Cosinus arbitraire de \'%s\': %.48Lf\n", argv[2], cosl(x));
+		free(temp);
+		free(temp_);
+		free(temp__);
+	}else{
+		x = strtold(argv[2], NULL);
+		printf("Cosinus arbitraire de \'%s\': %.48Lf\n", argv[2], cosl(x));
 	}
+	x = strtold(argv[2], NULL);
+	printf("Cosinus  de \'%s\': %.48Lf\n", argv[2], cosl(x));
+	free(pi_);
+	free(npi_);
 	return 0;
 }
