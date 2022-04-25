@@ -3,16 +3,16 @@
 
 AC_PREREQ([2.69])
 AC_INIT([liboperation.so], [1.0], [zoeurk@gmail.com])
-AC_CONFIG_SRCDIR([src/operation.c])
+AC_CONFIG_SRCDIR([src/operation.h])
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_MACRO_DIRS([m4])
 
 # Checks for programs.
 AC_PROG_CC
 LT_INIT
 AM_INIT_AUTOMAKE([foreign])
-
 # Checks for libraries.
+# FIXME: Replace `main' with a function in `-lm':
+AC_CHECK_LIB([m], [main])
 # FIXME: Replace `main' with a function in `-loperation':
 AC_CHECK_LIB([operation], [main])
 
@@ -27,5 +27,6 @@ AC_FUNC_REALLOC
 AC_CHECK_FUNCS([memset strchr])
 
 AC_CONFIG_FILES([Makefile
+                 exemple/Makefile
                  src/Makefile])
 AC_OUTPUT
