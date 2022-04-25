@@ -27,6 +27,5 @@ AC_FUNC_REALLOC
 AC_CHECK_FUNCS([memset strchr])
 
 AC_CONFIG_FILES([Makefile
-                 exemple/Makefile
                  src/Makefile])
 AC_OUTPUT
