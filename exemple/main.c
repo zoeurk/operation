@@ -7,20 +7,20 @@
 const unsigned long int BUFFER = 2;
 char *cosinus(char *arg){
 	char pi[512], npi[512],*pi_, *npi_ ,*temp, *t = NULL;
-	sprintf(npi,"-%.54Lf", 4*atanl(1)*2);
-	sprintf(pi,"%.54Lf", 4*atanl(1)*2);
-	//pi_ = multiplication(pi, "2");
-	//npi_ = multiplication(pi,"-2");
+	sprintf(npi,"-%.54Lf", 4*atanl(1));
+	sprintf(pi,"%.54Lf", 4*atanl(1));
+	pi_ = multiplication(pi, "2");
+	npi_ = multiplication(pi,"-2");
 	if(equal(arg, "0") == 1){
-			t = division(arg, pi , 0, 0);
-			temp = multiplication(t,pi);
+			t = division(arg, pi_ , 0, 0);
+			temp = multiplication(t,pi_);
 			free(t);
 			t = soustraction(arg, temp);
 			free(temp);
 	}else{
 		if(equal(arg, "0") == -1){
-			t = division(arg, npi , 0, 0);
-			temp = multiplication(t,npi);
+			t = division(arg, npi_ , 0, 0);
+			temp = multiplication(t,npi_);
 			free(t);
 			t = soustraction(arg, temp);
 			free(temp);
@@ -29,8 +29,8 @@ char *cosinus(char *arg){
 			*t = '0';
 		}
 	}
-	//free(pi_);
-	//free(npi_);
+	free(pi_);
+	free(npi_);
 	return t;
 }
 char *racine_carree(void *num1, unsigned long int virgule, int approximation){
