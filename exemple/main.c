@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
+//#include <math.h>
 #include "operation.h"
 /*BUFFER > 1*/
 const unsigned long int BUFFER = 2;
-char *cosinus(char *arg){
+/*char *cosinus(char *arg){
 	char pi[512], npi[512],*pi_, *npi_ ,*temp, *t = NULL;
 	sprintf(npi,"-%.54Lf", 4*atanl(1));
 	sprintf(pi,"%.54Lf", 4*atanl(1));
@@ -32,7 +32,7 @@ char *cosinus(char *arg){
 	free(pi_);
 	free(npi_);
 	return t;
-}
+}*/
 char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	unsigned long int len = strlen(num1)-(strchr(num1, '.') != NULL), v = virgule+1;
 	char *num1_ = NULL, *pnum1_,*dix = NULL, *pdix, buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test, *last = NULL;
@@ -207,7 +207,7 @@ int main(int argc, char **argv){
 	}
 	//No warrenty
 	printf("++++++++++++++++++\n");
-	r = cosinus(argv[1]);
+	/*r = cosinus(argv[1]);
 	if(r){
 		printf("cosinus de \'%s\':%.56Lf\n", argv[1],cosl(strtold(r,NULL)));
 		free(r);
@@ -216,7 +216,7 @@ int main(int argc, char **argv){
 	if(r){
 		printf("cosinus de \'%s\':%.56Lf\n", argv[2], cosl(strtold(r,NULL)));
 		free(r);
-	}
+	}*/
 	printf("++++++++++++++++++\n");
 	if(equal(argv[1],"0") < 0)
 		fprintf(stderr, "Racine carree non applicable sur un nombre negatif:%s\n", argv[1]);
