@@ -1,38 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-//#include <math.h>
+#include <math.h>
 #include "operation.h"
 /*BUFFER > 1*/
 const unsigned long int BUFFER = 2;
-/*char *cosinus(char *arg){
-	char pi[512], npi[512],*pi_, *npi_ ,*temp, *t = NULL;
-	sprintf(npi,"-%.54Lf", 4*atanl(1));
-	sprintf(pi,"%.54Lf", 4*atanl(1));
-	pi_ = multiplication(pi, "2");
-	npi_ = multiplication(pi,"-2");
-	if(equal(arg, "0") == 1){
-			t = division(arg, pi_ , 0, 0);
-			temp = multiplication(t,pi_);
-			free(t);
-			t = soustraction(arg, temp);
-			free(temp);
+char *cosinus(char *arg){
+	char pi[512], npi[512], *pi_ = NULL, *temp, *t = NULL, *mul;
+	//unsigned long int i = 0;
+	sprintf(pi,"%.54Lf", 8*atanl(1));
+	sprintf(npi,"-%.54Lf", 8*atanl(1));
+	t = multiplication(arg,"1");
+	if(equal(arg,"0") > 0){
+		mul = division(arg, pi, 0,0);
+		pi_ = multiplication(pi, mul);
+		temp = soustraction(t, pi_);
+		free(mul);
+		free(pi_);
+		free(t);
+		t = temp;
 	}else{
-		if(equal(arg, "0") == -1){
-			t = division(arg, npi_ , 0, 0);
-			temp = multiplication(t,npi_);
+		if(equal(arg, "0") < 0){
+			mul = division(arg, pi, 0, 0);
+			pi_ = multiplication(npi, mul);
+			temp = addition(t, pi_);
+			free(mul);
+			free(pi_);
 			free(t);
-			t = soustraction(arg, temp);
-			free(temp);
-		}else{
-			t = allocation((void *)&t, 2, sizeof(char));
-			*t = '0';
+			t = temp;
 		}
 	}
-	free(pi_);
-	free(npi_);
 	return t;
-}*/
+}
 char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	unsigned long int len = strlen(num1)-(strchr(num1, '.') != NULL), v = virgule+1;
 	char *num1_ = NULL, *pnum1_,*dix = NULL, *pdix, buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test, *last = NULL;
@@ -79,7 +78,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		}
 		//printf("%s\n", presult);
 		check = multiplication(presult, presult);
-		if(last == NULL){
+		/*if(last == NULL){
 			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
 			strcpy(last, check);
 		}else{
@@ -91,7 +90,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 			free(last);
 			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
 			strcpy(last, check);
-		}
+		}*/
 	}while(equal(num1_, check) < 0);
 	free(num1_);
 	if(last)
@@ -207,7 +206,7 @@ int main(int argc, char **argv){
 	}
 	//No warrenty
 	printf("++++++++++++++++++\n");
-	/*r = cosinus(argv[1]);
+	r = cosinus(argv[1]);
 	if(r){
 		printf("cosinus de \'%s\':%.56Lf\n", argv[1],cosl(strtold(r,NULL)));
 		free(r);
@@ -216,7 +215,7 @@ int main(int argc, char **argv){
 	if(r){
 		printf("cosinus de \'%s\':%.56Lf\n", argv[2], cosl(strtold(r,NULL)));
 		free(r);
-	}*/
+	}
 	printf("++++++++++++++++++\n");
 	if(equal(argv[1],"0") < 0)
 		fprintf(stderr, "Racine carree non applicable sur un nombre negatif:%s\n", argv[1]);
