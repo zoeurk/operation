@@ -157,13 +157,13 @@ int main(int argc, char **argv){
 		fprintf(stderr, "usage:\n\t%s num1 num2 virgule\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
-	/*for(i = 1; i < 3; i++)
+	for(i = 1; i < 3; i++)
 		if((ret = strtype(argv[i])) != 0)
 			switch(ret){
 				case 1: case 2:
 					fprintf(stderr, "Donnee invalide\n");
 					exit(EXIT_FAILURE);
-			}*/
+			}
 	ret = equal(argv[1],argv[2]);
 	switch(ret){
 		case 0:
