@@ -34,7 +34,7 @@ char *cosinus(char *arg){
 }
 char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	unsigned long int len = strlen(num1)-(strchr(num1, '.') != NULL), v = virgule+1;
-	char *num1_ = NULL, *pnum1_,*dix = NULL, *pdix, buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test, *last = NULL;
+	char *num1_ = NULL, *pnum1_,*dix = NULL, *pdix, buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test/*, *last = NULL*/;
 	num1_ = multiplication(num1, "1");
 	while(strchr(num1_,'.') != NULL){
 		pnum1_ = multiplication(num1_,"100");
@@ -93,8 +93,8 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		}*/
 	}while(equal(num1_, check) < 0);
 	free(num1_);
-	if(last)
-		free(last);
+	//if(last)
+		//free(last);
 	free(pbuf);
 	free(result);
 	free(check);
