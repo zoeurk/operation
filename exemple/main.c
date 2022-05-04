@@ -280,18 +280,16 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsig
 				n2 = n2_;
 			}
 		}else{
-			if(equal(n2,"0") < 0){
-				while(equal(n2,"-1") != 0){
-					n1_ = multiplication(n1,num1);
-					free(n1);
-					n1 = n1_;
-					n2_ = addition(n2, "1");
-					free(n2);
-					n2 = n2_;
-				}
-				n1_ = division("1", n1, virgule, 0);
+			while(equal(n2,"-1") != 0){
+				n1_ = multiplication(n1,num1);
 				free(n1);
+				n1 = n1_;
+				n2_ = addition(n2, "1");
+				free(n2);
+				n2 = n2_;
 			}
+			n1_ = division("1", n1, virgule, 0);
+			free(n1);
 		}
 	}
 	if(n2_)
