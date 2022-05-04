@@ -156,7 +156,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		presult[strlen(presult)-1] = 0;
 	return presult;
 }
-void *puissance(void *num1, void *num2, unsigned long int virgule, unsigned long int internal_buflen, int approximation){
+void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsigned long int virgule, int approximation){
 	char *n1 = multiplication(num1,"1"), *n2 = multiplication(num2,"1"),
 		*n1_ = n1, *n2_ = n2,
 		*v, *v_, *pseudo = NULL, *p;
@@ -408,7 +408,7 @@ int main(int argc, char **argv){
 			free(check);
 		}
 	}
-	r = puissance(argv[1],argv[2], atoi(argv[3]), 56, 0);
+	r = puissance(argv[1],argv[2], 56, atoi(argv[3]), 0);
 	if(r){
 		printf("%s^%s  = %s\n", argv[1], argv[2], r);
 		free(r);
