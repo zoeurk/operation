@@ -101,8 +101,8 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		}*/
 	}while(equal(num1_, check) < 0);
 	free(num1_);
-	if(last)
-		free(last);
+	/*if(last)
+		free(last);*/
 	free(pbuf);
 	free(result);
 	free(check);
