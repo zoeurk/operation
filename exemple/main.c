@@ -5,9 +5,9 @@
 #include "operation.h"
 /*BUFFER > 1*/
 const unsigned long int BUFFER = 2;
-char *cosinus(char *arg){
-	char pi[512], npi[512], *pi_ = NULL, *temp, *t = NULL, *mul;
-	//unsigned long int i = 0;
+char *cosinus(char *arg, unsigned long internal_buflen){
+	char pi[512], npi[512], *pi_ = NULL, *temp, *t = NULL, *mul, buffer[internal_buflen], *pbuf;
+	long double val;
 	sprintf(pi,"%.54Lf", 8*atanl(1));
 	sprintf(npi,"-%.54Lf", 8*atanl(1));
 	t = multiplication(arg,"1");
@@ -30,12 +30,16 @@ char *cosinus(char *arg){
 			t = temp;
 		}
 	}
-	return t;
+	val = cosl(strtold(t,NULL));
+	sprintf(buffer, "%Lf", val);
+	pbuf = multiplication(buffer,"1");
+	free(t);
+	return pbuf;
 }
 char *racine_carree(void *num1, unsigned long int virgule, int approximation){
-	unsigned long int len = strlen(num1)-(strchr(num1, '.') != NULL), v = virgule+1;
+	unsigned long int len, v = virgule+1;
 	/*last pour eviter une boucle plus bas*/
-	char *num1_ = NULL, *pnum1_,*dix = NULL, *pdix, buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test, *last = NULL;
+	char *num1_ = NULL, *pnum1_,*dix = NULL, *pdix, buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test/*, *last = NULL*/;
 	num1_ = multiplication(num1, "1");
 	while(strchr(num1_,'.') != NULL){
 		pnum1_ = multiplication(num1_,"100");
@@ -49,7 +53,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 			dix = pdix;
 		}
 	}
-	len = strlen(num1_)-(strchr(num1_, '.') != NULL);
+	len = strlen(num1_);
 	if((test = strchr(num1_,'.')) != NULL){
 		test++;
 		if(virgule < strlen(test)){
@@ -70,17 +74,15 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		result = addition(presult, pbuf);
 		free(presult);
 		presult = multiplication(result,"0.5");
-		//printf("%s\n", presult);
 		if(check)
 			free(check);
 		if((test = strchr(presult,'.')) != NULL && *presult != '0'){
 			if(strlen(test+1)>=v)
 				*(test+1+v) = 0; 
 		}
-		//printf("%s\n", presult);
 		check = multiplication(presult, presult);
 		/*Possible boucle infinie*/
-		if(last == NULL){
+		/*if(last == NULL){
 			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
 			strcpy(last, check);
 		}else{
@@ -92,11 +94,11 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 			free(last);
 			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
 			strcpy(last, check);
-		}
+		}*/
 	}while(equal(num1_, check) < 0);
 	free(num1_);
-	if(last)
-		free(last);
+	/*if(last)
+		free(last);*/
 	free(pbuf);
 	free(result);
 	free(check);
@@ -149,6 +151,143 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	if(presult[strlen(presult)-1] == '.')
 		presult[strlen(presult)-1] = 0;
 	return presult;
+}
+void *puissance(void *num1, void *num2, unsigned long int virgule, unsigned long int internal_buflen, int approximation){
+	char *n1 = multiplication(num1,"1"), *n2 = multiplication(num2,"1"),
+		*n1_ = n1, *n2_ = n2,
+		*v, *v_, *pseudo = NULL, *p;
+	char buffer[internal_buflen];
+	long double pseudo_;
+	int eq, set = 0;
+	unsigned long int i = 0;
+	if((v = strchr(n2, '.')) != NULL){
+		if(*((char *)num2) != '-'){
+				if(equal(num1, "0") < 0){
+					free(n1);
+					free(n2);
+					if((n1 = calloc(5,sizeof(char))) == NULL){
+						perror("calloc()");
+						exit(EXIT_FAILURE);
+					}
+					strcpy(n1, "-nan");
+					return n1;
+				}
+				if((v_ = calloc(strlen(n2)+2,sizeof(char))) == NULL){
+					perror("calloc()");
+					exit(EXIT_FAILURE);
+				}
+				strcpy(v_+1, v);
+				*v_ = '0';
+				*v = 0;
+				pseudo = buffer;
+				do{
+					pseudo_ = strtold(n1, NULL);
+					sprintf(buffer, "%Lf", pseudo_);
+					if((eq = equal(n1, pseudo)) > 0){
+						n1_ = racine_carree(n1, virgule,approximation);
+						free(n1);
+						n1 = n1_;
+						i++;
+					}
+				}while(eq > 0);
+				pseudo_ = powl(strtold(n1_, NULL), strtold(v_, NULL));
+				sprintf(buffer, "%Lf", pseudo_);
+				if(i != 0){
+					while(i != 0){
+						if(set == 0){ 
+							pseudo = multiplication(buffer, buffer);
+							set = 1;
+						}else{
+							p = pseudo;
+							pseudo = multiplication(p, buffer);
+							free(p);
+						}
+						i--;
+					}
+				}else pseudo = multiplication(buffer,"1");
+				free(n1_);
+				while(equal(n2, "0") != 0){
+					n1_ = multiplication(pseudo, num1);
+					free(pseudo);
+					pseudo = n1_;
+					n1_ = NULL;
+					n2_ = soustraction(n2, "1");
+					free(n2);
+					n2 = n2_;
+				}
+				n1_ = pseudo;
+				pseudo = NULL;
+				free(v_);
+				if(pseudo)
+					free(pseudo);
+				free(n2_);
+				n2_ = NULL;
+		}else{
+				if(equal(num1, "0") < 0){
+					free(n1);
+					free(n2);
+					if((n1 = calloc(5,sizeof(char))) == NULL){
+						perror("calloc()");
+						exit(EXIT_FAILURE);
+					}
+					strcpy(n1, "-nan");
+					return n1;
+				}
+				if((v_ = calloc(strlen(n2)+2,sizeof(char))) == NULL){
+					perror("calloc()");
+					exit(EXIT_FAILURE);
+				}
+				strcpy(v_+1, v);
+				*v_ = '0';
+				*v = 0;
+				n2_ = multiplication(n2,"-1");
+				free(n2);
+				pseudo_ = powl(strtold(n1, NULL), strtold(v_, NULL));
+				sprintf(buffer, "%Lf", pseudo_);
+				if(equal(n2_,"-1") <= 0)
+					pseudo = puissance(n1, n2_, virgule, internal_buflen, approximation);
+				free(n2_);
+				free(v_);
+				if(pseudo)
+					n1_ = multiplication(buffer, pseudo);
+				else
+					n1_ = multiplication(buffer, "1");
+				free(n1);
+				n2_ = division("1", n1_, virgule, 0);
+				free(n1_);
+				n1_ = n2_;
+				n2_ = NULL;
+				free(pseudo);
+		}
+	}else{
+		if(equal(n2, "0") > 0){
+			while(equal(n2,"1") != 0){
+				n1_ = multiplication(n1,num1);
+				free(n1);
+				n1 = n1_;
+				n2_ = soustraction(n2, "1");
+				free(n2);
+				n2 = n2_;
+			}
+		}else{
+			if(equal(n2,"0") < 0){
+				while(equal(n2,"-1") != 0){
+					n1_ = multiplication(n1,num1);
+					free(n1);
+					n1 = n1_;
+					n2_ = addition(n2, "1");
+					free(n2);
+					n2 = n2_;
+				}
+				n1_ = division("1", n1, virgule, 0);
+				free(n1);
+			}else{
+			}
+		}
+	}
+	if(n2_)
+		free(n2_);
+	return n1_;
 }
 int main(int argc, char **argv){
 	int ret, i;
@@ -208,14 +347,14 @@ int main(int argc, char **argv){
 	}
 	//No warrenty
 	printf("++++++++++++++++++\n");
-	r = cosinus(argv[1]);
+	r = cosinus(argv[1],0);
 	if(r){
-		printf("cosinus de \'%s\':%.56Lf\n", argv[1],cosl(strtold(r,NULL)));
+		printf("cosinus de \'%s\':%s\n", argv[1],r);
 		free(r);
 	}
-	r = cosinus(argv[2]);
+	r = cosinus(argv[2], 0);
 	if(r){
-		printf("cosinus de \'%s\':%.56Lf\n", argv[2], cosl(strtold(r,NULL)));
+		printf("cosinus de \'%s\':%s\n", argv[2], r);
 		free(r);
 	}
 	printf("++++++++++++++++++\n");
@@ -258,6 +397,11 @@ int main(int argc, char **argv){
 			free(r);
 			free(check);
 		}
+	}
+	r = puissance(argv[1],argv[2], atoi(argv[3]), 56, 0);
+	if(r){
+		printf("%s^%s  = %s\n", argv[1], argv[2], r);
+		free(r);
 	}
 	return 0;
 }
