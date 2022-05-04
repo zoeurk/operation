@@ -291,7 +291,6 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsig
 				}
 				n1_ = division("1", n1, virgule, 0);
 				free(n1);
-			}else{
 			}
 		}
 	}
