@@ -160,6 +160,12 @@ void *puissance(void *num1, void *num2, unsigned long int virgule, unsigned long
 	long double pseudo_;
 	int eq, set = 0;
 	unsigned long int i = 0;
+	if(equal(num2, "0") == 0){
+		free(n1);
+		free(n2);
+		n1 = multiplication("1","1");
+		return n1;
+	}
 	if((v = strchr(n2, '.')) != NULL){
 		if(*((char *)num2) != '-'){
 				if(equal(num1, "0") < 0){
