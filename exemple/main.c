@@ -39,7 +39,7 @@ char *cosinus(char *arg, unsigned long internal_buflen){
 char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	unsigned long int len, v = virgule+1;
 	/*last pour eviter une boucle plus bas*/
-	char *num1_ = NULL, *pnum1_,*dix = NULL, *pdix, buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test, *last = NULL;
+	char *num1_ = NULL, *pnum1_,*dix = NULL, *pdix, buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test/*, *last = NULL*/;
 	if(equal(num1, "0") == 0){
 		num1_ = multiplication("0","0");
 		return num1_;
@@ -86,7 +86,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		}
 		check = multiplication(presult, presult);
 		/*Possible boucle infinie*/
-		if(last == NULL){
+		/*if(last == NULL){
 			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
 			strcpy(last, check);
 		}else{
@@ -98,9 +98,8 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 			free(last);
 			last = allocation((void **)&last,strlen(check)+1, sizeof(char));
 			strcpy(last, check);
-		}
+		}*/
 	}while(equal(num1_, check) < 0);
-	printf("=============\n");
 	free(num1_);
 	if(last)
 		free(last);
