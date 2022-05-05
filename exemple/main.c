@@ -230,8 +230,9 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsig
 				free(v_);
 				if(pseudo)
 					free(pseudo);
-				free(n2_);
-				n2_ = NULL;
+				/*free(n2_);
+				n2_ = n1_;
+				n1_ = division("1", n2_, virgule, 0);*/
 		}else{
 				if(equal(num1, "0") < 0){
 					free(n1);
@@ -250,24 +251,50 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsig
 				strcpy(v_+1, v);
 				*v_ = '0';
 				*v = 0;
-				n2_ = multiplication(n2,"-1");
-				free(n2);
-				pseudo_ = powl(strtold(n1, NULL), strtold(v_, NULL));
+				pseudo = buffer;
+				do{
+					pseudo_ = strtold(n1, NULL);
+					sprintf(buffer, "%Lf", pseudo_);
+					if((eq = equal(n1, pseudo)) > 0){
+						n1_ = racine_carree(n1, virgule,approximation);
+						free(n1);
+						n1 = n1_;
+						i--;
+					}
+				}while(eq > 0);
+				pseudo_ = powl(strtold(n1_, NULL), strtold(v_, NULL));
 				sprintf(buffer, "%Lf", pseudo_);
-				if(equal(n2_,"-1") <= 0)
-					pseudo = puissance(n1, n2_, virgule, internal_buflen, approximation);
-				free(n2_);
+				if(i != 0){
+					while(i != 0){
+						if(set == 0){ 
+							pseudo = multiplication(buffer, buffer);
+							set = 1;
+						}else{
+							p = pseudo;
+							pseudo = multiplication(p, buffer);
+							free(p);
+						}
+						i--;
+					}
+				}else pseudo = multiplication(buffer,"1");
+				free(n1_);
+				while(equal(n2, "0") != 0){
+					n1_ = multiplication(pseudo, num1);
+					free(pseudo);
+					pseudo = n1_;
+					n1_ = NULL;
+					n2_ = addition(n2, "1");
+					free(n2);
+					n2 = n2_;
+				}
+				n1_ = pseudo;
+				pseudo = NULL;
 				free(v_);
 				if(pseudo)
-					n1_ = multiplication(buffer, pseudo);
-				else
-					n1_ = multiplication(buffer, "1");
-				free(n1);
-				n2_ = division("1", n1_, virgule, 0);
-				free(n1_);
-				n1_ = n2_;
-				n2_ = NULL;
-				free(pseudo);
+					free(pseudo);
+				free(n2_);
+				n2_ = n1_;
+				n1_ = division("1", n2_, virgule, 0);
 		}
 	}else{
 		if(equal(n2, "0") > 0){
