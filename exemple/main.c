@@ -3,10 +3,8 @@
 #include <string.h>
 #include <math.h>
 #include "operation.h"
-
 /*BUFFER > 1*/
 const unsigned long int BUFFER = 56;
-
 char *cosinus(char *arg, unsigned long internal_buflen){
 	char pi[512], npi[512], *pi_ = NULL, *temp, *t = NULL, *mul, buffer[internal_buflen], *pbuf;
 	long double val;
@@ -232,9 +230,6 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsig
 				free(v_);
 				if(pseudo)
 					free(pseudo);
-				/*free(n2_);
-				n2_ = n1_;
-				n1_ = division("1", n2_, virgule, 0);*/
 		}else{
 				if(equal(num1, "0") < 0){
 					free(n1);
@@ -296,7 +291,7 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsig
 					free(pseudo);
 				free(n2_);
 				n2_ = n1_;
-				n1_ = division("1", n2_, virgule, 0);
+				n1_ = division("1", n2_, virgule, approximation);
 		}
 	}else{
 		if(equal(n2, "0") > 0){
@@ -317,7 +312,7 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsig
 				free(n2);
 				n2 = n2_;
 			}
-			n1_ = division("1", n1, virgule, 0);
+			n1_ = division("1", n1, virgule, approximation);
 			free(n1);
 		}
 	}
@@ -434,7 +429,7 @@ int main(int argc, char **argv){
 			free(check);
 		}
 	}
-	r = puissance(argv[1],argv[2], 56, atoi(argv[3]), 0);
+	r = puissance(argv[1],argv[2], 56, atoi(argv[3]), 1);
 	if(r){
 		printf("%s^%s  = %s\n", argv[1], argv[2], r);
 		free(r);
