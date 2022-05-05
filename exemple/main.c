@@ -156,6 +156,66 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		presult[strlen(presult)-1] = 0;
 	return presult;
 }
+#define POWER(fn) \
+	if(equal(num1, "0") < 0){\
+		free(n1);\
+		free(n2);\
+		if((n1 = calloc(5,sizeof(char))) == NULL){\
+			perror("calloc()");\
+			exit(EXIT_FAILURE);\
+		}\
+		strcpy(n1, "-nan");\
+		return n1;\
+	}\
+	if((v_ = calloc(strlen(n2)+2,sizeof(char))) == NULL){\
+		perror("calloc()");\
+		exit(EXIT_FAILURE);\
+	}\
+	strcpy(v_+1, v);\
+	*v_ = '0';\
+	*v = 0;\
+	pseudo = buffer;\
+	do{\
+		pseudo_ = strtold(n1, NULL);\
+		sprintf(buffer, "%Lf", pseudo_);\
+		if((eq = equal(n1, pseudo)) > 0){\
+			n1_ = racine_carree(n1, virgule,approximation);\
+			free(n1);\
+			n1 = n1_;\
+			i++;\
+		}\
+	}while(eq > 0);\
+	pseudo_ = powl(strtold(n1_, NULL), strtold(v_, NULL));\
+	sprintf(buffer, "%Lf", pseudo_);\
+	if(i != 0){\
+		while(i != 0){\
+			if(set == 0){ \
+				pseudo = multiplication(buffer, buffer);\
+				set = 1;\
+			}else{\
+				p = pseudo;\
+				pseudo = multiplication(p, buffer);\
+				free(p);\
+			}\
+			i--;\
+		}\
+	}else pseudo = multiplication(buffer,"1");\
+	free(n1_);\
+	while(equal(n2, "0") != 0){\
+		n1_ = multiplication(pseudo, num1);\
+		free(pseudo);\
+		pseudo = n1_;\
+		n1_ = NULL;\
+		n2_ = fn(n2, "1");\
+		free(n2);\
+		n2 = n2_;\
+	}\
+	n1_ = pseudo;\
+	pseudo = NULL;\
+	free(v_);\
+	if(pseudo)\
+		free(pseudo);
+
 void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsigned long int virgule, int approximation){
 	char *n1 = multiplication(num1,"1"), *n2 = multiplication(num2,"1"),
 		*n1_ = n1, *n2_ = n2,
@@ -172,123 +232,9 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsig
 	}
 	if((v = strchr(n2, '.')) != NULL){
 		if(*((char *)num2) != '-'){
-				if(equal(num1, "0") < 0){
-					free(n1);
-					free(n2);
-					if((n1 = calloc(5,sizeof(char))) == NULL){
-						perror("calloc()");
-						exit(EXIT_FAILURE);
-					}
-					strcpy(n1, "-nan");
-					return n1;
-				}
-				if((v_ = calloc(strlen(n2)+2,sizeof(char))) == NULL){
-					perror("calloc()");
-					exit(EXIT_FAILURE);
-				}
-				strcpy(v_+1, v);
-				*v_ = '0';
-				*v = 0;
-				pseudo = buffer;
-				do{
-					pseudo_ = strtold(n1, NULL);
-					sprintf(buffer, "%Lf", pseudo_);
-					if((eq = equal(n1, pseudo)) > 0){
-						n1_ = racine_carree(n1, virgule,approximation);
-						free(n1);
-						n1 = n1_;
-						i++;
-					}
-				}while(eq > 0);
-				pseudo_ = powl(strtold(n1_, NULL), strtold(v_, NULL));
-				sprintf(buffer, "%Lf", pseudo_);
-				if(i != 0){
-					while(i != 0){
-						if(set == 0){ 
-							pseudo = multiplication(buffer, buffer);
-							set = 1;
-						}else{
-							p = pseudo;
-							pseudo = multiplication(p, buffer);
-							free(p);
-						}
-						i--;
-					}
-				}else pseudo = multiplication(buffer,"1");
-				free(n1_);
-				while(equal(n2, "0") != 0){
-					n1_ = multiplication(pseudo, num1);
-					free(pseudo);
-					pseudo = n1_;
-					n1_ = NULL;
-					n2_ = soustraction(n2, "1");
-					free(n2);
-					n2 = n2_;
-				}
-				n1_ = pseudo;
-				pseudo = NULL;
-				free(v_);
-				if(pseudo)
-					free(pseudo);
+				POWER(soustraction);
 		}else{
-				if(equal(num1, "0") < 0){
-					free(n1);
-					free(n2);
-					if((n1 = calloc(5,sizeof(char))) == NULL){
-						perror("calloc()");
-						exit(EXIT_FAILURE);
-					}
-					strcpy(n1, "-nan");
-					return n1;
-				}
-				if((v_ = calloc(strlen(n2)+2,sizeof(char))) == NULL){
-					perror("calloc()");
-					exit(EXIT_FAILURE);
-				}
-				strcpy(v_+1, v);
-				*v_ = '0';
-				*v = 0;
-				pseudo = buffer;
-				do{
-					pseudo_ = strtold(n1, NULL);
-					sprintf(buffer, "%Lf", pseudo_);
-					if((eq = equal(n1, pseudo)) > 0){
-						n1_ = racine_carree(n1, virgule,approximation);
-						free(n1);
-						n1 = n1_;
-						i--;
-					}
-				}while(eq > 0);
-				pseudo_ = powl(strtold(n1_, NULL), strtold(v_, NULL));
-				sprintf(buffer, "%Lf", pseudo_);
-				if(i != 0){
-					while(i != 0){
-						if(set == 0){ 
-							pseudo = multiplication(buffer, buffer);
-							set = 1;
-						}else{
-							p = pseudo;
-							pseudo = multiplication(p, buffer);
-							free(p);
-						}
-						i--;
-					}
-				}else pseudo = multiplication(buffer,"1");
-				free(n1_);
-				while(equal(n2, "0") != 0){
-					n1_ = multiplication(pseudo, num1);
-					free(pseudo);
-					pseudo = n1_;
-					n1_ = NULL;
-					n2_ = addition(n2, "1");
-					free(n2);
-					n2 = n2_;
-				}
-				n1_ = pseudo;
-				pseudo = NULL;
-				free(v_);
-				if(pseudo)
-					free(pseudo);
+				POWER(addition);
 				free(n2_);
 				n2_ = n1_;
 				n1_ = division("1", n2_, virgule, approximation);
