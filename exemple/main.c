@@ -3,8 +3,10 @@
 #include <string.h>
 #include <math.h>
 #include "operation.h"
+
 /*BUFFER > 1*/
 const unsigned long int BUFFER = 56;
+
 char *cosinus(char *arg, unsigned long internal_buflen){
 	char pi[512], npi[512], *pi_ = NULL, *temp, *t = NULL, *mul, buffer[internal_buflen], *pbuf;
 	long double val;
