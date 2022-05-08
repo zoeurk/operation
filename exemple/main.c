@@ -8,8 +8,8 @@ const unsigned long int BUFFER = 56;
 char *cosinus(char *arg, unsigned long internal_buflen){
 	char pi[512], npi[512], *pi_ = NULL, *temp, *t = NULL, *mul, buffer[internal_buflen], *pbuf;
 	long double val;
-	sprintf(pi,"%.54Lf", 8*atanl(1));
-	sprintf(npi,"-%.54Lf", 8*atanl(1));
+	sprintf(pi,"%Lf", 8*atanl(1));
+	sprintf(npi,"-%Lf", 8*atanl(1));
 	t = multiplication(arg,"1");
 	if(equal(arg,"0") > 0){
 		mul = division(arg, pi, 0,0);
