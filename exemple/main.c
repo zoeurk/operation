@@ -187,6 +187,9 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 			i = i_;\
 		}\
 	}while(eq > 0);\
+	if((p = strchr(v_,'.')) != NULL && strlen(p+1) > 6 ){\
+		fprintf(stderr,"Warning `%s`:\n\tTrop de chiffre apres la virgule.\n\tUtilisation de la valeur: %Lf\n", v_, strtold(v_, NULL));\
+	}\
 	pseudo_ = powl(strtold(n1_, NULL), strtold(v_, NULL));\
 	sprintf(buffer, "%Lf", pseudo_);\
 	if(equal(i,"0") != 0){\
