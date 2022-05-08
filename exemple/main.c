@@ -182,13 +182,15 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 			n1_ = racine_carree(n1, virgule,approximation);\
 			free(n1);\
 			n1 = n1_;\
-			i++;\
+			i_ = addition(i, "1");\
+			free(i);\
+			i = i_;\
 		}\
 	}while(eq > 0);\
 	pseudo_ = powl(strtold(n1_, NULL), strtold(v_, NULL));\
 	sprintf(buffer, "%Lf", pseudo_);\
-	if(i != 0){\
-		while(i != 0){\
+	if(equal(i,"0") != 0){\
+		while(equal(i,"0") != 0){\
 			if(set == 0){ \
 				pseudo = multiplication(buffer, buffer);\
 				set = 1;\
@@ -197,7 +199,9 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 				pseudo = multiplication(p, buffer);\
 				free(p);\
 			}\
-			i--;\
+			i_ = soustraction(i, "1");\
+			free(i);\
+			i = i_;\
 		}\
 	}else pseudo = multiplication(buffer,"1");\
 	free(n1_);\
@@ -213,17 +217,19 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	n1_ = pseudo;\
 	pseudo = NULL;\
 	free(v_);\
+	free(i);\
+	i = NULL;\
 	if(pseudo)\
 		free(pseudo);
 
 void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsigned long int virgule, int approximation){
 	char *n1 = multiplication(num1,"1"), *n2 = multiplication(num2,"1"),
 		*n1_ = n1, *n2_ = n2,
-		*v, *v_, *pseudo = NULL, *p;
+		*v, *v_, *pseudo = NULL, *p, *i = multiplication("1","0"), *i_;
 	char buffer[internal_buflen];
 	long double pseudo_;
 	int eq, set = 0;
-	unsigned long int i = 0;
+	//unsigned long int i_ = 0;
 	if(equal(num2, "0") == 0){
 		free(n1);
 		free(n2);
@@ -262,6 +268,8 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsig
 			free(n1);
 		}
 	}
+	if(i != NULL)
+		free(i);
 	if(n2_)
 		free(n2_);
 	return n1_;
