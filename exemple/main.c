@@ -285,12 +285,14 @@ int main(int argc, char **argv){
 		exit(EXIT_FAILURE);
 	}
 	v = atoi(argv[3]);
-	if(v > 12 || v <= 0){
-		fprintf(stderr, "usage:\n\t%s num1 num2 virgule(<=12 && > 0)\n", argv[0]);
+	if(v > 12 || v < 0){
+		fprintf(stderr, "usage:\n\t%s num1 num2 virgule(<=12 && >= 0)\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
-	strcpy(format,"%.");
-	strcat(format,argv[3]); 
+	if(v > 0){
+		strcpy(format,"%.");
+		strcat(format,argv[3]);
+	}else strcpy(format,"%Lf"); 
 	for(i = 1; i < 3; i++)
 		if((ret = strtype(argv[i])) != 0)
 			switch(ret){
