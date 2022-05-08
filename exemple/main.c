@@ -219,6 +219,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	pseudo = NULL;\
 	free(v_);\
 	free(i);\
+	i = NULL;\
 	if(pseudo)\
 		free(pseudo);
 
@@ -268,6 +269,8 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsig
 			free(n1);
 		}
 	}
+	if(i)
+		free(i);
 	if(n2_)
 		free(n2_);
 	return n1_;
