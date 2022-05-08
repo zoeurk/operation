@@ -279,9 +279,15 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, char 
 }
 int main(int argc, char **argv){
 	int ret, i;
+	unsigned long int v;
 	char *r, *check, format[64];
 	if(argc != 4){
-		fprintf(stderr, "usage:\n\t%s num1 num2 virgule\n", argv[0]);
+		fprintf(stderr, "usage:\n\t%s num1 num2 virgule(<=12)\n", argv[0]);
+		exit(EXIT_FAILURE);
+	}
+	v = atoi(argv[3]);
+	if(v > 12){
+		fprintf(stderr, "usage:\n\t%s num1 num2 virgule(<=12)\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
 	strcpy(format,"%.");
