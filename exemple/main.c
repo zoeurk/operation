@@ -234,12 +234,11 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsig
 	if((p = strchr(n2,'.'))){
 		pseudo_ = strtold(n2, NULL);
 		sprintf(buffer, "%Lf", pseudo_);
-		printf("%Lf\n", pseudo_);
 		if(equal(buffer,n2) != 0){
 			free(n1);
 			free(n2);
 			free(i);
-			printf("ERREUR exposant: trop de nombre trop long pour le systeme(:num2 = %s).\n", (char *)num2);
+			printf("ERREUR exposant:\ntrop de nombre trop de chiffre apres la virgule pour le systeme.\n:num2 = %s\n6 apres la virgule est trop long pour le systeme).\n", (char *)num2);
 			return NULL;
 		}
 	}
