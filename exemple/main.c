@@ -5,11 +5,11 @@
 #include "operation.h"
 /*BUFFER > 1*/
 const unsigned long int BUFFER = 56;
-char *cosinus(char *arg, unsigned long internal_buflen){
+char *cosinus(char *arg, char *format,unsigned long internal_buflen){
 	char pi[512], npi[512], *pi_ = NULL, *temp, *t = NULL, *mul, buffer[internal_buflen], *pbuf;
 	long double val;
-	sprintf(pi,"%Lf", 8*atanl(1));
-	sprintf(npi,"-%Lf", 8*atanl(1));
+	sprintf(pi,".58%Lf", 8*atanl(1));
+	sprintf(npi,"-58%Lf", 8*atanl(1));
 	t = multiplication(arg,"1");
 	if(equal(arg,"0") > 0){
 		mul = division(arg, pi, 0,0);
@@ -31,7 +31,7 @@ char *cosinus(char *arg, unsigned long internal_buflen){
 		}
 	}
 	val = cosl(strtold(t,NULL));
-	sprintf(buffer, "%Lf", val);
+	sprintf(buffer, format, val);
 	pbuf = multiplication(buffer,"1");
 	free(t);
 	return pbuf;
@@ -177,7 +177,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	pseudo = buffer;\
 	do{\
 		pseudo_ = strtold(n1, NULL);\
-		sprintf(buffer, "%Lf", pseudo_);\
+		sprintf(buffer, format, pseudo_);\
 		if((eq = equal(n1, pseudo)) > 0){\
 			n1_ = racine_carree(n1, virgule,approximation);\
 			free(n1);\
@@ -191,7 +191,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		fprintf(stderr,"Warning `%s`:\n\tTrop de chiffre apres la virgule.\n\tUtilisation de la valeur: %Lf\n", v_, strtold(v_, NULL));\
 	}\
 	pseudo_ = powl(strtold(n1_, NULL), strtold(v_, NULL));\
-	sprintf(buffer, "%Lf", pseudo_);\
+	sprintf(buffer, format, pseudo_);\
 	if(equal(i,"0") != 0){\
 		while(equal(i,"0") != 0){\
 			if(set == 0){ \
@@ -225,7 +225,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	if(pseudo)\
 		free(pseudo);
 
-void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsigned long int virgule, int approximation){
+void *puissance(void *num1, void *num2, unsigned long int internal_buflen, char *format, unsigned long int virgule, int approximation){
 	char *n1 = multiplication(num1,"1"), *n2 = multiplication(num2,"1"),
 		*n1_ = n1, *n2_ = n2,
 		*v, *v_, *pseudo = NULL, *p, *i = multiplication("1","0"), *i_;
@@ -279,11 +279,13 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsig
 }
 int main(int argc, char **argv){
 	int ret, i;
-	char *r, *check;
+	char *r, *check, format[64];
 	if(argc != 4){
 		fprintf(stderr, "usage:\n\t%s num1 num2 virgule\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
+	strcpy(format,"%.");
+	strcat(format,argv[3]); 
 	for(i = 1; i < 3; i++)
 		if((ret = strtype(argv[i])) != 0)
 			switch(ret){
@@ -335,12 +337,12 @@ int main(int argc, char **argv){
 	}
 	//No warrenty
 	printf("++++++++++++++++++\n");
-	r = cosinus(argv[1],0);
+	r = cosinus(argv[1], "%.16Lf", 0);
 	if(r){
 		printf("cosinus de \'%s\':%s\n", argv[1],r);
 		free(r);
 	}
-	r = cosinus(argv[2], 0);
+	r = cosinus(argv[2], "%.16Lf", 0);
 	if(r){
 		printf("cosinus de \'%s\':%s\n", argv[2], r);
 		free(r);
@@ -386,7 +388,7 @@ int main(int argc, char **argv){
 			free(check);
 		}
 	}
-	r = puissance(argv[1],argv[2], 56, atoi(argv[3]), 1);
+	r = puissance(argv[1],argv[2], 56, "%.16Lf",atoi(argv[3]), 1);
 	if(r){
 		printf("%s^%s  = %s\n", argv[1], argv[2], r);
 		free(r);
