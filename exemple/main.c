@@ -238,7 +238,7 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsig
 			/*free(n1);
 			free(n2);
 			free(i);*/
-			printf("Warning exposant:\n\ttrop de nombre trop de chiffre apres la virgule pour le systeme.\n\t:num2 = %s\n\t6 apres la virgule est trop long pour le systeme).\n\tValeur utilisee: %s\n", (char *)num2, buffer);
+			printf("Warning exposant:\n\ttrop de nombre trop de chiffre apres la virgule pour le systeme.\n\t:num2 = %s\n\t6 chiffre apres la virgule est trop long pour le systemse.\n\tValeur utilisee: %s\n", (char *)num2, buffer);
 			free(n2);
 			n2 = multiplication(buffer,"1");
 		}
