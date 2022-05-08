@@ -226,22 +226,29 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsigned long int virgule, int approximation){
 	char *n1 = multiplication(num1,"1"), *n2 = multiplication(num2,"1"),
 		*n1_ = n1, *n2_ = n2,
-		*v, *v_, *pseudo = NULL, *p, *i = multiplication("1", "0"), *i_;
-	char buffer[internal_buflen];
+		*v, *v_, *pseudo = NULL, *p, *p_, *i = multiplication("1", "0"), *i_;
+	char buffer[internal_buflen], sv = 0;
 	long double pseudo_;
 	int eq, set = 0;
 	//unsigned long int i = 0;
 	if((p = strchr(n2,'.'))){
-		pseudo_ = strtold(n2, NULL);
+		sv = *(p-1);
+		*(p-1) = '0';
+		pseudo_ = strtold((p-1), NULL);
+		sv = *(p-1);
 		sprintf(buffer, "%Lf", pseudo_);
-		if(equal(buffer,n2) != 0){
-			/*free(n1);
+		p_ = strchr(buffer, '.')-1;
+		//printf("%s\n", p_);
+		if(equal(buffer,p) != 0){
+			printf("Error exposant:\n\tNombre trop grand pour le systeme.\n\t:num2 = %s:%s\n\trop grand pour le systeme.\n",p-1, buffer);
+			free(n1);
 			free(n2);
-			free(i);*/
-			printf("Warning exposant:\n\ttrop de nombre trop de chiffre apres la virgule pour le systeme.\n\t:num2 = %s\n\t6 chiffre apres la virgule est trop long pour le systemse.\n\tValeur utilisee: %s\n", (char *)num2, buffer);
-			free(n2);
-			n2 = multiplication(buffer,"1");
+			free(i);
+			exit(EXIT_FAILURE);
 		}
+		//printf("%c::%s\n", sv, buffer);
+		//exit(0);
+		*(p-1) = sv;
 	}
 	if(equal(num2, "0") == 0){
 		free(n1);
