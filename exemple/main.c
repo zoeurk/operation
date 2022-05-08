@@ -231,6 +231,18 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsig
 	long double pseudo_;
 	int eq, set = 0;
 	//unsigned long int i = 0;
+	if((p = strchr(n2,'.'))){
+		pseudo_ = strtold(n2, NULL);
+		sprintf(buffer, "%Lf", pseudo_);
+		printf("%Lf\n", pseudo_);
+		if(equal(buffer,n2) != 0){
+			free(n1);
+			free(n2);
+			free(i);
+			printf("ERREUR exposant: trop de nombre trop long pour le systeme(:num2 = %s).\n", (char *)num2);
+			return NULL;
+		}
+	}
 	if(equal(num2, "0") == 0){
 		free(n1);
 		free(n2);
