@@ -213,7 +213,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		n2_ = fn(n2, "1");\
 		free(n2);\
 		n2 = n2_;\
-		printf("%s\n", n2);\
+		/*printf("%s\n", n2);*/\
 	}\
 	n1_ = pseudo;\
 	pseudo = NULL;\
