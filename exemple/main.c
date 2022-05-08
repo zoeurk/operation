@@ -182,15 +182,13 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 			n1_ = racine_carree(n1, virgule,approximation);\
 			free(n1);\
 			n1 = n1_;\
-			i_ = addition(i, "1");\
-			free(i);\
-			i_ = i;\
+			i++;\
 		}\
 	}while(eq > 0);\
 	pseudo_ = powl(strtold(n1_, NULL), strtold(v_, NULL));\
 	sprintf(buffer, "%Lf", pseudo_);\
-	if(equal(i,"0") != 0){\
-		while(equal(i,"0") != 0){\
+	if(i != 0){\
+		while(i != 0){\
 			if(set == 0){ \
 				pseudo = multiplication(buffer, buffer);\
 				set = 1;\
@@ -199,13 +197,11 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 				pseudo = multiplication(p, buffer);\
 				free(p);\
 			}\
-			i_ = soustraction(i,"1");\
-			free(i);\
-			i = i_;\
+			i--;\
 		}\
 	}else pseudo = multiplication(buffer,"1");\
 	free(n1_);\
-	while(equal(n2, "0") > 0){\
+	while(equal(n2, "0") != 0){\
 		n1_ = multiplication(pseudo, num1);\
 		free(pseudo);\
 		pseudo = n1_;\
@@ -213,43 +209,21 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		n2_ = fn(n2, "1");\
 		free(n2);\
 		n2 = n2_;\
-		/*printf("%s\n", n2);*/\
 	}\
 	n1_ = pseudo;\
 	pseudo = NULL;\
 	free(v_);\
-	free(i);\
-	i = NULL;\
 	if(pseudo)\
 		free(pseudo);
 
 void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsigned long int virgule, int approximation){
 	char *n1 = multiplication(num1,"1"), *n2 = multiplication(num2,"1"),
 		*n1_ = n1, *n2_ = n2,
-		*v, *v_, *pseudo = NULL, *p, *p_, *i = multiplication("1", "0"), *i_;
-	char buffer[internal_buflen], sv = 0;
+		*v, *v_, *pseudo = NULL, *p;
+	char buffer[internal_buflen];
 	long double pseudo_;
 	int eq, set = 0;
-	//unsigned long int i = 0;
-	if((p = strchr(n2,'.'))){
-		sv = *(p-1);
-		*(p-1) = '0';
-		pseudo_ = strtold((p-1), NULL);
-		sv = *(p-1);
-		sprintf(buffer, "%Lf", pseudo_);
-		p_ = strchr(buffer, '.')-1;
-		//printf("%s\n", p_);
-		if(equal(buffer,p) != 0){
-			printf("Error exposant:\n\tNombre trop grand pour le systeme.\n\t:num2 = %s:%s\n\trop grand pour le systeme.\n",p-1, buffer);
-			free(n1);
-			free(n2);
-			free(i);
-			exit(EXIT_FAILURE);
-		}
-		//printf("%c::%s\n", sv, buffer);
-		//exit(0);
-		*(p-1) = sv;
-	}
+	unsigned long int i = 0;
 	if(equal(num2, "0") == 0){
 		free(n1);
 		free(n2);
@@ -288,8 +262,6 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, unsig
 			free(n1);
 		}
 	}
-	if(i)
-		free(i);
 	if(n2_)
 		free(n2_);
 	return n1_;
