@@ -30,8 +30,24 @@ char *cosinus(char *arg, char *format,unsigned long internal_buflen){
 			t = temp;
 		}
 	}
+	if(strlen(t) >= internal_buflen){
+		fprintf(stderr, "internal_buflen trop petit::%lu::%lu\n", strlen(t), internal_buflen);
+		exit(EXIT_FAILURE);
+	}
+	/*if(strchr(t, '.') && strlen(strchr(t,'.')+1)+1 >= internal_buflen){
+	}*/
+	/*if(strlen(t) >= internal_buflen){
+		fprintf(stderr, "internal_buflen trop petit::%lu::%lu\n", strlen(t)+1, internal_buflen);
+		exit(EXIT_FAILURE);
+	}*/
+	//printf("%lu::%lu\n",internal_buflen, strlen(t));
 	val = cosl(strtold(t,NULL));
 	sprintf(buffer, format, val);
+
+	/*if(buffer[internal_buflen-1] != 0){
+		fprintf(stderr, "buffer interne trop court\n");
+		exit(EXIT_FAILURE);
+	}*/
 	pbuf = multiplication(buffer,"1");
 	free(t);
 	return pbuf;
@@ -62,6 +78,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		test++;
 		if(virgule < strlen(test)){
 			v = strlen(test)+1;
+			exit(0);
 		}
 	}
 	sprintf(buffer,"%lu", len);
@@ -356,12 +373,12 @@ int main(int argc, char **argv){
 	}
 	//No warrenty
 	printf("++++++++++++++++++\n");
-	r = cosinus(argv[1], format, 0);
+	r = cosinus(argv[1], format, 56);
 	if(r){
 		printf("cosinus de \'%s\':%s\n", argv[1],r);
 		free(r);
 	}
-	r = cosinus(argv[2], format, 0);
+	r = cosinus(argv[2], format, 56);
 	if(r){
 		printf("cosinus de \'%s\':%s\n", argv[2], r);
 		free(r);
