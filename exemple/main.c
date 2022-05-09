@@ -225,6 +225,15 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	if(pseudo)\
 		free(pseudo);
 
+
+#define POW(fn)\
+	n1_ = multiplication(n1,num1);\
+	free(n1);\
+	n1 = n1_;\
+	n2_ = fn(n2, "1");\
+	free(n2);\
+	n2 = n2_;
+
 void *puissance(void *num1, void *num2, unsigned long int internal_buflen, char *format, unsigned long int virgule, int approximation){
 	char *n1 = multiplication(num1,"1"), *n2 = multiplication(num2,"1"),
 		*n1_ = n1, *n2_ = n2,
@@ -251,21 +260,11 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, char 
 	}else{
 		if(equal(n2, "0") > 0){
 			while(equal(n2,"1") != 0){
-				n1_ = multiplication(n1,num1);
-				free(n1);
-				n1 = n1_;
-				n2_ = soustraction(n2, "1");
-				free(n2);
-				n2 = n2_;
+				POW(soustraction);
 			}
 		}else{
 			while(equal(n2,"-1") != 0){
-				n1_ = multiplication(n1,num1);
-				free(n1);
-				n1 = n1_;
-				n2_ = addition(n2, "1");
-				free(n2);
-				n2 = n2_;
+				POW(addition);
 			}
 			n1_ = division("1", n1, virgule, approximation);
 			free(n1);
