@@ -199,7 +199,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	if((p = strchr(v_,'.')) != NULL && strlen(p+1) > (unsigned long int)atol(dot_)){\
 		fprintf(stderr,"Warning `%s`:\n\tTrop de chiffre apres la virgule.\n\tUtilisation de la valeur: ", v_);\
 		fprintf(stderr, format, strtold(v_, NULL)); \
-		fprintf(stderr,"::%s::%li::%lu\n", dot_, atol(dot_+1), strlen(p+1));\
+		fprintf(stderr,"\n");\
 	}\
 	free(dot_);\
 	pseudo_ = powl(strtold(n1_, NULL), strtold(v_, NULL));\
