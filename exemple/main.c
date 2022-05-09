@@ -296,12 +296,15 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, char 
 }
 int main(int argc, char **argv){
 	int ret, i, v;
+	unsigned long int sz = 56;
 	char *r, *check, format[8];
-	if(argc != 4){
-		fprintf(stderr, "usage:\n\t%s num1 num2 virgule(<=12 && > 0)\n", argv[0]);
+	if(argc < 4){
+		fprintf(stderr, "usage:\n\t%s num1 num2 virgule [internal_buflen]\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
 	v = atoi(argv[3]);
+	if(argc > 4)
+		sz = atoi(argv[4]);
 	if(v < 0){
 		fprintf(stderr, "usage:\n\t%s num1 num2 virgule(>= 0)\n", argv[0]);
 		exit(EXIT_FAILURE);
@@ -362,12 +365,12 @@ int main(int argc, char **argv){
 	}
 	//No warrenty
 	printf("++++++++++++++++++\n");
-	r = cosinus(argv[1], format, 56);
+	r = cosinus(argv[1], format, sz);
 	if(r){
 		printf("cosinus de \'%s\':%s\n", argv[1],r);
 		free(r);
 	}
-	r = cosinus(argv[2], format, 56);
+	r = cosinus(argv[2], format, sz);
 	if(r){
 		printf("cosinus de \'%s\':%s\n", argv[2], r);
 		free(r);
@@ -413,7 +416,7 @@ int main(int argc, char **argv){
 			free(check);
 		}
 	}
-	r = puissance(argv[1],argv[2], 56, format,atoi(argv[3]), 1);
+	r = puissance(argv[1],argv[2], sz, format,atoi(argv[3]), 1);
 	if(r){
 		printf("%s^%s  = %s\n", argv[1], argv[2], r);
 		free(r);
