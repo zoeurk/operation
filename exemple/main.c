@@ -263,6 +263,7 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, char 
 	char buffer[internal_buflen];
 	long double pseudo_;
 	int eq, set = 0;
+	memset(buffer, 0, internal_buflen);
 	//unsigned long int i_ = 0;
 	if(equal(num2, "0") == 0){
 		free(n1);
