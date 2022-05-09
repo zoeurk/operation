@@ -210,6 +210,10 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	free(dot_);\
 	pseudo_ = powl(strtold(n1_, NULL), strtold(v_, NULL));\
 	sprintf(buffer, format, pseudo_);\
+	if(buffer[internal_buflen-1] != 0){\
+		fprintf(stderr, "buffer interne trop court\n");\
+		exit(EXIT_FAILURE);\
+	}\
 	if(equal(i,"0") != 0){\
 		while(equal(i,"0") != 0){\
 			if(set == 0){ \
