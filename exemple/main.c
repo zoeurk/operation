@@ -187,9 +187,21 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 			i = i_;\
 		}\
 	}while(eq > 0);\
-	if((p = strchr(v_,'.')) != NULL && strlen(p+1) > 6 ){\
-		fprintf(stderr,"Warning `%s`:\n\tTrop de chiffre apres la virgule.\n\tUtilisation de la valeur: %Lf\n", v_, strtold(v_, NULL));\
+	pdot_ = strchr(format,'.');\
+	if((dot_ = calloc(strlen(format), sizeof(char))) == NULL){\
+		perror("calloc()");\
+		exit(EXIT_FAILURE);\
 	}\
+	strcpy(dot_, pdot_+1);\
+	pdot_ = strchr(dot_, 'L');\
+	/**dot_ = '0';*/\
+	*pdot_ = 0;\
+	if((p = strchr(v_,'.')) != NULL && strlen(p+1) > (unsigned long int)atol(dot_)){\
+		fprintf(stderr,"Warning `%s`:\n\tTrop de chiffre apres la virgule.\n\tUtilisation de la valeur: ", v_);\
+		fprintf(stderr, format, strtold(v_, NULL)); \
+		fprintf(stderr,"::%s::%li::%lu\n", dot_, atol(dot_+1), strlen(p+1));\
+	}\
+	free(dot_);\
 	pseudo_ = powl(strtold(n1_, NULL), strtold(v_, NULL));\
 	sprintf(buffer, format, pseudo_);\
 	if(equal(i,"0") != 0){\
@@ -236,7 +248,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 
 void *puissance(void *num1, void *num2, unsigned long int internal_buflen, char *format, unsigned long int virgule, int approximation){
 	char *n1 = multiplication(num1,"1"), *n2 = multiplication(num2,"1"),
-		*n1_ = n1, *n2_ = n2,
+		*n1_ = n1, *n2_ = n2,*dot_, *pdot_,
 		*v, *v_, *pseudo = NULL, *p, *i = multiplication("1","0"), *i_;
 	char buffer[internal_buflen];
 	long double pseudo_;
@@ -284,13 +296,14 @@ int main(int argc, char **argv){
 		exit(EXIT_FAILURE);
 	}
 	v = atoi(argv[3]);
-	if(v > 12 || v < 0){
-		fprintf(stderr, "usage:\n\t%s num1 num2 virgule(<=12 && >= 0)\n", argv[0]);
+	if(v < 0){
+		fprintf(stderr, "usage:\n\t%s num1 num2 virgule(>= 0)\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
 	if(v > 0){
 		strcpy(format,"%.");
 		strcat(format,argv[3]);
+		strcat(format,"Lf");
 	}else strcpy(format,"%Lf"); 
 	for(i = 1; i < 3; i++)
 		if((ret = strtype(argv[i])) != 0)
@@ -343,12 +356,12 @@ int main(int argc, char **argv){
 	}
 	//No warrenty
 	printf("++++++++++++++++++\n");
-	r = cosinus(argv[1], "%.16Lf", 0);
+	r = cosinus(argv[1], format, 0);
 	if(r){
 		printf("cosinus de \'%s\':%s\n", argv[1],r);
 		free(r);
 	}
-	r = cosinus(argv[2], "%.16Lf", 0);
+	r = cosinus(argv[2], format, 0);
 	if(r){
 		printf("cosinus de \'%s\':%s\n", argv[2], r);
 		free(r);
@@ -394,7 +407,7 @@ int main(int argc, char **argv){
 			free(check);
 		}
 	}
-	r = puissance(argv[1],argv[2], 56, "%.16Lf",atoi(argv[3]), 1);
+	r = puissance(argv[1],argv[2], 56, format,atoi(argv[3]), 1);
 	if(r){
 		printf("%s^%s  = %s\n", argv[1], argv[2], r);
 		free(r);
