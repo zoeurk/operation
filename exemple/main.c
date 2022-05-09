@@ -67,7 +67,6 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 		test++;
 		if(virgule < strlen(test)){
 			v = strlen(test)+1;
-			exit(0);
 		}
 	}
 	sprintf(buffer,"%lu", len);
