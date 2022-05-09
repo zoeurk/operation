@@ -299,14 +299,14 @@ int main(int argc, char **argv){
 	unsigned long int sz = 56;
 	char *r, *check, format[8];
 	if(argc < 4){
-		fprintf(stderr, "usage:\n\t%s num1 num2 virgule [internal_buflen(default = 56)]\n", argv[0]);
+		fprintf(stderr, "usage:\n\t%s num1 num2 virgule(>= 0) [internal_buflen(default = 56)]\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
 	v = atoi(argv[3]);
 	if(argc > 4)
 		sz = atoi(argv[4]);
 	if(v < 0){
-		fprintf(stderr, "usage:\n\t%s num1 num2 virgule(>= 0)\n", argv[0]);
+		fprintf(stderr, "usage:\n\t%s num1 num2 virgule(>= 0) [internal_buflen(default = 56)]\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
 	if(v > 0){
