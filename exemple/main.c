@@ -299,7 +299,7 @@ int main(int argc, char **argv){
 	unsigned long int sz = 56;
 	char *r, *check, format[8];
 	if(argc < 4){
-		fprintf(stderr, "usage:\n\t%s num1 num2 virgule [internal_buflen]\n", argv[0]);
+		fprintf(stderr, "usage:\n\t%s num1 num2 virgule [internal_buflen(default = 56)]\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
 	v = atoi(argv[3]);
