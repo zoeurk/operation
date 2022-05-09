@@ -33,7 +33,7 @@ char *cosinus(char *arg, char *format,unsigned long internal_buflen){
 	}
 	val = cosl(strtold(t,NULL));
 	sprintf(buffer, format, val);
-	if(buffer[55] != 0){
+	if(buffer[internal_buflen] != 0){
 		fprintf(stderr, "Tampon interne trop petit\n");
 		exit(0);
 	}
