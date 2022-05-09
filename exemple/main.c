@@ -8,6 +8,7 @@ const unsigned long int BUFFER = 56;
 char *cosinus(char *arg, char *format,unsigned long internal_buflen){
 	char pi[512], npi[512], *pi_ = NULL, *temp, *t = NULL, *mul, buffer[internal_buflen], *pbuf;
 	long double val;
+	memset(buffer, 0, internal_buflen);
 	sprintf(pi,"%.54Lf", 8*atanl(1));
 	sprintf(npi,"-%.54Lf", 8*atanl(1));
 	t = multiplication(arg,"1");
@@ -30,24 +31,12 @@ char *cosinus(char *arg, char *format,unsigned long internal_buflen){
 			t = temp;
 		}
 	}
-	if(strlen(t) >= internal_buflen){
-		fprintf(stderr, "internal_buflen trop petit::%lu::%lu\n", strlen(t), internal_buflen);
-		exit(EXIT_FAILURE);
-	}
-	/*if(strchr(t, '.') && strlen(strchr(t,'.')+1)+1 >= internal_buflen){
-	}*/
-	/*if(strlen(t) >= internal_buflen){
-		fprintf(stderr, "internal_buflen trop petit::%lu::%lu\n", strlen(t)+1, internal_buflen);
-		exit(EXIT_FAILURE);
-	}*/
-	//printf("%lu::%lu\n",internal_buflen, strlen(t));
 	val = cosl(strtold(t,NULL));
 	sprintf(buffer, format, val);
-
-	/*if(buffer[internal_buflen-1] != 0){
-		fprintf(stderr, "buffer interne trop court\n");
-		exit(EXIT_FAILURE);
-	}*/
+	if(buffer[55] != 0){
+		fprintf(stderr, "Tampon interne trop petit\n");
+		exit(0);
+	}
 	pbuf = multiplication(buffer,"1");
 	free(t);
 	return pbuf;
