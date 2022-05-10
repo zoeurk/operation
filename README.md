@@ -8,4 +8,7 @@ Pour installer la librairie:
 	autoreconf --install  
 	./configure --prefix=/usr --exec-prefix=/usr  
 	make  
-	make install (en super utilisateur)
+	make install (en super utilisateur)  
+  
+patch pour ne pas utiliser la librairie <math.h>  
+patch -i math.patch main.c

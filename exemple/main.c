@@ -5,6 +5,7 @@
 #include "operation.h"
 /*BUFFER > 1*/
 const unsigned long int BUFFER = 56;
+#ifdef _MATH_H
 char *cosinus(char *arg, char *format,unsigned long internal_buflen){
 	char pi[512], npi[512], *pi_ = NULL, *temp, *t = NULL, *mul, buffer[internal_buflen], *pbuf;
 	long double val;
@@ -41,6 +42,7 @@ char *cosinus(char *arg, char *format,unsigned long internal_buflen){
 	free(t);
 	return pbuf;
 }
+#endif
 char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	unsigned long int len, v = virgule+1;
 	/*last pour eviter une boucle plus bas*/
@@ -257,11 +259,14 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 
 void *puissance(void *num1, void *num2, unsigned long int internal_buflen, char *format, unsigned long int virgule, int approximation){
 	char *n1 = multiplication(num1,"1"), *n2 = multiplication(num2,"1"),
-		*n1_ = n1, *n2_ = n2,*dot_, *pdot_,
-		*v, *v_, *pseudo = NULL, *p, *i = multiplication("1","0"), *i_;
-	char buffer[internal_buflen];
+		buffer[internal_buflen], *v, 
+		*n1_ = n1, *n2_ = n2,
+		*i = multiplication("1","0");
+#ifdef _MATH_H
+	char *i_, *v_, *pseudo = NULL, *p, *dot_, *pdot_;
 	long double pseudo_;
 	int eq, set = 0;
+#endif
 	memset(buffer, 0, internal_buflen);
 	//unsigned long int i_ = 0;
 	if(equal(num2, "0") == 0){
@@ -271,6 +276,7 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, char 
 		return n1;
 	}
 	if((v = strchr(n2, '.')) != NULL){
+#ifdef _MATH_H
 		if(*((char *)num2) != '-'){
 				POWER(soustraction);
 		}else{
@@ -279,6 +285,10 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, char 
 				n2_ = n1_;
 				n1_ = division("1", n2_, virgule, approximation);
 		}
+#else
+		fprintf(stderr, "Erreur puissance scalaire non pris en charge\n");\
+		exit(EXIT_FAILURE);
+#endif
 	}else{
 		if(equal(n2, "0") > 0){
 			while(equal(n2,"1") != 0){
@@ -368,6 +378,7 @@ int main(int argc, char **argv){
 		free(r);
 	}
 	//No warrenty
+#ifdef _MATH_H
 	printf("++++++++++++++++++\n");
 	r = cosinus(argv[1], format, sz);
 	if(r){
@@ -380,6 +391,7 @@ int main(int argc, char **argv){
 		free(r);
 	}
 	printf("++++++++++++++++++\n");
+#endif
 	if(equal(argv[1],"0") < 0)
 		fprintf(stderr, "Racine carree non applicable sur un nombre negatif:%s\n", argv[1]);
 	else{
