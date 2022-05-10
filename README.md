@@ -10,5 +10,6 @@ Pour installer la librairie:
 	make  
 	make install (en super utilisateur)  
   
+Pour l'exemple: 
 patch pour ne pas utiliser la librairie <math.h>  
 patch -i math.patch main.c
