@@ -2,7 +2,7 @@ CC=gcc
 ARG=-g -Wall -Wpadded -Wextra
 
 all:liboperation.so
-	 $(CC) $(ARG) main.c -o main -L. -loperation -lm
+	 $(CC) $(ARG) main/main.c -o main/main -L./operation -loperation -L./arithmetique -larithmetique -lm
 
 liboperation.so:
 	$(CC) $(ARG) -fPIC -c operation.c
