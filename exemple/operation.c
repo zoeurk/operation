@@ -129,8 +129,8 @@ int equal(void *num1, void *num2){
 	val1_len = (dot1_len) ? val1_len - dot1_len -1: val1_len; 
 	val2_len = (dot2_len) ? val2_len - dot2_len -1: val2_len;
 	if(neg1 && !neg2){
-		if((pdot = strchr(val1, '.')) != NULL)
-			/*for(pdot = val1 +val1_len,
+		/*if((pdot = strchr(val1, '.')) != NULL)
+			for(pdot = val1 +val1_len,
 				dot[0] = 0;
 				*pdot != 0 &&
 				dot[0] == 0;
