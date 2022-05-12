@@ -138,7 +138,7 @@ int equal(void *num1, void *num2){
 			)if(*pdot != '0')dot[0] = *pdot;
 		if(strncmp(val1,val2, 1 ) == 0 && dot[0] == 0)
 			return 0;*/
-		return 1;
+		return -1;
 	}
 	if(neg2 && !neg1){
 		/*if((pdot = strchr(val2, '.')) != NULL)
@@ -153,7 +153,7 @@ int equal(void *num1, void *num2){
 		if(strncmp(val1,val2, 1 ) == 0 && dot[0] == 0){
 			return 0;
 		}*/
-		return -1;
+		return 1;
 	}
 	if(strcmp(val1,"0") == 0 && strcmp(val2,"0") == 0)
 		return 0;
