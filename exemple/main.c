@@ -313,10 +313,10 @@ int main(int argc, char **argv){
 			free(check);
 		}
 	}
-	r = puissance(argv[1],argv[2], sz, format,atoi(argv[3]), 1);
+	/*r = puissance(argv[1],argv[2], sz, format,atoi(argv[3]), 1);
 	if(r){
 		printf("%s^%s  = %s\n", argv[1], argv[2], r);
 		free(r);
-	}
+	}*/
 	return 0;
 }
