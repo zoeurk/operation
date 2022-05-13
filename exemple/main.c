@@ -2,17 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "operation.h"
+#include "../operation/operation.h"
 /*BUFFER > 1*/
 const unsigned long int BUFFER = 56;
 #ifdef _MATH_H
 char *cosinus(char *arg, char *format,unsigned long internal_buflen){
 	char pi[512], npi[512], *pi_ = NULL, *temp, *t = NULL, *mul, buffer[internal_buflen], *pbuf, *form;
 	long double val, format_;
-	form = format+1;
+	form = format+2;
 	format_ = strtold(form,NULL);
-	if(format_ < internal_buflen){
-		fprintf(stderr, "Echec :%s < %lu\n", form, internal_buflen);
+		//fprintf(stderr, "Echec :%.0Lf < %lu\n", format_, internal_buflen);
+	if(format_ > internal_buflen){
+		fprintf(stderr, "Echec :%.0Lf > %lu\n", format_, internal_buflen);
 		exit(EXIT_FAILURE);
 	}
 	memset(buffer, 0, internal_buflen);
