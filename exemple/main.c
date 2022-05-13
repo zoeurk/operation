@@ -7,11 +7,17 @@
 const unsigned long int BUFFER = 56;
 #ifdef _MATH_H
 char *cosinus(char *arg, char *format,unsigned long internal_buflen){
-	char pi[512], npi[512], *pi_ = NULL, *temp, *t = NULL, *mul, buffer[internal_buflen], *pbuf;
-	long double val;
+	char pi[512], npi[512], *pi_ = NULL, *temp, *t = NULL, *mul, buffer[internal_buflen], *pbuf, *form;
+	long double val, format_;
+	form = format+1;
+	format_ = strtold(form,NULL);
+	if(format_ < internal_buflen){
+		fprintf(stderr, "Echec :%s < %lu\n", form, internal_buflen);
+		exit(EXIT_FAILURE);
+	}
 	memset(buffer, 0, internal_buflen);
-	sprintf(pi,"%.54Lf", 2*atanl(-1));
-	sprintf(npi,"-%.54Lf", 2*atanl(-1));
+	sprintf(pi,"%.54Lf", 8*atanl(1));
+	sprintf(npi,"-%.54Lf", 8*atanl(1));
 	t = multiplication(arg,"1");
 	if(equal(arg,"0") > 0){
 		mul = division(arg, pi, 0,0);
