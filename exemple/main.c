@@ -13,7 +13,7 @@ char *cosinus(char *arg, char *format,unsigned long internal_buflen){
 	format_ = strtold(form,NULL);
 		//fprintf(stderr, "Echec :%.0Lf < %lu (internal_buflen)\n", format_, internal_buflen);
 	if(format_ > internal_buflen){
-		fprintf(stderr, "Echec :%.0Lf > %lu\n", format_, internal_buflen);
+		fprintf(stderr, "Echec :%.0Lf > %lu (internal_buflen)\n", format_, internal_buflen);
 		exit(EXIT_FAILURE);
 	}
 	memset(buffer, 0, internal_buflen);
