@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "../operation/operation.h"
+#include "operation.h"
 /*BUFFER > 1*/
 const unsigned long int BUFFER = 56;
 #ifdef _MATH_H
