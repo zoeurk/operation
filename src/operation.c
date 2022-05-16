@@ -120,8 +120,8 @@ int equal(void *num1, void *num2){
 	DOT_INIT;
 	if(dot1)dot1++;
 	if(dot2)dot2++;
-	for(n1 = n1;*(n1+1) != '.' && *(n1+1) != 0 && (*n1 == '0' || *n1 == '+' || *n1 == '-'); n1++);;
-	for(n2 = n2;*(n2+1) != '.' && *(n2+1) != 0 && (*n2 == '0' || *n2 == '+' || *n2 == '-'); n2++);;
+	for(n1 = n1;*(n1+1) != '.' && (*n1 == '0' || *n1 == '+' || *n1 == '-'); n1++);;
+	for(n2 = n2;*(n2+1) != '.' && (*n2 == '0' || *n2 == '+' || *n2 == '-'); n2++);;
 	val1 = n1;
 	val2 = n2;
 	val1_len = strlen(n1);
@@ -129,7 +129,7 @@ int equal(void *num1, void *num2){
 	val1_len = (dot1_len) ? val1_len - dot1_len -1: val1_len; 
 	val2_len = (dot2_len) ? val2_len - dot2_len -1: val2_len;
 	if(neg1 && !neg2){
-		/*if((pdot = strchr(val1, '.')) != NULL)
+		if((pdot = strchr(val1, '.')) != NULL)
 			for(pdot = val1 +val1_len,
 				dot[0] = 0;
 				*pdot != 0 &&
@@ -137,11 +137,11 @@ int equal(void *num1, void *num2){
 				pdot++
 			)if(*pdot != '0')dot[0] = *pdot;
 		if(strncmp(val1,val2, 1 ) == 0 && dot[0] == 0)
-			return 0;*/
+			return 0;
 		return -1;
 	}
 	if(neg2 && !neg1){
-		/*if((pdot = strchr(val2, '.')) != NULL)
+		if((pdot = strchr(val2, '.')) != NULL)
 			for(pdot = val2 +val2_len,
 				dot[0] = 0;
 				*pdot != 0 &&
@@ -152,7 +152,7 @@ int equal(void *num1, void *num2){
 			}
 		if(strncmp(val1,val2, 1 ) == 0 && dot[0] == 0){
 			return 0;
-		}*/
+		}
 		return 1;
 	}
 	if(strcmp(val1,"0") == 0 && strcmp(val2,"0") == 0)
@@ -1160,12 +1160,12 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	}
 	return result;
 }
-void *modulo(void *num1, void *num2, unsigned long int virgule){
+void *modulo(void *num1, void *num2){
 	char *n1 = num1, *n2 = num2,
 		*quotient = NULL, *dividende = NULL, *diviseur = NULL, *reste = NULL, *preste, *zero_ = NULL, *pzero_,
-		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}, point = 0,
-		neg1 = 0, *dix, *pdix;
-	unsigned long int len = 0, virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
+		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}, point = 0, *pvirgule,
+		neg1 = 0/*, *dix, *pdix*/;
+	unsigned long int len = 0, /*virgule= 0,*/ virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
 	long long int ii = 0;
 	int x;
 	for(n1 = n1; *n1 == '-' || *n1 == '+'; n1++) 
@@ -1187,7 +1187,7 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 		//strcpy(temp, n1);
 		reste = multiplication(n1,"1");
 		/*ICI*/
-		if(virgule)
+		/*if(virgule)
 			dix = multiplication("1","1");
 		if(virgule){
 			diviseur = n2;
@@ -1218,7 +1218,7 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 			free(reste);
 			free(dix);
 			reste = temp;
-		}
+		}*/
 		if(neg1){
 			temp = allocation((void **)&temp,strlen(reste)+1, sizeof(char));
 			*temp = '-';
@@ -1324,8 +1324,12 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 		ii++;
 	}
 	if(zero_){
-		/*ICI*/
-		if(virgule)
+		virgule_ = strlen(zero_)+1;
+		pvirgule = division(reste, zero_, virgule_, 0);
+		free(reste);
+		reste = pvirgule;
+	}
+	/*	if(virgule)
 			dix = multiplication("1","1");
 		if(virgule){
 			do{
@@ -1356,13 +1360,7 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 			free(dix);
 			reste = temp;
 		}
-		/*BUG POSSIBLE*/
-		/*if(*reste != '0' && equal(reste,"0") != 0){
-			pzero_ = division(reste, zero_, strlen(reste)+3, 0);
-			free(reste);
-			reste = pzero_;
-		}*/
-	}
+	}*/
 	if(zero_)
 		free(zero_);
 	if(neg1){
@@ -1381,7 +1379,7 @@ char *racine_carree(void *num1, unsigned long int virgule, int approximation){
 	/*last pour eviter une boucle plus bas*/
 	char *num1_ = NULL, *pnum1_,*dix = NULL, *pdix, buffer[32], *buf, *pbuf, *result, *presult, *check = NULL, *test/*, *last = NULL*/;
 	if(equal(num1, "0") < 0){
-		fprintf(stderr, "Erreur:racine_carre: %s < 0\n", (char *)num1);
+		fprintf(stderr, "Erreur: %s < 0\n", (char *)num1);
 		return NULL;
 	}
 	if(equal(num1, "0") == 0){
