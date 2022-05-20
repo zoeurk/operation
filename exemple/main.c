@@ -91,11 +91,11 @@ char *cosinus(char *arg, char *format,unsigned long internal_buflen){
 	pdot_ = strchr(dot_, 'L');\
 	/**dot_ = '0';*/\
 	*pdot_ = 0;\
-	if((p = strchr(v_,'.')) != NULL && strlen(p+1) > (unsigned long int)atol(dot_)){\
+	/*if((p = strchr(v_,'.')) != NULL && strlen(p+1) > (unsigned long int)atol(dot_)){\
 		fprintf(stderr,"Warning `%s`:\n\tTrop de chiffre apres la virgule.\n\tUtilisation de la valeur: ", v_);\
 		fprintf(stderr, format, strtold(v_, NULL)); \
 		fprintf(stderr,"\n");\
-	}\
+	}*/ \
 	free(dot_);\
 	pseudo_ = powl(strtold(n1_, NULL), strtold(v_, NULL));\
 	snprintf(buffer, internal_buflen, format, pseudo_);\
