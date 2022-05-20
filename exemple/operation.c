@@ -111,6 +111,8 @@ int equal(void *num1, void *num2){
 	unsigned long int dot1_len = 0, dot2_len = 0,
 				val1_len = 0, val2_len = 0;
 	long long ii = 0;
+	/*printf("******\n");
+	exit(0);*/
 	for(val1 = n1; *val1 == '-' || *val1 == '+'; val1++)
 		if(*val1 == '-')
 			neg1 = !neg1;
@@ -1160,12 +1162,12 @@ void *division(void *num1, void *num2, unsigned long int virgule, int approximat
 	}
 	return result;
 }
-void *modulo(void *num1, void *num2){
+void *modulo(void *num1, void *num2, unsigned long int virgule){
 	char *n1 = num1, *n2 = num2,
 		*quotient = NULL, *dividende = NULL, *diviseur = NULL, *reste = NULL, *preste, *zero_ = NULL, *pzero_,
 		*temp = NULL, *temp_ = NULL, t[2] = {0, 0}, point = 0, *pvirgule,
-		neg1 = 0/*, *dix, *pdix*/;
-	unsigned long int len = 0, /*virgule= 0,*/ virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
+		neg1 = 0, *dix, *pdix;
+	unsigned long int len = 0, virgule_ = 0, zero = 0, nreste = 0, qreste = 1;
 	long long int ii = 0;
 	int x;
 	for(n1 = n1; *n1 == '-' || *n1 == '+'; n1++) 
@@ -1187,7 +1189,7 @@ void *modulo(void *num1, void *num2){
 		//strcpy(temp, n1);
 		reste = multiplication(n1,"1");
 		/*ICI*/
-		/*if(virgule)
+		if(virgule)
 			dix = multiplication("1","1");
 		if(virgule){
 			diviseur = n2;
@@ -1218,7 +1220,7 @@ void *modulo(void *num1, void *num2){
 			free(reste);
 			free(dix);
 			reste = temp;
-		}*/
+		}
 		if(neg1){
 			temp = allocation((void **)&temp,strlen(reste)+1, sizeof(char));
 			*temp = '-';
@@ -1308,6 +1310,7 @@ void *modulo(void *num1, void *num2){
 				virgule_++;
 		}
 		for(x = 9; x >= 0; x--){
+			//fprintf(stderr,"%==>i", x);
 			sprintf(t, "%i", x);
 			temp = multiplication(t, diviseur);
 			temp_ = soustraction(reste, temp);
