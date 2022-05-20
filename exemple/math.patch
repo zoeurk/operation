@@ -1,11 +1,10 @@
---- main.c	2022-05-14 10:39:34.731048773 +0200
-+++ main.c	2022-05-14 10:56:04.152100039 +0200
-@@ -1,7 +1,7 @@
+--- main.c	2022-05-20 10:57:47.961214525 +0200
++++ main.c	2022-05-20 10:58:55.261665934 +0200
+@@ -1,7 +1,6 @@
  #include <stdio.h>
  #include <stdlib.h>
  #include <string.h>
 -#include <math.h>
-+//#include <math.h>
  #include "operation.h"
  /*BUFFER > 1*/
  const unsigned long int BUFFER = 56;
