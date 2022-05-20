@@ -82,21 +82,21 @@ char *cosinus(char *arg, char *format,unsigned long internal_buflen){
 			i = i_;\
 		}\
 	}while(eq > 0);\
-	pdot_ = strchr(format,'.');\
+	/*pdot_ = strchr(format,'.');\
 	if((dot_ = calloc(strlen(format), sizeof(char))) == NULL){\
 		perror("calloc()");\
 		exit(EXIT_FAILURE);\
-	}\
-	strcpy(dot_, pdot_+1);\
-	pdot_ = strchr(dot_, 'L');\
+	}*/\
+	/*strcpy(dot_, pdot_+1);\
+	pdot_ = strchr(dot_, 'L');*/\
 	/**dot_ = '0';*/\
-	*pdot_ = 0;\
+	/**pdot_ = 0;*/ \
 	/*if((p = strchr(v_,'.')) != NULL && strlen(p+1) > (unsigned long int)atol(dot_)){\
 		fprintf(stderr,"Warning `%s`:\n\tTrop de chiffre apres la virgule.\n\tUtilisation de la valeur: ", v_);\
 		fprintf(stderr, format, strtold(v_, NULL)); \
 		fprintf(stderr,"\n");\
 	}*/ \
-	free(dot_);\
+	/*free(dot_);*/\
 	pseudo_ = powl(strtold(n1_, NULL), strtold(v_, NULL));\
 	snprintf(buffer, internal_buflen, format, pseudo_);\
 	if(buffer[internal_buflen-1] != 0){\
