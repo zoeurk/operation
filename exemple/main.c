@@ -98,7 +98,7 @@ char *cosinus(char *arg, char *format,unsigned long internal_buflen){
 	}\
 	free(dot_);\
 	pseudo_ = powl(strtold(n1_, NULL), strtold(v_, NULL));\
-	sprintf(buffer, format, pseudo_);\
+	snprintf(buffer, internal_buflen, format, pseudo_);\
 	if(buffer[internal_buflen-1] != 0){\
 		fprintf(stderr, "buffer interne trop court\n");\
 		exit(EXIT_FAILURE);\
