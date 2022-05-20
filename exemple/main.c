@@ -199,7 +199,7 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, char 
 int main(int argc, char **argv){
 	int ret, i, v;
 	unsigned long int sz = 56;
-	char *r, *check, format[8];
+	char *r, *check, format[16];
 	if(argc < 4){
 		fprintf(stderr, "usage:\n\t%s num1 num2 virgule(>= 0) [internal_buflen(default = 56)]\n", argv[0]);
 		exit(EXIT_FAILURE);
@@ -213,6 +213,10 @@ int main(int argc, char **argv){
 	}
 	if(v > 0){
 		strcpy(format,"%.");
+		if(strlen(argv[3]) > 5){
+			fprintf(stderr,"Erreur: format trop long.\n");
+			exit(EXIT_FAILURE);
+		}
 		strcat(format,argv[3]);
 		strcat(format,"Lf");
 	}else strcpy(format,"%Lf"); 
