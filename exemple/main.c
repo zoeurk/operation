@@ -72,7 +72,11 @@ char *cosinus(char *arg, char *format,unsigned long internal_buflen){
 	pseudo = buffer;\
 	do{\
 		pseudo_ = strtold(n1, NULL);\
-		sprintf(buffer, format, pseudo_);\
+		snprintf(buffer, internal_buflen, format, pseudo_);\
+		if(buffer[internal_buflen-1] != 0){\
+			fprintf(stderr, "buffer interne trop court\n");\
+			exit(EXIT_FAILURE);\
+		}\
 		if((eq = equal(n1, pseudo)) > 0){\
 			n1_ = racine_carree(n1, virgule,approximation);\
 			free(n1);\
