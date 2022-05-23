@@ -1332,7 +1332,7 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 		free(reste);
 		reste = pvirgule;
 	}
-	/*	if(virgule)
+		if(virgule)
 			dix = multiplication("1","1");
 		if(virgule){
 			do{
@@ -1362,8 +1362,7 @@ void *modulo(void *num1, void *num2, unsigned long int virgule){
 			free(reste);
 			free(dix);
 			reste = temp;
-		}
-	}*/
+	}
 	if(zero_)
 		free(zero_);
 	if(neg1){
