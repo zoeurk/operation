@@ -155,7 +155,7 @@ void *puissance(void *num1, void *num2, unsigned long int internal_buflen, char 
 		*n1_ = n1, *n2_ = n2,
 		*i = multiplication("1","0");
 #ifdef _MATH_H
-	char *i_, *v_, *pseudo = NULL, *p, *dot_, *pdot_;
+	char *i_, *v_, *pseudo = NULL, *p;
 	long double pseudo_;
 	int eq, set = 0;
 #endif
