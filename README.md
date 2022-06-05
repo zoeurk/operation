@@ -4,6 +4,7 @@ La librairie est libre d'utilisation, de modification et de (re)distribution
 n'oubliez par de faire un:  
 
 Pour installer la librairie:  
+	libtoolize  
 	aclocal  
 	autoreconf --install  
 	./configure --prefix=/usr --exec-prefix=/usr  
