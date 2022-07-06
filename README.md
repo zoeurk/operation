@@ -13,4 +13,6 @@ Pour installer la librairie:
   
 Pour l'exemple:  
 patch pour ne pas utiliser la librairie <math.h>  
-patch -i math.patch main.c
+patch -i math.patch main.c  
+  
+OUTDATED: par arithmetique.
